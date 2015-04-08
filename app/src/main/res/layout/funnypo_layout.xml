@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="This is readonly textview."/>
+
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageButton
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:id="@+id/noun_button"
+            android:src="@mipmap/ic_launcher"
+            android:gravity="center_vertical"
+            />
+        <ImageButton
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:id="@+id/adj_button"
+            android:layout_toRightOf="@id/noun_button"
+            android:src="@mipmap/ic_launcher"
+            android:gravity="center_vertical"
+            />
+        <ImageButton
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:id="@+id/location_button"
+            android:layout_toRightOf="@id/adj_button"
+            android:layout_toEndOf="@id/adj_button"
+            android:src="@mipmap/ic_launcher"
+            android:gravity="center_vertical"
+            />
+
+    </RelativeLayout>
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="140dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:id="@+id/noun_listView"
+        android:background="@color/sienna"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:id="@+id/informtextfield"
+            android:layout_gravity="left"
+            />
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:id="@+id/hey_button"
+            android:layout_toRightOf="@id/informtextfield"
+            android:layout_toEndOf="@id/informtextfield"
+            android:clickable="false"
+            android:src="@mipmap/ic_launcher"
+            android:gravity="center_vertical"
+            />
+    </RelativeLayout>
+</LinearLayout>
+</LinearLayout>
