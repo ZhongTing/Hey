@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import slm2015.hey.tabsswipe.FunnyPoFragment;
+import slm2015.hey.tabsswipe.FunnyWatchFragment;
 import slm2015.hey.tabsswipe.TabsPagerAdapter;
 
 /**
