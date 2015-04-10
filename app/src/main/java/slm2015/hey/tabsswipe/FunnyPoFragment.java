@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import slm2015.hey.R;
+import slm2015.hey.adapter.ListViewAdapter;
 import slm2015.hey.manager.RaiseIssueManager;
 
 public class FunnyPoFragment extends Fragment {
@@ -26,16 +27,17 @@ public class FunnyPoFragment extends Fragment {
     private ListView _listView;
     private EditText _informTxtField;
     private ImageButton _heyButton;
-    private ImageButton _nounButton, _adjButton, _locationButton;
-    private ArrayList<ImageButton> _buttonMap;
+    private Button _nounButton, _adjButton, _locationButton;
+    private ArrayList<Button> _buttonMap;
     private TextView _hintTextView;
     private RaiseIssueManager _raiseIssueManager;
+    private ListViewAdapter adapter;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         _raiseIssueManager = new RaiseIssueManager();
-        _buttonMap = new ArrayList<ImageButton>();
+        _buttonMap = new ArrayList<Button>();
     }
 
     @Override
@@ -66,7 +68,7 @@ public class FunnyPoFragment extends Fragment {
     }
 
     private void initializeNounButton(View view){
-        _nounButton = (ImageButton) view.findViewById(R.id.noun_button);
+        _nounButton = (Button) view.findViewById(R.id.noun_button);
         _buttonMap.add(_nounButton);
         _nounButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +80,7 @@ public class FunnyPoFragment extends Fragment {
     }
 
     private void initializeAdjButton(View view){
-        _adjButton = (ImageButton) view.findViewById(R.id.adj_button);
+        _adjButton = (Button) view.findViewById(R.id.adj_button);
         _buttonMap.add(_adjButton);
         _adjButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +92,7 @@ public class FunnyPoFragment extends Fragment {
     }
 
     private void initializeLocationButton(View view){
-        _locationButton = (ImageButton) view.findViewById(R.id.location_button);
+        _locationButton = (Button) view.findViewById(R.id.location_button);
         _buttonMap.add(_locationButton);
         _locationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,12 +112,11 @@ public class FunnyPoFragment extends Fragment {
         _listView = (ListView) view.findViewById(R.id.noun_listView);
         if(_listView.getAdapter() == null) {
             final int NOUNLIST = 0;
-            _listView.setAdapter(new ArrayAdapter<>(getActivity().getApplicationContext(),
-                    android.R.layout.simple_list_item_activated_1, _raiseIssueManager.getList(NOUNLIST)));
+            this.adapter = new ListViewAdapter(getActivity().getApplicationContext(), _raiseIssueManager.getList(NOUNLIST));
+            _listView.setAdapter(adapter);
             _listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    ListView listView = (ListView) parent;
                     String text = listView.getItemAtPosition(position).toString();
                     setIssue(text);
                     CharSequence issue = _raiseIssueManager.getIssueInString();
@@ -135,10 +136,9 @@ public class FunnyPoFragment extends Fragment {
 
     private void refreshListView(){
         int listNum = _raiseIssueManager.getIssuePosNum();
-        ArrayList showList = _raiseIssueManager.getList(listNum);
-        ArrayAdapter adapter = new ArrayAdapter<>(getActivity().getApplicationContext(),
-                android.R.layout.simple_list_item_activated_1, showList);
-        _listView.setAdapter(adapter);
+        ArrayList<String> showList = _raiseIssueManager.getList(listNum);
+        this.adapter.SetData(showList);
+        _listView.setAdapter(this.adapter);
         refreshBtnState();
     }
 

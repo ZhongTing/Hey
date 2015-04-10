@@ -17,43 +17,52 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ImageButton
-            android:layout_width="120dp"
-            android:layout_height="50dp"
+        <Button
+            android:layout_width="113dp"
+            android:layout_height="30dp"
             android:id="@+id/noun_button"
-            android:src="@mipmap/ic_launcher"
-            android:gravity="center_vertical"
+            android:background="@color/light_blue"
+            android:text="S"
+            android:textAlignment="center"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
             />
-        <ImageButton
-            android:layout_width="120dp"
-            android:layout_height="50dp"
+        <Button
+            android:layout_width="113dp"
+            android:layout_height="30dp"
             android:id="@+id/adj_button"
             android:layout_toRightOf="@id/noun_button"
-            android:src="@mipmap/ic_launcher"
-            android:gravity="center_vertical"
+            android:background="@color/light_blue"
+            android:text="V"
+            android:textAlignment="center"
             android:enabled="false"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
             />
-        <ImageButton
-            android:layout_width="120dp"
-            android:layout_height="50dp"
+        <Button
+            android:layout_width="113dp"
+            android:layout_height="30dp"
             android:id="@+id/location_button"
+            android:text="P"
+            android:textAlignment="center"
             android:layout_toRightOf="@id/adj_button"
             android:layout_toEndOf="@id/adj_button"
-            android:src="@mipmap/ic_launcher"
-            android:gravity="center_vertical"
+            android:background="@color/light_blue"
             android:enabled="false"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
             />
 
     </RelativeLayout>
 
     <ListView
         android:layout_width="fill_parent"
-        android:layout_height="140dp"
+        android:layout_height="170dp"
         android:layout_gravity="left"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:id="@+id/noun_listView"
-        android:background="@color/sienna"
+        android:background="@color/light_yellow"
         />
 
     <RelativeLayout
@@ -64,12 +73,13 @@
             android:layout_width="280dp"
             android:layout_height="50dp"
             android:id="@+id/informtextfield"
-            android:layout_gravity="left"
+            android:layout_margin="5dp"
+            android:background="@color/light_blue"
             />
 
         <ImageButton
             android:layout_width="80dp"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:id="@+id/hey_button"
             android:layout_toRightOf="@id/informtextfield"
             android:layout_toEndOf="@id/informtextfield"
