@@ -2,11 +2,13 @@ package slm2015.hey.manager;
 
 import java.util.ArrayList;
 
+import slm2015.hey.entity.Term;
+
 public class RaiseIssueManager {
-    private ArrayList<String> _nounList = new ArrayList<String>();
-    private ArrayList<String> _adjList = new ArrayList<String>();
-    private ArrayList<String> _locationList = new ArrayList<String>();
-    private ArrayList<ArrayList<String>> _listMap = new ArrayList<ArrayList<String>>();
+    private ArrayList<Term> _nounList = new ArrayList<Term>();
+    private ArrayList<Term> _adjList = new ArrayList<Term>();
+    private ArrayList<Term> _locationList = new ArrayList<Term>();
+    private ArrayList<ArrayList<Term>> _listMap = new ArrayList<ArrayList<Term>>();
     private int _issuePosNum = 0;
 
     private String[] _issue = {"", "", ""};
@@ -16,17 +18,17 @@ public class RaiseIssueManager {
         String[] adjArray = {"is comming", "is dangerous", "opening", "on sale", "sold out"};
         String[] locationArray = {"忠孝新生", "科研", "綜科", "光華商場", "六教"};
         for (String s : nounArray)
-            this._nounList.add(s);
+            this._nounList.add(new Term(s));
         for (String s : adjArray)
-            _adjList.add(s);
+            _adjList.add(new Term(s));
         for (String s : locationArray)
-            _locationList.add(s);
+            _locationList.add(new Term(s));
         _listMap.add(_nounList);
         _listMap.add(_adjList);
         _listMap.add(_locationList);
     }
 
-    public ArrayList<String> getList(int listNum) {
+    public ArrayList<Term> getList(int listNum) {
         return _listMap.get(listNum);
     }
 

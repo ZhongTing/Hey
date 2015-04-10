@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import slm2015.hey.R;
 import slm2015.hey.adapter.ListViewAdapter;
+import slm2015.hey.entity.Term;
 import slm2015.hey.manager.RaiseIssueManager;
 
 public class FunnyPoFragment extends Fragment {
@@ -113,16 +114,21 @@ public class FunnyPoFragment extends Fragment {
         if(_listView.getAdapter() == null) {
             final int NOUNLIST = 0;
             this.adapter = new ListViewAdapter(getActivity().getApplicationContext(), _raiseIssueManager.getList(NOUNLIST));
-            _listView.setAdapter(adapter);
+            _listView.setAdapter(this.adapter);
             _listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String text = listView.getItemAtPosition(position).toString();
-                    setIssue(text);
-                    CharSequence issue = _raiseIssueManager.getIssueInString();
-                    _informTxtField.setText(issue);
-                    _hintTextView.setText(issue);
-                    refreshListView();
+                    int listNum = _raiseIssueManager.getIssuePosNum();
+                    ListView listView = (ListView) parent;
+                    if(position <  _raiseIssueManager.getList(listNum).size()){
+                        _raiseIssueManager.getList(listNum).get(position).setIsSelected(true);
+                        Term term = (Term) listView.getItemAtPosition(position);
+                        setIssue(term.getTerm());
+                        CharSequence issue = _raiseIssueManager.getIssueInString();
+                        _informTxtField.setText(issue);
+                        _hintTextView.setText(issue);
+                        refreshListView();
+                    }
                 }
             });
         }
@@ -136,7 +142,7 @@ public class FunnyPoFragment extends Fragment {
 
     private void refreshListView(){
         int listNum = _raiseIssueManager.getIssuePosNum();
-        ArrayList<String> showList = _raiseIssueManager.getList(listNum);
+        ArrayList<Term> showList = _raiseIssueManager.getList(listNum);
         this.adapter.SetData(showList);
         _listView.setAdapter(this.adapter);
         refreshBtnState();

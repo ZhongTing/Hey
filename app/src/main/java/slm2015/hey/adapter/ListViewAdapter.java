@@ -11,25 +11,30 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import slm2015.hey.R;
+import slm2015.hey.entity.Term;
 
 
 public class ListViewAdapter extends BaseAdapter {
-    private ArrayList<String> data = new ArrayList<String>();
+    private final int INI_ROW_COUNT = 12;
+    private ArrayList<Term> data = new ArrayList<Term>();
     private LayoutInflater inflater;
     private Context context;
-    private int selectId = -1;
 
-    public ListViewAdapter(Context context, ArrayList<String> data){
+    public ListViewAdapter(Context context, ArrayList<Term> data){
         this.context = context;
         this.data = data;
     }
     @Override
     public int getCount() {
+        if(this.data.size() < INI_ROW_COUNT)
+            return INI_ROW_COUNT;
         return this.data.size();
     }
 
     @Override
     public Object getItem(int position) {
+        if(position >= data.size())
+            return new Term("");
         return this.data.get(position);
     }
 
@@ -51,22 +56,22 @@ public class ListViewAdapter extends BaseAdapter {
         }else{
             holder = (ViewHolder)convertView.getTag();
         }
-        if(convertView.isSelected()){
-            convertView.setBackgroundColor(convertView.getResources().getColor(R.color.light_blue));
+        if(position < data.size()){
+            if(this.data.get(position).isSelected()){
+                convertView.setBackgroundColor(convertView.getResources().getColor(R.color.light_blue));
+            }
+            holder.text.setText(this.data.get(position).getTerm());
+        }else{
+            holder.text.setText("");
         }
-        holder.text.setText(this.data.get(position));
         return convertView;
     }
 
-    public void SetData(ArrayList<String> data){
+    public void SetData(ArrayList<Term> data){
         this.data = data;
     }
 
     private class ViewHolder{
         TextView text;
-    }
-
-    public void SetSelectId(int id){
-        this.selectId = id;
     }
 }

@@ -57,7 +57,8 @@
 
     <ListView
         android:layout_width="fill_parent"
-        android:layout_height="170dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_gravity="left"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -71,15 +72,15 @@
 
         <EditText
             android:layout_width="280dp"
-            android:layout_height="50dp"
+            android:layout_height="30dp"
             android:id="@+id/informtextfield"
-            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
             android:background="@color/light_blue"
             />
 
         <ImageButton
             android:layout_width="80dp"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:id="@+id/hey_button"
             android:layout_toRightOf="@id/informtextfield"
             android:layout_toEndOf="@id/informtextfield"
