@@ -1,4 +1,4 @@
-package slm2015.hey;
+package slm2015.hey.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,9 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import slm2015.hey.tabsswipe.FunnyPoFragment;
-import slm2015.hey.tabsswipe.FunnyWatchFragment;
-import slm2015.hey.tabsswipe.TabsPagerAdapter;
+import slm2015.hey.R;
+import slm2015.hey.ui.tabsswipe.FunnyPoFragment;
+import slm2015.hey.ui.tabsswipe.FunnyWatchFragment;
+import slm2015.hey.ui.tabsswipe.TabsPagerAdapter;
 
 /**
  * The <code>TabsViewPagerFragmentActivity</code> class implements the Fragment activity that maintains a TabHost using a ViewPager.

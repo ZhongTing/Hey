@@ -1,4 +1,4 @@
-package slm2015.hey.tabsswipe;
+package slm2015.hey.ui.tabsswipe;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
