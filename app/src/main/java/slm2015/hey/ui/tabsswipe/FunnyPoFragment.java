@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -30,7 +29,6 @@ public class FunnyPoFragment extends Fragment {
     private ImageButton _heyButton;
     private Button _nounButton, _adjButton, _locationButton;
     private ArrayList<Button> _buttonMap;
-    private TextView _hintTextView;
     private RaiseIssueManager _raiseIssueManager;
     private ListViewAdapter adapter;
 
@@ -57,15 +55,29 @@ public class FunnyPoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.funnypo_layout, container, false);
 
-        _hintTextView = (TextView) view.findViewById(R.id.hintTextView);
         initializeInformTxtField(view);
         initializeListView(view);
-        _heyButton = (ImageButton) view.findViewById(R.id.hey_button);
+        initializeHeyButton(view);
         initializeNounButton(view);
         initializeAdjButton(view);
         initializeLocationButton(view);
         refreshBtnState();
         return view;
+    }
+
+    private void initializeHeyButton(View view){
+        _heyButton = (ImageButton) view.findViewById(R.id.hey_button);
+        _heyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int listNum = _raiseIssueManager.getIssuePosNum();
+                String text = _informTxtField.getText().toString();
+                if(!text.isEmpty()){
+                    setText(text, listNum);
+                    refreshListView();
+                }
+            }
+        });
     }
 
     private void initializeNounButton(View view){
@@ -121,17 +133,27 @@ public class FunnyPoFragment extends Fragment {
                     int listNum = _raiseIssueManager.getIssuePosNum();
                     ListView listView = (ListView) parent;
                     if(position <  _raiseIssueManager.getList(listNum).size()){
-                        _raiseIssueManager.getList(listNum).get(position).setIsSelected(true);
+                        setItemSelected(listNum, position);
                         Term term = (Term) listView.getItemAtPosition(position);
-                        setIssue(term.getTerm());
-                        CharSequence issue = _raiseIssueManager.getIssueInString();
-                        _informTxtField.setText(issue);
-                        _hintTextView.setText(issue);
+                        setText(term.getTerm(), listNum);
                         refreshListView();
                     }
                 }
             });
         }
+    }
+
+    private void setText(String text, int listNum){
+        setIssue(text);
+        _informTxtField.getText().clear();
+        _buttonMap.get(listNum).setText(text);
+    }
+
+    private void setItemSelected(int listNum, int position){
+        ArrayList<Term> termList = _raiseIssueManager.getList(listNum);
+        for(Term term : termList)
+            term.setIsSelected(false);
+        termList.get(position).setIsSelected(true);
     }
 
     private void setIssue(String text){

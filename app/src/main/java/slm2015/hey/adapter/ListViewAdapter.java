@@ -56,6 +56,7 @@ public class ListViewAdapter extends BaseAdapter {
         }else{
             holder = (ViewHolder)convertView.getTag();
         }
+        convertView.setBackgroundColor(convertView.getResources().getColor(R.color.light_yellow));
         if(position < data.size()){
             if(this.data.get(position).isSelected()){
                 convertView.setBackgroundColor(convertView.getResources().getColor(R.color.light_blue));
