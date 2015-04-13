@@ -1,7 +1,6 @@
 package slm2015.hey.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
@@ -18,6 +17,7 @@ public class IssuePopupWindow extends PopupWindow {
     private TextView textView;
     private ImageButton cancelButton;
     private ImageButton raiseButton;
+    private Activity activity;
 
     public IssuePopupWindow(View view, String text, int width, int height, Activity activity) {
         super(view, width, height);
@@ -26,17 +26,22 @@ public class IssuePopupWindow extends PopupWindow {
         initializeCancelButton(view);
         this.raiseButton = (ImageButton) view.findViewById(R.id.raiseButton);
         initializeWindow(view, width, height);
+        this.activity = activity;
     }
 
     private void initializeCameraButton(View view, final Activity activity) {
         this.cameraButton = (ImageButton) view.findViewById(R.id.cameraButton);
-        this.cameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                activity.startActivityForResult(intent, 0);
-            }
-        });
+//        this.cameraButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//                activity.startActivityForResult(intent, 0);
+//            }
+//        });
+    }
+
+    public ImageButton getCameraButton() {
+        return this.cameraButton;
     }
 
     private void initializeWindow(View view, int width, int height) {
@@ -63,4 +68,15 @@ public class IssuePopupWindow extends PopupWindow {
             }
         });
     }
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super(requestCode, resultCode,data);
+//        if (requestCode == 0) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                Bitmap image = (Bitmap) data.getExtras().get("data");
+//                this.cameraButton.setBackground(new BitmapDrawable(this.activity.getResources(), image));
+//            }
+//        }
+//    }
 }

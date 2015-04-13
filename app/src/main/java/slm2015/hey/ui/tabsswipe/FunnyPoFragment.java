@@ -2,6 +2,9 @@ package slm2015.hey.ui.tabsswipe;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -27,7 +30,6 @@ import slm2015.hey.ui.IssuePopupWindow;
 
 public class FunnyPoFragment extends Fragment {
 
-
     private ListView listView;
     private EditText informTxtField;
     private ImageButton heyButton;
@@ -37,6 +39,7 @@ public class FunnyPoFragment extends Fragment {
     private ListViewAdapter adapter;
     private View popupView;
     private Activity activity;
+    private IssuePopupWindow window;
 
     @Override
     public void onAttach(Activity activity) {
@@ -142,7 +145,14 @@ public class FunnyPoFragment extends Fragment {
             this.raiseIssueManager.setIsPreview(false);
             int length = RelativeLayout.LayoutParams.WRAP_CONTENT;
             String text = this.raiseIssueManager.getIssueInString();
-            new IssuePopupWindow(this.popupView, text, length, length, this.activity);
+            this.window = new IssuePopupWindow(this.popupView, text, length, length, this.activity);
+            this.window.getCameraButton().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                    startActivityForResult(intent, 0);
+                }
+            });
         }
     }
 
@@ -223,5 +233,20 @@ public class FunnyPoFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+                if (android.os.Build.VERSION.SDK_INT >= 16) {
+                    this.window.getCameraButton().setBackground(new BitmapDrawable(getResources(), image));
+                } else {
+                    this.window.getCameraButton().setBackgroundDrawable(new BitmapDrawable(getResources(), image));
+                }
+            }
+        }
     }
 }
