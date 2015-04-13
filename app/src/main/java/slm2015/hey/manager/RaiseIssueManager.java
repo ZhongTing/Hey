@@ -6,14 +6,12 @@ import slm2015.hey.entity.Issue;
 import slm2015.hey.entity.Term;
 
 public class RaiseIssueManager {
-    private ArrayList<Term> _nounList = new ArrayList<Term>();
-    private ArrayList<Term> _adjList = new ArrayList<Term>();
-    private ArrayList<Term> _locationList = new ArrayList<Term>();
-    private ArrayList<ArrayList<Term>> _listMap = new ArrayList<ArrayList<Term>>();
-    private int _issuePosNum = 0;
+    private ArrayList<Term> nounList = new ArrayList<Term>();
+    private ArrayList<Term> adjList = new ArrayList<Term>();
+    private ArrayList<Term> locationList = new ArrayList<Term>();
+    private ArrayList<ArrayList<Term>> listMap = new ArrayList<ArrayList<Term>>();
+    private int issuePosNum = 0;
     private boolean isPreview = false;
-
-        private String[] _issue = {"", "", ""};
     private Issue issue = new Issue();
 
     public RaiseIssueManager() {
@@ -21,24 +19,23 @@ public class RaiseIssueManager {
         String[] adjArray = {"is comming", "is dangerous", "opening", "on sale", "sold out"};
         String[] locationArray = {"忠孝新生", "科研", "綜科", "光華商場", "六教"};
         for (String s : nounArray)
-            this._nounList.add(new Term(s));
+            this.nounList.add(new Term(s));
         for (String s : adjArray)
-            _adjList.add(new Term(s));
+            this.adjList.add(new Term(s));
         for (String s : locationArray)
-            _locationList.add(new Term(s));
-        _listMap.add(_nounList);
-        _listMap.add(_adjList);
-        _listMap.add(_locationList);
+            this.locationList.add(new Term(s));
+        this.listMap.add(this.nounList);
+        this.listMap.add(this.adjList);
+        this.listMap.add(this.locationList);
     }
 
     public ArrayList<Term> getList(int listNum) {
-        return _listMap.get(listNum);
+        return this.listMap.get(listNum);
     }
 
     public void setIssue(String content) {
-//        _issue[_issuePosNum] = content;
         final int SUBJECT = 0, DESCRIPTION = 1, LOCATION = 2;
-        switch (this._issuePosNum) {
+        switch (this.issuePosNum) {
             case SUBJECT:
                 this.issue.setSubject(content);
                 break;
@@ -52,13 +49,13 @@ public class RaiseIssueManager {
     }
 
     public int getIssuePosNum() {
-        return _issuePosNum;
+        return this.issuePosNum;
     }
 
     public void setIssuePosNum(int issuePosNum) {
         final int ISSUE_DATA = 3;
         if (issuePosNum < ISSUE_DATA)
-            _issuePosNum = issuePosNum;
+            this.issuePosNum = issuePosNum;
     }
 
     public String getIssueInString() {
