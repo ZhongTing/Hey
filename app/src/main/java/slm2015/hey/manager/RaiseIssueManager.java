@@ -10,6 +10,7 @@ public class RaiseIssueManager {
     private ArrayList<Term> _locationList = new ArrayList<Term>();
     private ArrayList<ArrayList<Term>> _listMap = new ArrayList<ArrayList<Term>>();
     private int _issuePosNum = 0;
+    private boolean isPreview = false;
 
     private String[] _issue = {"", "", ""};
 
@@ -56,11 +57,23 @@ public class RaiseIssueManager {
         return issue;
     }
 
+    public boolean isPreview() {
+        return !(_issue[0].isEmpty() || _issue[1].isEmpty() || _issue[2].isEmpty()) || this.isPreview;
+    }
+
+    public void setIsPreview(boolean isPreview) {
+        this.isPreview = isPreview;
+    }
+
     public boolean adjButtonEnable() {
         return !_issue[0].isEmpty();
     }
 
     public boolean locationButtonEnable() {
         return !_issue[1].isEmpty();
+    }
+
+    public boolean hetButtonEnable() {
+        return !(this._issue[0].isEmpty() || this._issue[1].isEmpty());
     }
 }

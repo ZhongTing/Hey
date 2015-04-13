@@ -86,7 +86,6 @@
             android:id="@+id/hey_button"
             android:layout_toRightOf="@id/informtextfield"
             android:layout_marginTop="2dp"
-            android:clickable="false"
             android:src="@drawable/arrow_right"
             android:gravity="center"
             android:background="#00000000"
