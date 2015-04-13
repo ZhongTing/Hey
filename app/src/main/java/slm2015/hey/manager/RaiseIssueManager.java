@@ -2,6 +2,7 @@ package slm2015.hey.manager;
 
 import java.util.ArrayList;
 
+import slm2015.hey.entity.Issue;
 import slm2015.hey.entity.Term;
 
 public class RaiseIssueManager {
@@ -12,7 +13,8 @@ public class RaiseIssueManager {
     private int _issuePosNum = 0;
     private boolean isPreview = false;
 
-    private String[] _issue = {"", "", ""};
+        private String[] _issue = {"", "", ""};
+    private Issue issue = new Issue();
 
     public RaiseIssueManager() {
         String[] nounArray = {"Police", "Sausage", "北科", "Mr.Brown", "Seven-Eleven", "Family-Mart", "Cat", "MRT", "Garbage noodle"};
@@ -34,7 +36,19 @@ public class RaiseIssueManager {
     }
 
     public void setIssue(String content) {
-        _issue[_issuePosNum] = content;
+//        _issue[_issuePosNum] = content;
+        final int SUBJECT = 0, DESCRIPTION = 1, LOCATION = 2;
+        switch (this._issuePosNum) {
+            case SUBJECT:
+                this.issue.setSubject(content);
+                break;
+            case DESCRIPTION:
+                this.issue.setDescription(content);
+                break;
+            case LOCATION:
+                this.issue.setLocation(content);
+                break;
+        }
     }
 
     public int getIssuePosNum() {
@@ -42,23 +56,20 @@ public class RaiseIssueManager {
     }
 
     public void setIssuePosNum(int issuePosNum) {
-        if (issuePosNum < _issue.length)
+        final int ISSUE_DATA = 3;
+        if (issuePosNum < ISSUE_DATA)
             _issuePosNum = issuePosNum;
     }
 
     public String getIssueInString() {
-        String issue = "";
-        for (String s : _issue) {
-            if (issue.isEmpty())
-                issue = s;
-            else if (!s.isEmpty())
-                issue += " " + s;
-        }
-        return issue;
+        return this.issue.getIssue();
     }
 
     public boolean isPreview() {
-        return !(_issue[0].isEmpty() || _issue[1].isEmpty() || _issue[2].isEmpty()) || this.isPreview;
+        String subject = this.issue.getSubject();
+        String description = this.issue.getDescription();
+        String location = this.issue.getLocation();
+        return !(subject.isEmpty() || description.isEmpty() || location.isEmpty()) || this.isPreview;
     }
 
     public void setIsPreview(boolean isPreview) {
@@ -66,14 +77,16 @@ public class RaiseIssueManager {
     }
 
     public boolean adjButtonEnable() {
-        return !_issue[0].isEmpty();
+        return !this.issue.getSubject().isEmpty();
     }
 
     public boolean locationButtonEnable() {
-        return !_issue[1].isEmpty();
+        return !this.issue.getDescription().isEmpty();
     }
 
     public boolean hetButtonEnable() {
-        return !(this._issue[0].isEmpty() || this._issue[1].isEmpty());
+        String subject = this.issue.getSubject();
+        String description = this.issue.getDescription();
+        return !(subject.isEmpty() || description.isEmpty());
     }
 }

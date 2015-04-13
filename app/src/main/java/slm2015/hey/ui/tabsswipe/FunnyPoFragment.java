@@ -145,7 +145,7 @@ public class FunnyPoFragment extends Fragment {
             this.raiseIssueManager.setIsPreview(false);
             int length = RelativeLayout.LayoutParams.WRAP_CONTENT;
             String text = this.raiseIssueManager.getIssueInString();
-            this.window = new IssuePopupWindow(this.popupView, text, length, length, this.activity);
+            this.window = new IssuePopupWindow(this.popupView, text, length, length);
             this.window.getCameraButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import slm2015.hey.R;
 import slm2015.hey.entity.Term;
 
 
-public class ListViewAdapter extends BaseAdapter {
+public class ListViewAdapter extends BaseAdapter implements Filterable {
     private final int INI_ROW_COUNT = 12;
     private ArrayList<Term> data = new ArrayList<Term>();
     private LayoutInflater inflater;
@@ -70,6 +72,11 @@ public class ListViewAdapter extends BaseAdapter {
 
     public void SetData(ArrayList<Term> data){
         this.data = data;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return null;
     }
 
     private class ViewHolder{
