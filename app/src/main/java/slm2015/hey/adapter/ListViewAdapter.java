@@ -18,26 +18,29 @@ import slm2015.hey.entity.Term;
 
 public class ListViewAdapter extends BaseAdapter implements Filterable {
     private final int INI_ROW_COUNT = 12;
-    private ArrayList<Term> data = new ArrayList<Term>();
+    private ArrayList<Term> originalData = new ArrayList<Term>();
+    private ArrayList<Term> filterData = new ArrayList<Term>();
     private LayoutInflater inflater;
     private Context context;
 
-    public ListViewAdapter(Context context, ArrayList<Term> data){
+    public ListViewAdapter(Context context, ArrayList<Term> data) {
         this.context = context;
-        this.data = data;
+        this.originalData = data;
+        this.filterData = data;
     }
+
     @Override
     public int getCount() {
-        if(this.data.size() < INI_ROW_COUNT)
+        if (this.filterData.size() < INI_ROW_COUNT)
             return INI_ROW_COUNT;
-        return this.data.size();
+        return this.filterData.size();
     }
 
     @Override
     public Object getItem(int position) {
-        if(position >= data.size())
+        if (position >= filterData.size())
             return new Term("");
-        return this.data.get(position);
+        return this.filterData.get(position);
     }
 
     @Override
@@ -55,31 +58,67 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
             holder = new ViewHolder();
             holder.text = (TextView) convertView.findViewById(R.id.text);
             convertView.setTag(holder);
-        }else{
-            holder = (ViewHolder)convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
         convertView.setBackgroundColor(convertView.getResources().getColor(R.color.light_yellow));
-        if(position < data.size()){
-            if(this.data.get(position).isSelected()){
+        if (position < filterData.size()) {
+            if (this.filterData.get(position).isSelected()) {
                 convertView.setBackgroundColor(convertView.getResources().getColor(R.color.light_blue));
             }
-            holder.text.setText(this.data.get(position).getTerm());
-        }else{
+            holder.text.setText(this.filterData.get(position).getTerm());
+        } else {
             holder.text.setText("");
         }
         return convertView;
     }
 
-    public void SetData(ArrayList<Term> data){
-        this.data = data;
+    public void SetData(ArrayList<Term> data) {
+        this.originalData = data;
+        this.filterData = data;
     }
 
     @Override
     public Filter getFilter() {
-        return null;
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                FilterResults results = new FilterResults();
+
+                if (charSequence == null || charSequence.toString().isEmpty()) {
+                    results.values = originalData;
+                    results.count = originalData.size();
+                } else {
+                    ArrayList<Term> filterResultsData = new ArrayList<Term>();
+
+                    for (Term term : originalData) {
+                        if (term.getTerm().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                            filterResultsData.add(term);
+                        }
+                    }
+
+                    results.values = filterResultsData;
+                    results.count = filterResultsData.size();
+                }
+
+                return results;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                filterData = (ArrayList<Term>) filterResults.values;
+                if (filterResults.count > 0) {
+                    notifyDataSetChanged();
+                } else {
+                    notifyDataSetInvalidated();
+                }
+            }
+        };
     }
 
-    private class ViewHolder{
+
+    private class ViewHolder {
         TextView text;
     }
 }

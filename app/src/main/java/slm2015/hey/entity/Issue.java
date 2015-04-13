@@ -1,5 +1,7 @@
 package slm2015.hey.entity;
 
+import android.graphics.Bitmap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,6 +11,7 @@ public class Issue {
     private String description = "";
     private String location = "";
     private JSONObject issueJSON;
+    private Bitmap image;
 
     public Issue() {
         this.issueJSON = new JSONObject();
@@ -63,6 +66,10 @@ public class Issue {
         updateIssue();
     }
 
+    public void setImage(Bitmap image){
+        this.image = image;
+    }
+
     public String getSubject() {
         return this.subject;
     }
@@ -73,5 +80,9 @@ public class Issue {
 
     public String getLocation() {
         return this.location;
+    }
+
+    public Bitmap getImage(){
+        return this.image;
     }
 }

@@ -9,6 +9,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import slm2015.hey.R;
+import slm2015.hey.entity.Issue;
 
 
 public class IssuePopupWindow extends PopupWindow {
@@ -17,8 +18,9 @@ public class IssuePopupWindow extends PopupWindow {
     private ImageButton cancelButton;
     private ImageButton raiseButton;
 
-    public IssuePopupWindow(View view, String text, int width, int height) {
+    public IssuePopupWindow(View view, Issue issue, int width, int height) {
         super(view, width, height);
+        String text = issue.getIssue();
         initializeCameraButton(view);
         initializeTextView(view, text);
         initializeCancelButton(view);

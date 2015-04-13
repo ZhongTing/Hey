@@ -62,6 +62,10 @@ public class RaiseIssueManager {
         return this.issue.getIssue();
     }
 
+    public Issue getIssue(){
+        return this.issue;
+    }
+
     public boolean isPreview() {
         String subject = this.issue.getSubject();
         String description = this.issue.getDescription();

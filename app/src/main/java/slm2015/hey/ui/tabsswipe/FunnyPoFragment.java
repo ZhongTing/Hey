@@ -143,9 +143,9 @@ public class FunnyPoFragment extends Fragment {
         if (this.raiseIssueManager.isPreview()) {
             closeKeyBoard();
             this.raiseIssueManager.setIsPreview(false);
-            int length = RelativeLayout.LayoutParams.WRAP_CONTENT;
+            int length = RelativeLayout.LayoutParams.FILL_PARENT;
             String text = this.raiseIssueManager.getIssueInString();
-            this.window = new IssuePopupWindow(this.popupView, text, length, length);
+            this.window = new IssuePopupWindow(this.popupView, this.raiseIssueManager.getIssue(), length, length);
             this.window.getCameraButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -215,7 +215,7 @@ public class FunnyPoFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                adapter.getFilter().filter(s);
             }
 
             @Override
@@ -246,6 +246,7 @@ public class FunnyPoFragment extends Fragment {
                 } else {
                     this.window.getCameraButton().setBackgroundDrawable(new BitmapDrawable(getResources(), image));
                 }
+                this.raiseIssueManager.getIssue().setImage(image);
             }
         }
     }
