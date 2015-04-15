@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -139,6 +141,7 @@ public class FunnyPoFragment extends Fragment {
     private void refreshState() {
         this.adjButton.setEnabled(raiseIssueManager.adjButtonEnable());
         this.locationButton.setEnabled(raiseIssueManager.locationButtonEnable());
+        this.informTxtField.getText().clear();
         heyButtonObserver();
         if (this.raiseIssueManager.isPreview()) {
             closeKeyBoard();
@@ -161,16 +164,16 @@ public class FunnyPoFragment extends Fragment {
         if (this.listView.getAdapter() == null) {
             final int NOUNLIST = 0;
             this.adapter = new ListViewAdapter(getActivity().getApplicationContext(), raiseIssueManager.getList(NOUNLIST));
-            this.listView.setAdapter(this.adapter);
+            this.listView.setAdapter(getAdapter());
             this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     int listNum = raiseIssueManager.getIssuePosNum();
                     ListView listView = (ListView) parent;
                     if (position < raiseIssueManager.getList(listNum).size()) {
-                        setItemSelected(listNum, position);
                         Term term = (Term) listView.getItemAtPosition(position);
                         setText(term.getTerm(), listNum);
+                        setItemSelected(listNum, (int) id);
                         refreshListView();
                     }
                 }
@@ -178,16 +181,40 @@ public class FunnyPoFragment extends Fragment {
         }
     }
 
-    private void setText(String text, int listNum) {
-        setIssue(text);
-        this.informTxtField.getText().clear();
-        this.buttonMap.get(listNum).setText(text);
+    private void scaleButton(int listNum) {
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
+        int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
+        LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(width, height);
+        p1.weight = 1;
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(width, height);
+        p.weight = 100;
+
+        p1.setMargins(margin, margin, margin, margin);
+        p.setMargins(margin, margin, margin, margin);
+        for (Button b : this.buttonMap){
+            b.setLayoutParams(p1);
+            b.requestLayout();
+    }
+        this.buttonMap.get(listNum).setLayoutParams(p);
+        this.buttonMap.get(listNum).requestLayout();
     }
 
-    private void setItemSelected(int listNum, int position) {
+    private void setText(String text, int listNum) {
+        setIssue(text);
+        this.buttonMap.get(listNum).setText(text);
+        setItemSelectedFalse(listNum);
+    }
+
+    private void setItemSelectedFalse(int listNum){
         ArrayList<Term> termList = this.raiseIssueManager.getList(listNum);
         for (Term term : termList)
             term.setIsSelected(false);
+    }
+
+    private void setItemSelected(int listNum, int position) {
+        setItemSelectedFalse(listNum);
+        ArrayList<Term> termList = this.raiseIssueManager.getList(listNum);
         termList.get(position).setIsSelected(true);
     }
 
@@ -200,9 +227,13 @@ public class FunnyPoFragment extends Fragment {
     private void refreshListView() {
         int listNum = this.raiseIssueManager.getIssuePosNum();
         ArrayList<Term> showList = this.raiseIssueManager.getList(listNum);
-        this.adapter.SetData(showList);
-        listView.setAdapter(this.adapter);
+        getAdapter().SetData(showList);
+        scaleButton(listNum);
         refreshState();
+    }
+
+    private synchronized ListViewAdapter getAdapter(){
+        return this.adapter;
     }
 
     private void initializeInformTxtField(View view) {
@@ -215,7 +246,7 @@ public class FunnyPoFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.getFilter().filter(s);
+                getAdapter().getFilter().filter(s);
             }
 
             @Override

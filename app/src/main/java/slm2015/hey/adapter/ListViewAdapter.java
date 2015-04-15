@@ -22,6 +22,7 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
     private ArrayList<Term> filterData = new ArrayList<Term>();
     private LayoutInflater inflater;
     private Context context;
+    private Filter filter;
 
     public ListViewAdapter(Context context, ArrayList<Term> data) {
         this.context = context;
@@ -31,21 +32,18 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getCount() {
-        if (this.filterData.size() < INI_ROW_COUNT)
-            return INI_ROW_COUNT;
         return this.filterData.size();
     }
 
     @Override
     public Object getItem(int position) {
-        if (position >= filterData.size())
-            return new Term("");
         return this.filterData.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        Term term = this.filterData.get(position);
+        return this.originalData.indexOf(term);
     }
 
     @Override
@@ -73,48 +71,54 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
         return convertView;
     }
 
-    public void SetData(ArrayList<Term> data) {
-        this.originalData = data;
-        this.filterData = data;
+    public void SetData(final ArrayList<Term> data) {
+        originalData = data;
+        filterData = data;
+        notifyDataSetChanged();
     }
 
     @Override
     public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                FilterResults results = new FilterResults();
+        if (this.filter == null)
+            filter = new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence charSequence) {
+                    FilterResults results = new FilterResults();
+                    if (charSequence == null || charSequence.toString().isEmpty()) {
+                        synchronized (results) {
+                            results.values = originalData;
+                            results.count = originalData.size();
+                        }
+                    } else {
+                        ArrayList<Term> filterResultsData = new ArrayList<Term>();
 
-                if (charSequence == null || charSequence.toString().isEmpty()) {
-                    results.values = originalData;
-                    results.count = originalData.size();
-                } else {
-                    ArrayList<Term> filterResultsData = new ArrayList<Term>();
-
-                    for (Term term : originalData) {
-                        if (term.getTerm().toLowerCase().contains(charSequence.toString().toLowerCase())) {
-                            filterResultsData.add(term);
+                        for (Term term : originalData) {
+                            if (term.getTerm().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                                filterResultsData.add(term);
+                            }
+                        }
+                        synchronized (results) {
+                            results.values = filterResultsData;
+                            results.count = filterResultsData.size();
                         }
                     }
 
-                    results.values = filterResultsData;
-                    results.count = filterResultsData.size();
+                    return results;
                 }
 
-                return results;
-            }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filterData = (ArrayList<Term>) filterResults.values;
-                if (filterResults.count > 0) {
-                    notifyDataSetChanged();
-                } else {
-                    notifyDataSetInvalidated();
+                @SuppressWarnings("unchecked")
+                @Override
+                protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                    filterData = (ArrayList<Term>) filterResults.values;
+//                    notifyDataSetChanged();
+                    if (filterResults.count > 0) {
+                        notifyDataSetChanged();
+                    } else {
+                        notifyDataSetInvalidated();
+                    }
                 }
-            }
-        };
+            };
+        return filter;
     }
 
 

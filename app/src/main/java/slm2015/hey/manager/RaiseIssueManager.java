@@ -15,8 +15,8 @@ public class RaiseIssueManager {
     private Issue issue = new Issue();
 
     public RaiseIssueManager() {
-        String[] nounArray = {"Police", "Sausage", "北科", "Mr.Brown", "Seven-Eleven", "Family-Mart", "Cat", "MRT", "Garbage noodle"};
-        String[] adjArray = {"is comming", "is dangerous", "opening", "on sale", "sold out"};
+        String[] nounArray = {"Police", "Sausage", "北科", "Mr.Brown", "Seven-Eleven", "Family-Mart", "Cat", "MRT", "Garbage noodle", "滷肉飯"};
+        String[] adjArray = {"is comming", "is dangerous", "opening", "on sale", "sold out", "開單"};
         String[] locationArray = {"忠孝新生", "科研", "綜科", "光華商場", "六教"};
         for (String s : nounArray)
             this.nounList.add(new Term(s));
