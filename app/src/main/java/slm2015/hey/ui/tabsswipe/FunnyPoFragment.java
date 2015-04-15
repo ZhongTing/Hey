@@ -204,6 +204,7 @@ public class FunnyPoFragment extends Fragment {
         setIssue(text);
         this.buttonMap.get(listNum).setText(text);
         setItemSelectedFalse(listNum);
+        checkNewTerm(text);
     }
 
     private void setItemSelectedFalse(int listNum){
@@ -213,9 +214,11 @@ public class FunnyPoFragment extends Fragment {
     }
 
     private void setItemSelected(int listNum, int position) {
-        setItemSelectedFalse(listNum);
-        ArrayList<Term> termList = this.raiseIssueManager.getList(listNum);
-        termList.get(position).setIsSelected(true);
+        if(position != -1) {
+            setItemSelectedFalse(listNum);
+            ArrayList<Term> termList = this.raiseIssueManager.getList(listNum);
+            termList.get(position).setIsSelected(true);
+        }
     }
 
     private void setIssue(String text) {
@@ -230,6 +233,12 @@ public class FunnyPoFragment extends Fragment {
         getAdapter().SetData(showList);
         scaleButton(listNum);
         refreshState();
+    }
+
+    private void checkNewTerm(String content){
+        boolean isNewTerm = getAdapter().checkNewTerm(content);
+        if(isNewTerm)
+            this.raiseIssueManager.addTerm(content);
     }
 
     private synchronized ListViewAdapter getAdapter(){

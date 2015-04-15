@@ -48,6 +48,17 @@ public class RaiseIssueManager {
         }
     }
 
+    public void addTerm(String content) {
+        int posNum = this.issuePosNum;
+        if (posNum > 0) {
+            Term t = new Term(content);
+            t.setIsSelected(true);
+            if(posNum<2)
+                posNum -=1;
+            this.getList(posNum).add(t);
+        }
+    }
+
     public int getIssuePosNum() {
         return this.issuePosNum;
     }
@@ -62,7 +73,7 @@ public class RaiseIssueManager {
         return this.issue.getIssue();
     }
 
-    public Issue getIssue(){
+    public Issue getIssue() {
         return this.issue;
     }
 

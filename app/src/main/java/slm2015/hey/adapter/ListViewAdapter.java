@@ -77,6 +77,14 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
         notifyDataSetChanged();
     }
 
+    public boolean checkNewTerm(String content){
+        boolean isNewTerm = true;
+        for(Term t : this.originalData)
+            if(t.getTerm().equals(content))
+                isNewTerm = false;
+        return isNewTerm;
+    }
+
     @Override
     public Filter getFilter() {
         if (this.filter == null)
@@ -91,12 +99,17 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
                         }
                     } else {
                         ArrayList<Term> filterResultsData = new ArrayList<Term>();
-
+                        boolean hasTerm = false, sameWord = false;
                         for (Term term : originalData) {
                             if (term.getTerm().toLowerCase().contains(charSequence.toString().toLowerCase())) {
                                 filterResultsData.add(term);
+                                hasTerm = true;
+                                if(term.getTerm().toLowerCase().equals(charSequence.toString().toLowerCase()))
+                                    sameWord = true;
                             }
                         }
+                        if(!sameWord)
+                            filterResultsData.add(new Term(charSequence.toString()));
                         synchronized (results) {
                             results.values = filterResultsData;
                             results.count = filterResultsData.size();
@@ -110,7 +123,6 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
                 @Override
                 protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                     filterData = (ArrayList<Term>) filterResults.values;
-//                    notifyDataSetChanged();
                     if (filterResults.count > 0) {
                         notifyDataSetChanged();
                     } else {
