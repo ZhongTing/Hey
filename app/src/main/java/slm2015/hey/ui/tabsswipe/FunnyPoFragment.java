@@ -17,7 +17,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -34,7 +33,7 @@ public class FunnyPoFragment extends Fragment {
 
     private ListView listView;
     private EditText informTxtField;
-    private ImageButton heyButton;
+//    private ImageButton heyButton;
     private Button nounButton, adjButton, locationButton;
     private ArrayList<Button> buttonMap;
     private RaiseIssueManager raiseIssueManager;
@@ -68,7 +67,7 @@ public class FunnyPoFragment extends Fragment {
         this.popupView = inflater.inflate(R.layout.raise_issue, null);
         initializeInformTxtField(view);
         initializeListView(view);
-        initializeHeyButton(view);
+//        initializeHeyButton(view);
         initializeNounButton(view);
         initializeAdjButton(view);
         initializeLocationButton(view);
@@ -76,25 +75,24 @@ public class FunnyPoFragment extends Fragment {
         return view;
     }
 
-    private void initializeHeyButton(View view) {
-        this.heyButton = (ImageButton) view.findViewById(R.id.hey_button);
-        this.heyButton.setEnabled(false);
-        this.heyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int listNum = raiseIssueManager.getIssuePosNum();
-                String text = informTxtField.getText().toString();
-                if (listNum == 2)
-                    raiseIssueManager.setIsPreview(true);
-                if (!text.isEmpty()) {
-                    setText(text, listNum);
-                }
-                refreshAll();
-//                final PopupWindow popupWindow = new PopupWindow(popupView, RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-            }
-        });
-    }
+//    private void initializeHeyButton(View view) {
+//        this.heyButton = (ImageButton) view.findViewById(R.id.hey_button);
+//        this.heyButton.setEnabled(false);
+//        this.heyButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int listNum = raiseIssueManager.getIssuePosNum();
+//                String text = informTxtField.getText().toString();
+//                if (listNum == 2)
+//                    raiseIssueManager.setIsPreview(true);
+//                if (!text.isEmpty()) {
+//                    setText(text, listNum);
+//                }
+//                refreshAll();
+//
+//            }
+//        });
+//    }
 
     private void closeKeyboard() {
         InputMethodManager imm = (InputMethodManager) this.activity.getSystemService(
@@ -161,7 +159,7 @@ public class FunnyPoFragment extends Fragment {
         this.adjButton.setEnabled(raiseIssueManager.adjButtonEnable());
         this.locationButton.setEnabled(raiseIssueManager.locationButtonEnable());
         this.informTxtField.getText().clear();
-        heyButtonObserver();
+//        heyButtonObserver();
         if (this.raiseIssueManager.isPreview()) {
             closeKeyboard();
             this.raiseIssueManager.setIsPreview(false);
@@ -278,15 +276,15 @@ public class FunnyPoFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                heyButtonObserver();
+//                heyButtonObserver();
             }
         });
     }
 
-    private void heyButtonObserver() {
-        boolean enable = this.informTxtField.getText().toString().length() > 0 || this.raiseIssueManager.hetButtonEnable();
-        this.heyButton.setEnabled(enable);
-    }
+//    private void heyButtonObserver() {
+//        boolean enable = this.informTxtField.getText().toString().length() > 0 || this.raiseIssueManager.hetButtonEnable();
+//        this.heyButton.setEnabled(enable);
+//    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
