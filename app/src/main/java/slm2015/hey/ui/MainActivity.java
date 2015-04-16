@@ -131,9 +131,9 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
         mTabHost = (TabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup();
         TabInfo tabInfo = null;
-        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("FunnyWatch").setIndicator("FunnyWatch"), (tabInfo = new TabInfo("FunnyWatch", FunnyWatchFragment.class, args)));
+        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("FunnWatch").setIndicator("", getResources().getDrawable(R.mipmap.ic_launcher)), (tabInfo = new TabInfo("FunnyWatch", FunnyWatchFragment.class, args)));
         this.mapTabInfo.put(tabInfo.tag, tabInfo);
-        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("FunnyPo").setIndicator("FunnyPo"), (tabInfo = new TabInfo("FunnyPo", FunnyPoFragment.class, args)));
+        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("FunnyPo").setIndicator("", getResources().getDrawable(R.mipmap.ic_launcher)), (tabInfo = new TabInfo("FunnyPo", FunnyPoFragment.class, args)));
         this.mapTabInfo.put(tabInfo.tag, tabInfo);
 //        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("Tab3").setIndicator("Tab 3"), ( tabInfo = new TabInfo("Tab3", Tab3Fragment.class, args)));
 //        this.mapTabInfo.put(tabInfo.tag, tabInfo);
