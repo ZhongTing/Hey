@@ -13,10 +13,6 @@ public class Term {
         return this.term;
     }
 
-    public void setTerm(String term){
-        this.term = term;
-    }
-
     public boolean isSelected(){
         return this.isSelected;
     }
