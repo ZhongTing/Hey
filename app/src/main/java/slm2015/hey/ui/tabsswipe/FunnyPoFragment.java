@@ -89,17 +89,31 @@ public class FunnyPoFragment extends Fragment {
                 if (!text.isEmpty()) {
                     setText(text, listNum);
                 }
-                refreshListView();
+                refreshAll();
 //                final PopupWindow popupWindow = new PopupWindow(popupView, RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
             }
         });
     }
 
-    private void closeKeyBoard() {
+    private void closeKeyboard() {
         InputMethodManager imm = (InputMethodManager) this.activity.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(this.informTxtField.getWindowToken(), 0);
+    }
+
+    public void changeKeyboardVisible(boolean open) {
+        if (open) {
+            this.informTxtField.requestFocus();
+            openKeyboard();
+        }else
+            closeKeyboard();
+    }
+
+    private void openKeyboard() {
+        InputMethodManager imm = (InputMethodManager) this.activity.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(this.informTxtField, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private void initializeNounButton(View view) {
@@ -138,13 +152,18 @@ public class FunnyPoFragment extends Fragment {
         });
     }
 
+    private void refreshAll(){
+        refreshListView();
+        refreshState();
+    }
+
     private void refreshState() {
         this.adjButton.setEnabled(raiseIssueManager.adjButtonEnable());
         this.locationButton.setEnabled(raiseIssueManager.locationButtonEnable());
         this.informTxtField.getText().clear();
         heyButtonObserver();
         if (this.raiseIssueManager.isPreview()) {
-            closeKeyBoard();
+            closeKeyboard();
             this.raiseIssueManager.setIsPreview(false);
             int length = RelativeLayout.LayoutParams.FILL_PARENT;
             String text = this.raiseIssueManager.getIssueInString();
@@ -174,7 +193,7 @@ public class FunnyPoFragment extends Fragment {
                         Term term = (Term) listView.getItemAtPosition(position);
                         setText(term.getTerm(), listNum);
                         setItemSelected(listNum, (int) id);
-                        refreshListView();
+                        refreshAll();
                     }
                 }
             });
@@ -192,10 +211,10 @@ public class FunnyPoFragment extends Fragment {
 
         p1.setMargins(margin, margin, margin, margin);
         p.setMargins(margin, margin, margin, margin);
-        for (Button b : this.buttonMap){
+        for (Button b : this.buttonMap) {
             b.setLayoutParams(p1);
             b.requestLayout();
-    }
+        }
         this.buttonMap.get(listNum).setLayoutParams(p);
         this.buttonMap.get(listNum).requestLayout();
     }
@@ -207,14 +226,14 @@ public class FunnyPoFragment extends Fragment {
         checkNewTerm(text);
     }
 
-    private void setItemSelectedFalse(int listNum){
+    private void setItemSelectedFalse(int listNum) {
         ArrayList<Term> termList = this.raiseIssueManager.getList(listNum);
         for (Term term : termList)
             term.setIsSelected(false);
     }
 
     private void setItemSelected(int listNum, int position) {
-        if(position != -1) {
+        if (position != -1) {
             setItemSelectedFalse(listNum);
             ArrayList<Term> termList = this.raiseIssueManager.getList(listNum);
             termList.get(position).setIsSelected(true);
@@ -232,16 +251,15 @@ public class FunnyPoFragment extends Fragment {
         ArrayList<Term> showList = this.raiseIssueManager.getList(listNum);
         getAdapter().SetData(showList);
         scaleButton(listNum);
-        refreshState();
     }
 
-    private void checkNewTerm(String content){
+    private void checkNewTerm(String content) {
         boolean isNewTerm = getAdapter().checkNewTerm(content);
-        if(isNewTerm)
+        if (isNewTerm)
             this.raiseIssueManager.addTerm(content);
     }
 
-    private synchronized ListViewAdapter getAdapter(){
+    private synchronized ListViewAdapter getAdapter() {
         return this.adapter;
     }
 
