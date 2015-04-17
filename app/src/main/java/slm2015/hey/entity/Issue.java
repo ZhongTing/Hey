@@ -9,7 +9,7 @@ public class Issue {
     //todo implement issue data structure here
     private String subject = "";
     private String description = "";
-    private String location = "";
+    private String position = "";
     private JSONObject issueJSON;
     private Bitmap image;
 
@@ -29,7 +29,7 @@ public class Issue {
         try {
             this.issueJSON.put("subject", this.subject);
             this.issueJSON.put("description", this.description);
-            this.issueJSON.put("location", this.location);
+            this.issueJSON.put("location", this.position);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -47,7 +47,7 @@ public class Issue {
     }
 
     private String[] getIssueInArray(){
-        String[] issueInArray = {this.subject, this.description, this.location};
+        String[] issueInArray = {this.subject, this.description, this.position};
         return issueInArray;
     }
 
@@ -56,8 +56,8 @@ public class Issue {
         updateIssue();
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setPosition(String location) {
+        this.position = location;
         updateIssue();
     }
 
@@ -78,8 +78,8 @@ public class Issue {
         return this.description;
     }
 
-    public String getLocation() {
-        return this.location;
+    public String getPosition() {
+        return this.position;
     }
 
     public Bitmap getImage(){

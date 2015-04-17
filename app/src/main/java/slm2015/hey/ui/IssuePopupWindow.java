@@ -51,7 +51,7 @@ public class IssuePopupWindow extends PopupWindow {
         this.v_textView = (TextView) view.findViewById(R.id.v_text);
         this.v_textView.setText(issue.getDescription());
         this.p_textView = (TextView) view.findViewById(R.id.p_text);
-        this.p_textView.setText(issue.getLocation());
+        this.p_textView.setText(issue.getPosition());
     }
 
     private void initializeCancelButton(View view) {

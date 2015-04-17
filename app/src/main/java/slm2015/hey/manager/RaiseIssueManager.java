@@ -43,7 +43,7 @@ public class RaiseIssueManager {
                 this.issue.setDescription(content);
                 break;
             case LOCATION:
-                this.issue.setLocation(content);
+                this.issue.setPosition(content);
                 break;
         }
     }
@@ -80,7 +80,7 @@ public class RaiseIssueManager {
     public boolean isPreview() {
         String subject = this.issue.getSubject();
         String description = this.issue.getDescription();
-        String location = this.issue.getLocation();
+        String location = this.issue.getPosition();
         return !(subject.isEmpty() || description.isEmpty() || location.isEmpty()) || this.isPreview;
     }
 
