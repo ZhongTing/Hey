@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -301,11 +300,11 @@ public class FunnyPoFragment extends Fragment {
         if (requestCode == 0) {
             if (resultCode == Activity.RESULT_OK) {
                 Bitmap image = (Bitmap) data.getExtras().get("data");
-                if (android.os.Build.VERSION.SDK_INT >= 16) {
-                    this.window.getCameraButton().setBackground(new BitmapDrawable(getResources(), image));
-                } else {
-                    this.window.getCameraButton().setBackgroundDrawable(new BitmapDrawable(getResources(), image));
-                }
+//                if (android.os.Build.VERSION.SDK_INT >= 16) {
+//                    this.window.getCameraButton().setBackground(new BitmapDrawable(getResources(), image));
+//                } else {
+//                    this.window.getCameraButton().setBackgroundDrawable(new BitmapDrawable(getResources(), image));
+//                }
                 this.raiseIssueManager.getIssue().setImage(image);
             }
         }

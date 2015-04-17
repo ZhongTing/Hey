@@ -14,15 +14,14 @@ import slm2015.hey.entity.Issue;
 
 public class IssuePopupWindow extends PopupWindow {
     private ImageButton cameraButton;
-    private TextView textView;
+    private TextView s_textView, v_textView, p_textView;
     private ImageButton cancelButton;
     private ImageButton raiseButton;
 
     public IssuePopupWindow(View view, Issue issue, int width, int height) {
         super(view, width, height);
-        String text = issue.getIssue();
         initializeCameraButton(view);
-        initializeTextView(view, text);
+        initializeTextView(view, issue);
         initializeCancelButton(view);
         this.raiseButton = (ImageButton) view.findViewById(R.id.raiseButton);
         initializeWindow(view, width, height);
@@ -46,9 +45,13 @@ public class IssuePopupWindow extends PopupWindow {
         showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
-    private void initializeTextView(View view, String text) {
-        this.textView = (TextView) view.findViewById(R.id.text);
-        this.textView.setText(text);
+    private void initializeTextView(View view, Issue issue) {
+        this.s_textView = (TextView) view.findViewById(R.id.s_text);
+        this.s_textView.setText(issue.getSubject());
+        this.v_textView = (TextView) view.findViewById(R.id.v_text);
+        this.v_textView.setText(issue.getDescription());
+        this.p_textView = (TextView) view.findViewById(R.id.p_text);
+        this.p_textView.setText(issue.getLocation());
     }
 
     private void initializeCancelButton(View view) {
