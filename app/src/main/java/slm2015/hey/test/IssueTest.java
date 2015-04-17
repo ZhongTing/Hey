@@ -1,5 +1,7 @@
 package slm2015.hey.test;
 
+import android.graphics.Bitmap;
+
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
@@ -13,7 +15,7 @@ public class IssueTest extends TestCase {
     private final String subject = "testSubject";
     private final String description = "testDescription";
     private final String position = "testPosition";
-    private Field s, d, p;
+    private Field s, d, p, i;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -27,6 +29,8 @@ public class IssueTest extends TestCase {
         p = Issue.class.getDeclaredField("position");
         p.setAccessible(true);
         p.set(this.issue, this.position);
+        i = Issue.class.getDeclaredField("image");
+        i.setAccessible(true);
     }
 
     public void testupdateIssue() throws Exception {
@@ -103,6 +107,12 @@ public class IssueTest extends TestCase {
         p.set(this.issue, "");
         String expect = "";
         Assert.assertEquals(expect, this.issue.getIssue());
+    }
+
+    public void testsetImage() throws Exception {
+        Bitmap expect = Bitmap.createBitmap(100, 100, Bitmap.Config.ALPHA_8);
+        this.issue.setImage(expect);
+        Assert.assertEquals(expect, i.get(this.issue));
     }
 
     public void testsetSubject() throws Exception {
