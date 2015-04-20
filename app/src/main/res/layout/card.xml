@@ -26,44 +26,46 @@
             android:scaleType="centerCrop"
             android:background="@color/preview_yellow"
             android:src="@drawable/odd_bird"
-            android:alpha="0.5" />
+            android:alpha="1" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:orientation="vertical"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_centerInParent="true">
-
-                <TextView
-                    android:layout_marginTop="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="一動也不動的站著"
-                    android:textSize="30dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="在生態池附近"
-                    android:textSize="30dp" />
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:src="@drawable/location"
-            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
+            android:text="一動也不動的站著"
+            android:textSize="30dp"
+            android:background="#ffffff"
+            android:alpha="0.5"
+            android:gravity="center_vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true" />
+            android:background="#ffffff"
+            android:alpha="0.5"
+            android:gravity="right"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="在生態池附近"
+                android:textSize="20dp"
+                android:paddingRight="10dp"
+                android:paddingEnd="10dp"
+                android:gravity= "center"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/location"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
