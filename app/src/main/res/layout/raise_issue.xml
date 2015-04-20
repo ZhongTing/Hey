@@ -52,7 +52,8 @@
             android:layout_height="200dp"
             android:layout_marginTop="20dp"
             android:id="@+id/cameraButton"
-            android:background="@color/camera_green"/>
+            android:background="@color/camera_green"
+            android:src="@drawable/btn_camera"/>
 
         <RelativeLayout
             android:layout_width="280dp"
@@ -64,13 +65,17 @@
             <ImageButton
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:id="@+id/cancelButton" />
+                android:id="@+id/cancelButton"
+                android:background="@color/preview_yellow"
+                android:src="@drawable/button_cancel"/>
 
             <ImageButton
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginLeft="50dp"
                 android:id="@+id/raiseButton"
+                android:src="@drawable/button_ok"
+                android:background="@color/preview_yellow"
                 android:layout_toRightOf="@id/cancelButton" />
         </RelativeLayout>
 

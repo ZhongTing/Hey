@@ -17,6 +17,7 @@ import java.util.Vector;
 import slm2015.hey.R;
 import slm2015.hey.ui.tabsswipe.FunnyPoFragment;
 import slm2015.hey.ui.tabsswipe.FunnyWatchFragment;
+import slm2015.hey.ui.tabsswipe.NewFunnyPoFragment;
 import slm2015.hey.ui.tabsswipe.TabsPagerAdapter;
 
 /**
@@ -114,6 +115,7 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
     private void intialiseViewPager() {
 
         this.fragments = new Vector<Fragment>();
+        this.fragments.add(Fragment.instantiate(this, NewFunnyPoFragment.class.getName()));
         this.fragments.add(Fragment.instantiate(this, FunnyWatchFragment.class.getName()));
         this.fragments.add(Fragment.instantiate(this, FunnyPoFragment.class.getName()));
 //        fragments.add(Fragment.instantiate(this, Tab3Fragment.class.getName()));
@@ -131,6 +133,8 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
         mTabHost = (TabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup();
         TabInfo tabInfo = null;
+        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("NewFunnyPo").setIndicator("", getResources().getDrawable(R.mipmap.ic_launcher)), (tabInfo = new TabInfo("NewFunnyPo", NewFunnyPoFragment.class, args)));
+        this.mapTabInfo.put(tabInfo.tag, tabInfo);
         MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("FunnWatch").setIndicator("", getResources().getDrawable(R.mipmap.ic_launcher)), (tabInfo = new TabInfo("FunnyWatch", FunnyWatchFragment.class, args)));
         this.mapTabInfo.put(tabInfo.tag, tabInfo);
         MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("FunnyPo").setIndicator("", getResources().getDrawable(R.mipmap.ic_launcher)), (tabInfo = new TabInfo("FunnyPo", FunnyPoFragment.class, args)));
@@ -158,11 +162,7 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
         //TabInfo newTab = this.mapTabInfo.get(tag);
         int pos = this.mTabHost.getCurrentTab();
         this.mViewPager.setCurrentItem(pos);
-        FunnyPoFragment funnyPoFragment = (FunnyPoFragment) this.fragments.get(1);
-        if (pos == 1)
-            funnyPoFragment.changeKeyboardVisible(true);
-        else
-            funnyPoFragment.changeKeyboardVisible(false);
+        changeKeyboardState(pos);
     }
 
     /* (non-Javadoc)
@@ -193,10 +193,10 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
     }
 
     private void changeKeyboardState(int position){
-        FunnyPoFragment funnyPoFragment = (FunnyPoFragment) this.fragments.get(1);
-        if (position == 1)
+        FunnyPoFragment funnyPoFragment = (FunnyPoFragment) this.fragments.get(2);
+        if (position == 2)
             funnyPoFragment.changeKeyboardVisible(true);
-        else
+        else if(position == 1)
             funnyPoFragment.changeKeyboardVisible(false);
 
     }
