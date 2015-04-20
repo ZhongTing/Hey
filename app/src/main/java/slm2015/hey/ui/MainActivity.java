@@ -193,11 +193,18 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
     }
 
     private void changeKeyboardState(int position){
-        FunnyPoFragment funnyPoFragment = (FunnyPoFragment) this.fragments.get(2);
-        if (position == 2)
-            funnyPoFragment.changeKeyboardVisible(true);
-        else if(position == 1)
-            funnyPoFragment.changeKeyboardVisible(false);
+//        FunnyPoFragment funnyPoFragment = (FunnyPoFragment) this.fragments.get(2);
+//        if (position == 2)
+//            funnyPoFragment.changeKeyboardVisible(true);
+//        else if(position == 1)
+//            funnyPoFragment.changeKeyboardVisible(false);
+//        NewFunnyPoFragment f = (NewFunnyPoFragment) this.fragments.get(2);
+//        if(position == 0 ) {
+//            f.changeKeyboardVisible(true);
+//        }else if(position == 1) {
+//            f.changeKeyboardVisible(false);
+//
+//        }
 
     }
 }

@@ -15,15 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
-
 import slm2015.hey.R;
 
 public class FunnyWatchFragment extends Fragment implements ViewPager.OnPageChangeListener {
 
-    private List<Fragment> fragments;
     private ViewPager mViewPager;
-    private ViewPager viewPager;
     private Activity activity;
     private MyPagerAdapter mPagerAdapter;
     private LayoutInflater inflater;

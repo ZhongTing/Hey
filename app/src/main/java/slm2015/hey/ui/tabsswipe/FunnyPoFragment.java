@@ -100,18 +100,18 @@ public class FunnyPoFragment extends Fragment {
         imm.hideSoftInputFromWindow(this.informTxtField.getWindowToken(), 0);
     }
 
+    private void openKeyboard() {
+        InputMethodManager imm = (InputMethodManager) this.activity.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(this.informTxtField, InputMethodManager.SHOW_IMPLICIT);
+    }
+
     public void changeKeyboardVisible(boolean open) {
         if (open) {
             this.informTxtField.requestFocus();
             openKeyboard();
         } else
             closeKeyboard();
-    }
-
-    private void openKeyboard() {
-        InputMethodManager imm = (InputMethodManager) this.activity.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(this.informTxtField, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private void initializeNounButton(View view) {
