@@ -42,6 +42,8 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
     private ArrayList<Button> buttonMap;
     private View popupView;
     private IssuePopupWindow window;
+    private ArrayList<ListView> lv;
+    private ArrayList<ListViewAdapter> adapters;
 
     @Override
     public void onAttach(Activity activity) {
@@ -94,7 +96,7 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                getAdapter().getFilter().filter(s);
+                getAdapter(raiseIssueManager.getIssuePosNum()).getFilter().filter(s);
             }
 
             @Override
@@ -155,8 +157,8 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
 
     }
 
-    private synchronized ListViewAdapter getAdapter() {
-        return this.adapter;
+    private synchronized ListViewAdapter getAdapter(int position) {
+        return this.adapters.get(position);
     }
 
     private void setItemSelectedFalse(int listNum) {
@@ -188,7 +190,7 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
     private void refreshListView() {
         int listNum = this.raiseIssueManager.getIssuePosNum();
         ArrayList<Term> showList = this.raiseIssueManager.getList(listNum);
-        getAdapter().SetData(showList);
+        getAdapter(listNum).SetData(showList);
         scaleButton(listNum);
     }
 
@@ -252,7 +254,7 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
     }
 
     private void checkNewTerm(String content) {
-        boolean isNewTerm = getAdapter().checkNewTerm(content);
+        boolean isNewTerm = getAdapter(raiseIssueManager.getIssuePosNum()).checkNewTerm(content);
         if (isNewTerm)
             this.raiseIssueManager.addTerm(content);
     }
@@ -267,10 +269,9 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
 
         int NumberOfPages = 3;
 
-        ArrayList<ListView> lv;
-
         public MyPagerAdapter() {
             lv = new ArrayList<ListView>();
+            adapters = new ArrayList<ListViewAdapter>();
             for(int i = 0; i < NumberOfPages; i++) {
                 final int nextPage = i < 2 ? i + 1 : i;
                 ListView listView = new ListView(activity);
@@ -278,7 +279,8 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
                 final ArrayList<Term> list = raiseIssueManager.getList(i);
                 final int listNum = i;
                 adapter = new ListViewAdapter(getActivity().getApplicationContext(), list);
-                listView.setAdapter(getAdapter());
+                adapters.add(adapter);
+                listView.setAdapter(getAdapter(i));
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -300,7 +302,7 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
 
         @Override
         public int getCount() {
-            return this.lv.size();
+            return lv.size();
         }
 
         @Override
@@ -316,7 +318,7 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(this.lv.get(position));
+            container.removeView(lv.get(position));
         }
 
     }
