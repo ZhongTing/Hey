@@ -216,7 +216,7 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
         this.locationButton.setEnabled(raiseIssueManager.locationButtonEnable());
         this.informTxtField.getText().clear();
         if (this.raiseIssueManager.isPreview()) {
-//            closeKeyboard();
+            closeKeyboard();
             this.raiseIssueManager.setIsPreview(false);
             int length = RelativeLayout.LayoutParams.FILL_PARENT;
             String text = this.raiseIssueManager.getIssueInString();
