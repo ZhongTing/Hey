@@ -5,27 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/black">
 
         <slm2015.hey.ui.component.StepIndicator
+            android:id="@+id/preview_step_indicator"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:text="事件本體" />
+            android:layout_toRightOf="@+id/location_step_indicator"
+            android:layout_toEndOf="@+id/location_step_indicator"
+            android:layout_marginLeft="-20dp"
+            android:layout_marginStart="-20dp"
+            app:active="false"
+            app:text="預覽" />
 
         <slm2015.hey.ui.component.StepIndicator
+            android:id="@+id/location_step_indicator"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:text="事件描述" />
-
-        <slm2015.hey.ui.component.StepIndicator
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/description_step_indicator"
+            android:layout_toEndOf="@+id/description_step_indicator"
+            android:layout_marginLeft="-20dp"
+            android:layout_marginStart="-20dp"
+            app:active="false"
             app:text="地點" />
 
-    </LinearLayout>
+        <slm2015.hey.ui.component.StepIndicator
+            android:id="@+id/description_step_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/subject_step_indicator"
+            android:layout_toEndOf="@+id/subject_step_indicator"
+            android:layout_marginLeft="-20dp"
+            android:layout_marginStart="-20dp"
+            app:active="false"
+            app:text="描述" />
+
+        <slm2015.hey.ui.component.StepIndicator
+            android:id="@+id/subject_step_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-20dp"
+            android:layout_marginStart="-20dp"
+            app:active="true"
+            app:text="主角" />
+
+    </RelativeLayout >
 
     <android.support.v4.view.ViewPager
         android:id="@+id/wizard_viewpager"
