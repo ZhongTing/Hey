@@ -75,19 +75,7 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_margin="5dp"
-            android:background="@android:color/transparent">
-        <!--<ListView-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="470dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_gravity="left"-->
-            <!--android:layout_marginLeft="5dp"-->
-            <!--android:layout_marginRight="5dp"-->
-            <!--android:layout_marginBottom="5dp"-->
-            <!--android:id="@+id/noun_listView"-->
-            <!--android:background="@color/light_yellow" />-->
-
+            android:layout_margin="5dp">
         </android.support.v4.view.ViewPager>
     </LinearLayout>
 </LinearLayout>

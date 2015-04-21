@@ -74,16 +74,24 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
         initializeAdjButton(view);
         initializeLocationButton(view);
         refreshState();
+        initializeListViewViewPager(view);
+        return view;
+    }
+
+    private void initializeListViewViewPager(View view){
         this.mViewPager = (ViewPager) view.findViewById(R.id.viewpagerforfunnypo);
-        this.mPagerAdapter = new MyPagerAdapter();
+        this.mViewPager.setOnPageChangeListener(this);
+        ArrayList<Term>[] termListArray = new ArrayList[3];
+        for (int i = 0; i < 3; i++) {
+            termListArray[i] = this.raiseIssueManager.getList(i);
+        }
+        this.mPagerAdapter = new MyPagerAdapter(this.activity, termListArray);
         try {
             this.mViewPager.setAdapter(this.mPagerAdapter);
         } catch (Exception e) {
             System.out.print(e);
         }
         this.mViewPager.setCurrentItem(0);
-//        initializeListView(view);
-        return view;
     }
 
     private void initializeInformTxtField(View view) {
@@ -144,7 +152,7 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
 
     @Override
     public void onPageScrolled(int i, float v, int i2) {
-
+        scaleButton(i);
     }
 
     @Override
@@ -154,7 +162,6 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
 
     @Override
     public void onPageScrollStateChanged(int i) {
-
     }
 
     private synchronized ListViewAdapter getAdapter(int position) {
@@ -176,10 +183,13 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
     }
 
     private void setText(String text, int listNum) {
-        setIssue(text);
-        this.buttonMap.get(listNum).setText(text);
         setItemSelectedFalse(listNum);
-        checkNewTerm(text);
+        if(!text.isEmpty()){
+            checkNewTerm(text);
+            this.buttonMap.get(listNum).setText(text);
+        }else if(listNum == 2)
+            this.buttonMap.get(listNum).setText("P");
+        setIssue(text);
     }
 
     private void refreshAll() {
@@ -191,6 +201,7 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
         int listNum = this.raiseIssueManager.getIssuePosNum();
         ArrayList<Term> showList = this.raiseIssueManager.getList(listNum);
         getAdapter(listNum).SetData(showList);
+        mViewPager.setCurrentItem(listNum);
         scaleButton(listNum);
     }
 
@@ -266,43 +277,28 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
     }
 
     private class MyPagerAdapter extends PagerAdapter {
+        private Context mContext;
+        private LayoutInflater mLayoutInflater;
+        private final int MUN_OF_PAGES = 3;
+        private ListViewAdapter adapter;
+        private ArrayList<Term>[] termListArray;
 
-        int NumberOfPages = 3;
-
-        public MyPagerAdapter() {
-            lv = new ArrayList<ListView>();
+        public MyPagerAdapter(Context context, ArrayList<Term>[] termListArray) {
+            this.mContext = context;
+            this.mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             adapters = new ArrayList<ListViewAdapter>();
-            for(int i = 0; i < NumberOfPages; i++) {
-                final int nextPage = i < 2 ? i + 1 : i;
-                ListView listView = new ListView(activity);
-                listView.setBackgroundColor(R.color.light_yellow);
-                final ArrayList<Term> list = raiseIssueManager.getList(i);
+            this.termListArray = termListArray;
+            for (int i = 0; i < MUN_OF_PAGES; i++) {
+                final ArrayList<Term> list = this.termListArray[i];
                 final int listNum = i;
-                adapter = new ListViewAdapter(getActivity().getApplicationContext(), list);
+                adapter = new ListViewAdapter(this.mContext, list);
                 adapters.add(adapter);
-                listView.setAdapter(getAdapter(i));
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if(position < list.size()){
-                            Term term = (Term) parent.getItemAtPosition(position);
-                            if(listNum != 2 || id != 0)
-                                setText(term.getTerm(), listNum);
-                            else
-                                raiseIssueManager.setIsPreview(true);
-                            setItemSelected(listNum, (int) id);
-                            refreshAll();
-                        }
-                        mViewPager.setCurrentItem(nextPage);
-                    }
-                });
-                lv.add(listView);
             }
         }
 
         @Override
         public int getCount() {
-            return lv.size();
+            return MUN_OF_PAGES;
         }
 
         @Override
@@ -312,14 +308,38 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            container.addView(lv.get(position));
-            return lv.get(position);
+            View itemView = mLayoutInflater.inflate(R.layout.pager_adapter_layout, container, false);
+            final int listNum = position;
+            final int nextPage = listNum < 2 ? listNum + 1 : listNum;
+            ListView l = (ListView) itemView.findViewById(R.id.listView);
+            l.setAdapter(adapters.get(listNum));
+            l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (position < termListArray[listNum].size()) {
+                        Term term = (Term) parent.getItemAtPosition(position);
+                        if(listNum == 2)
+                            raiseIssueManager.setIsPreview(true);
+                        if (listNum != 2 || id != 0)
+                            setText(term.getTerm(), listNum);
+                        else
+                            setText("", listNum);
+                        setItemSelected(listNum, (int) id);
+                        refreshAll();
+                    }
+                    mViewPager.setCurrentItem(nextPage);
+                }
+            });
+
+            container.addView(itemView);
+
+            return itemView;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(lv.get(position));
+            container.removeView((LinearLayout) object);
         }
-
     }
+
 }

@@ -50,13 +50,9 @@ public class RaiseIssueManager {
 
     public void addTerm(String content) {
         int posNum = this.issuePosNum;
-        if (posNum > 0) {
-            Term t = new Term(content);
-            t.setIsSelected(true);
-            if(posNum<2)
-                posNum -=1;
-            this.getList(posNum).add(t);
-        }
+        Term t = new Term(content);
+        t.setIsSelected(true);
+        this.getList(posNum).add(t);
     }
 
     public int getIssuePosNum() {
@@ -81,7 +77,7 @@ public class RaiseIssueManager {
         String subject = this.issue.getSubject();
         String description = this.issue.getDescription();
         String location = this.issue.getPosition();
-        return !(subject.isEmpty() || description.isEmpty() || location.isEmpty()) || this.isPreview;
+        return !(subject.isEmpty() || description.isEmpty()) && this.isPreview;
     }
 
     public void setIsPreview(boolean isPreview) {
