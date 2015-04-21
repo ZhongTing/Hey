@@ -3,6 +3,7 @@ package slm2015.hey.ui.tabsswipe;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 import slm2015.hey.R;
 import slm2015.hey.adapter.ListViewAdapter;
+import slm2015.hey.entity.Issue;
 import slm2015.hey.entity.Term;
 import slm2015.hey.manager.RaiseIssueManager;
 import slm2015.hey.ui.IssuePopupWindow;
@@ -76,6 +78,24 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
         refreshState();
         initializeListViewViewPager(view);
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+//                if (android.os.Build.VERSION.SDK_INT >= 16) {
+//                    this.window.getCameraButton().setBackground(new BitmapDrawable(getResources(), image));
+//                } else {
+//                    this.window.getCameraButton().setBackgroundDrawable(new BitmapDrawable(getResources(), image));
+//                }
+                Issue issue = this.raiseIssueManager.getIssue();
+                issue.setImage(image);
+                this.window.reasignIssue(issue);
+            }
+        }
     }
 
     private void initializeListViewViewPager(View view){

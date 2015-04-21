@@ -6,24 +6,25 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
+import slm2015.hey.ui.component.Card;
 
 
 public class IssuePopupWindow extends PopupWindow {
     private ImageButton cameraButton;
-    private TextView s_textView, v_textView, p_textView;
     private ImageButton cancelButton;
     private ImageButton raiseButton;
+    private Card card;
 
     public IssuePopupWindow(View view, Issue issue, int width, int height) {
         super(view, width, height);
         initializeCameraButton(view);
-        initializeTextView(view, issue);
         initializeCancelButton(view);
         this.raiseButton = (ImageButton) view.findViewById(R.id.raiseButton);
+        this.card = (Card) view.findViewById(R.id.preview);
+        this.card.assignIssue(issue);
         initializeWindow(view, width, height);
     }
 
@@ -45,15 +46,6 @@ public class IssuePopupWindow extends PopupWindow {
         showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
-    private void initializeTextView(View view, Issue issue) {
-        this.s_textView = (TextView) view.findViewById(R.id.s_text);
-        this.s_textView.setText(issue.getSubject());
-        this.v_textView = (TextView) view.findViewById(R.id.v_text);
-        this.v_textView.setText(issue.getDescription());
-        this.p_textView = (TextView) view.findViewById(R.id.p_text);
-        this.p_textView.setText(issue.getPosition());
-    }
-
     private void initializeCancelButton(View view) {
         this.cancelButton = (ImageButton) view.findViewById(R.id.cancelButton);
         this.cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -62,5 +54,9 @@ public class IssuePopupWindow extends PopupWindow {
                 dismiss();
             }
         });
+    }
+
+    public void reasignIssue(Issue issue) {
+        this.card.assignIssue(issue);
     }
 }
