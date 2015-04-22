@@ -10,11 +10,16 @@ import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.TabContentFactory;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
 import slm2015.hey.R;
+import slm2015.hey.api.APIBase;
+import slm2015.hey.api.user.PullRecommendsAPI;
 import slm2015.hey.manager.APIManager;
 import slm2015.hey.ui.tabsswipe.FunnyWatchFragment;
 import slm2015.hey.ui.tabsswipe.NewFunnyPoFragment;
@@ -87,18 +92,31 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
      *
      * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
      */
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Inflate the layout
         setContentView(R.layout.activity_main);
         // Initialise the TabHost
+        APIManager.getInstance().run(this, new PullRecommendsAPI(new APIBase.Callback() {
+            @Override
+            public void requestSuccess(JSONObject result) throws JSONException {
+                init(savedInstanceState);
+            }
+
+            @Override
+            public void requestFail() {
+                init(savedInstanceState);
+            }
+        }));
+    }
+
+    private void init(Bundle savedInstanceState){
         this.initialiseTabHost(savedInstanceState);
         if (savedInstanceState != null) {
             mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab")); //set the tab as per the saved state
         }
         // Intialise ViewPager
         this.intialiseViewPager();
-        APIManager.getInstance().test();
     }
 
     /**

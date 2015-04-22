@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
+import junit.framework.Assert;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -21,18 +23,15 @@ import java.io.UnsupportedEncodingException;
 import javax.net.ssl.SSLPeerUnverifiedException;
 
 public abstract class APIBase implements Runnable {
-    public static final String NETWORK_ERROR = "network error!!!";
-    protected static int NO_CONTENT = 204;
-
     protected String TAG = "?????API";
 
-    protected APICallback callback;
-    protected Activity activity = null;
+    protected Callback callback;
 
     protected String requestUrl;
     protected HttpRequestBase httpRequest;
+    private Activity activity;
 
-    public APIBase(String baseUrl, String action, APICallback callback) {
+    public APIBase(String baseUrl, String action, Callback callback) {
         this.requestUrl = baseUrl + action;
         Log.d("APIBase", this.requestUrl);
 
@@ -50,15 +49,12 @@ public abstract class APIBase implements Runnable {
         this.httpRequest.setHeader(key, value);
     }
 
-    protected void doCallback(int status, String result) throws JSONException {
-        Log.d(TAG, result);
+    protected void runSuccess(JSONObject object) throws JSONException {
+        this.callback.requestSuccess(object);
+    }
 
-        JSONObject object = new JSONObject(result);
-        if (object.has("error")) {
-            this.callback.requestCallback(false, object.getString("error"));
-        } else {
-            this.callback.requestCallback(true, object);
-        }
+    protected void runFail(JSONObject object) throws JSONException {
+        this.callback.requestFail();
     }
 
     protected abstract void doInit() throws UnsupportedEncodingException;
@@ -69,6 +65,8 @@ public abstract class APIBase implements Runnable {
 
     @Override
     public void run() {
+        Assert.assertNotNull(activity);
+
         try {
             this.initConnectionParams();
 
@@ -79,44 +77,49 @@ public abstract class APIBase implements Runnable {
             final int status = res.getStatusLine().getStatusCode();
             final String response = entity == null ? "" : EntityUtils.toString(entity, "utf-8");
 
-            final APIBase apiBase = this;
-            Runnable callback = new Runnable() {
+            Log.d(TAG, response);
+            activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        apiBase.doCallback(status, response);
+                        JSONObject object = new JSONObject(response);
+                        JSONObject result = object.has("result") ? object.getJSONObject("result") : null;
+
+                        if (object.getString("status").equals("success")) {
+                            APIBase.this.runSuccess(result);
+
+                        } else {
+                            APIBase.this.runFail(result);
+
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-
                     }
                 }
-            };
+            });
 
-            if (activity == null)
-                callback.run();
-            else
-                activity.runOnUiThread(callback);
 
         } catch (SSLPeerUnverifiedException e) {
             Log.d("APIBase", "SSLPeerUnverifiedException");
             run();
+
         } catch (IOException e) {
             e.printStackTrace();
-            if (activity != null) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(activity, "請檢查網路是否正常！", Toast.LENGTH_LONG).show();
-                        try {
-                            callback.requestCallback(false, NETWORK_ERROR);
-                        } catch (JSONException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                });
-            }
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(activity, "網路發生錯誤！", Toast.LENGTH_SHORT).show();
+                    APIBase.this.callback.requestFail();
+                }
+            });
         }
+    }
+
+    public interface Callback {
+        public void requestSuccess(JSONObject result) throws JSONException;
+
+        public void requestFail();
     }
 }
 

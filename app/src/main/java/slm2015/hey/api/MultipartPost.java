@@ -16,7 +16,7 @@ import java.nio.charset.Charset;
 public class MultipartPost extends APIBase {
     protected MultipartEntityBuilder postParams;
 
-    public MultipartPost(String baseUrl, String action, APICallback callback) {
+    public MultipartPost(String baseUrl, String action, Callback callback) {
         super(baseUrl, action, callback);
 
         this.httpRequest = new HttpPost(this.requestUrl);

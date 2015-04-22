@@ -1,34 +1,42 @@
 package slm2015.hey.manager;
 
-import android.util.Log;
+import android.app.Activity;
 
-import org.json.JSONException;
+import org.json.JSONObject;
 
-import slm2015.hey.api.APICallback;
-import slm2015.hey.api.user.PullRecommendsAPI;
+import slm2015.hey.api.APIBase;
 
 public class APIManager {
+    // static
     public static final String HEY_SERVER_BASE_URL = "http://140.124.181.195:8000";
-    private static APIManager ourInstance = new APIManager();
+    private static APIManager ourInstance = null;
 
-    private String accessToken = "test";
+    // private
+    private String accessToken = "";
+    private JSONObject temp = null;
 
     public static APIManager getInstance() {
+        if (ourInstance == null)
+            ourInstance = new APIManager();
         return ourInstance;
     }
 
     private APIManager() {
+        this.accessToken = "test";
     }
 
-    public void test(){
-        Log.d("APIManager", "start");
-        Thread thread = new Thread(new PullRecommendsAPI(new APICallback() {
-            @Override
-            public void requestCallback(boolean isValid, Object result) throws JSONException {
-                Log.d("PullRecommendsAPI", "finish");
-            }
-        }));
+    public void run(Activity activity, APIBase task) {
+        task.setActivity(activity);
+        Thread thread = new Thread(task);
         thread.start();
+    }
+
+    public void setTemp(JSONObject temp) {
+        this.temp = temp;
+    }
+
+    public JSONObject getTemp() {
+        return this.temp;
     }
 
     public String getAccessToken() {
