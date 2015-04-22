@@ -28,6 +28,8 @@ public class RaiseIssueManager {
                 this.nounList.add(new Term(actorArray.getString(i)));
             for (int i = 0; i < eventArray.length(); i++)
                 this.adjList.add(new Term(eventArray.getString(i)));
+
+            this.locationList.add(new Term("(無)"));
             for (int i = 0; i < placeArray.length(); i++)
                 this.locationList.add(new Term(placeArray.getString(i)));
 
