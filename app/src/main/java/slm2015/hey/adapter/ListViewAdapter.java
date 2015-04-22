@@ -62,7 +62,8 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
         convertView.setBackgroundColor(convertView.getResources().getColor(R.color.light_yellow));
         if (position < filterData.size()) {
             if (this.filterData.get(position).isSelected()) {
-                convertView.setBackgroundColor(convertView.getResources().getColor(R.color.light_blue));
+                convertView.setBackground(convertView.getResources().getDrawable(R.drawable.term_button));
+//                convertView.setBackgroundColor(convertView.getResources().getColor(R.color.light_blue));
             }
             holder.text.setText(this.filterData.get(position).getTerm());
         } else {
