@@ -2,7 +2,6 @@ package slm2015.hey.ui.component;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 
 import slm2015.hey.R;
 
-public class StepIndicator extends FrameLayout{
+public class StepIndicator extends FrameLayout {
     private TextView indicateTextView;
     private ImageView indicateHeadImageView;
     private Boolean active;
@@ -53,7 +52,7 @@ public class StepIndicator extends FrameLayout{
     public void setActive(Boolean active) {
         this.active = active;
         int color = active ? R.color.blue_green : R.color.peach_red;
-        int source = active ? R.drawable.arrow_head : R.drawable.arrow_head_unactive;
+        int source = active ? R.drawable.arrow_head : R.drawable.arrow_head_inactive;
         this.indicateTextView.setBackgroundResource(color);
         this.indicateHeadImageView.setImageResource(source);
     }
