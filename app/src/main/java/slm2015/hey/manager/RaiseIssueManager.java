@@ -1,5 +1,9 @@
 package slm2015.hey.manager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import slm2015.hey.entity.Issue;
@@ -15,18 +19,24 @@ public class RaiseIssueManager {
     private Issue issue = new Issue();
 
     public RaiseIssueManager() {
-        String[] nounArray = {"Police", "Sausage", "北科", "Mr.Brown", "Seven-Eleven", "Family-Mart", "Cat", "MRT", "Garbage noodle", "滷肉飯"};
-        String[] adjArray = {"is comming", "is dangerous", "opening", "on sale", "sold out", "開單"};
-        String[] locationArray = {"(無)", "忠孝新生", "科研", "綜科", "光華商場", "六教"};
-        for (String s : nounArray)
-            this.nounList.add(new Term(s));
-        for (String s : adjArray)
-            this.adjList.add(new Term(s));
-        for (String s : locationArray)
-            this.locationList.add(new Term(s));
-        this.listMap.add(this.nounList);
-        this.listMap.add(this.adjList);
-        this.listMap.add(this.locationList);
+        try {
+            JSONObject temp = APIManager.getInstance().getTemp();
+            JSONArray actorArray = temp.getJSONArray("actor");
+            JSONArray eventArray = temp.getJSONArray("event");
+            JSONArray placeArray = temp.getJSONArray("place");
+            for (int i = 0; i < actorArray.length(); i++)
+                this.nounList.add(new Term(actorArray.getString(i)));
+            for (int i = 0; i < eventArray.length(); i++)
+                this.adjList.add(new Term(eventArray.getString(i)));
+            for (int i = 0; i < placeArray.length(); i++)
+                this.locationList.add(new Term(placeArray.getString(i)));
+
+            this.listMap.add(this.nounList);
+            this.listMap.add(this.adjList);
+            this.listMap.add(this.locationList);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<Term> getList(int listNum) {

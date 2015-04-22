@@ -91,11 +91,25 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
      *
      * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
      */
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Inflate the layout
         setContentView(R.layout.activity_main);
         // Initialise the TabHost
+        APIManager.getInstance().run(this, new PullRecommendsAPI(new APIBase.Callback() {
+            @Override
+            public void requestSuccess(JSONObject result) throws JSONException {
+                init(savedInstanceState);
+            }
+
+            @Override
+            public void requestFail() {
+                init(savedInstanceState);
+            }
+        }));
+    }
+
+    private void init(Bundle savedInstanceState){
         this.initialiseTabHost(savedInstanceState);
         if (savedInstanceState != null) {
             mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab")); //set the tab as per the saved state

@@ -2,6 +2,8 @@ package slm2015.hey.manager;
 
 import android.app.Activity;
 
+import org.json.JSONObject;
+
 import slm2015.hey.api.APIBase;
 
 public class APIManager {
@@ -11,6 +13,7 @@ public class APIManager {
 
     // private
     private String accessToken = "";
+    private JSONObject temp = null;
 
     public static APIManager getInstance() {
         if (ourInstance == null)
@@ -26,6 +29,14 @@ public class APIManager {
         task.setActivity(activity);
         Thread thread = new Thread(task);
         thread.start();
+    }
+
+    public void setTemp(JSONObject temp) {
+        this.temp = temp;
+    }
+
+    public JSONObject getTemp() {
+        return this.temp;
     }
 
     public String getAccessToken() {
