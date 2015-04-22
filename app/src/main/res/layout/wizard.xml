@@ -6,10 +6,10 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/step_indicator_group"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:background="@color/black">
+        android:orientation="horizontal">
 
         <slm2015.hey.ui.component.StepIndicator
             android:id="@+id/preview_step_indicator"
@@ -48,8 +48,6 @@
             android:id="@+id/subject_step_indicator"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="-20dp"
-            android:layout_marginStart="-20dp"
             app:active="true"
             app:text="主角" />
 

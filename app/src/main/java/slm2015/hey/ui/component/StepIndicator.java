@@ -12,8 +12,9 @@ import slm2015.hey.R;
 public class StepIndicator extends FrameLayout {
     private TextView indicateTextView;
     private ImageView indicateHeadImageView;
-    private Boolean active;
+    private boolean active;
     private String indicateText;
+    private int originWidth;
 
     public StepIndicator(Context context) {
         super(context);
@@ -34,6 +35,7 @@ public class StepIndicator extends FrameLayout {
         inflate(this.getContext(), R.layout.step_indicator, this);
         this.findview();
         this.loadAttribute(attrs, defStyle);
+        this.originWidth = LayoutParams.WRAP_CONTENT;
     }
 
     private void loadAttribute(AttributeSet attrs, int defStyle) {
@@ -60,5 +62,17 @@ public class StepIndicator extends FrameLayout {
     public void setIndicateText(String indicateText) {
         this.indicateText = indicateText;
         this.indicateTextView.setText(indicateText);
+    }
+
+    public int getIndicatorHeadWidthInPixel() {
+        return this.indicateHeadImageView.getLayoutParams().width;
+    }
+
+    public void setActiveWidth(int width) {
+        this.getLayoutParams().width = width;
+    }
+
+    public void resetWidth() {
+        this.getLayoutParams().width = this.originWidth;
     }
 }
