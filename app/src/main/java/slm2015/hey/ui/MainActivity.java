@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Vector;
 
 import slm2015.hey.R;
+import slm2015.hey.manager.APIManager;
 import slm2015.hey.ui.tabsswipe.FunnyPoFragment;
 import slm2015.hey.ui.tabsswipe.FunnyWatchFragment;
 import slm2015.hey.ui.tabsswipe.NewFunnyPoFragment;
@@ -97,6 +98,7 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
         }
         // Intialise ViewPager
         this.intialiseViewPager();
+        APIManager.getInstance().test();
     }
 
     /**
