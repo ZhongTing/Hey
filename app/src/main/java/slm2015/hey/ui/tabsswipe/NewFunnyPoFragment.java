@@ -98,7 +98,7 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
         }
     }
 
-    private void initializeListViewViewPager(View view){
+    private void initializeListViewViewPager(View view) {
         this.mViewPager = (ViewPager) view.findViewById(R.id.viewpagerforfunnypo);
         this.mViewPager.setOnPageChangeListener(this);
         ArrayList<Term>[] termListArray = new ArrayList[3];
@@ -204,10 +204,10 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
 
     private void setText(String text, int listNum) {
         setItemSelectedFalse(listNum);
-        if(!text.isEmpty()){
+        if (!text.isEmpty()) {
             checkNewTerm(text);
             this.buttonMap.get(listNum).setText(text);
-        }else if(listNum == 2)
+        } else if (listNum == 2)
             this.buttonMap.get(listNum).setText("P");
         setIssue(text);
     }
@@ -253,7 +253,7 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
             this.raiseIssueManager.setIsPreview(false);
             int length = RelativeLayout.LayoutParams.FILL_PARENT;
             String text = this.raiseIssueManager.getIssueInString();
-            this.window = new IssuePopupWindow(this.popupView, this.raiseIssueManager.getIssue(), length, length);
+            this.window = new IssuePopupWindow(this.getActivity(), this.popupView, this.raiseIssueManager.getIssue(), length, length);
             this.window.getCameraButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -338,7 +338,7 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (position < termListArray[listNum].size()) {
                         Term term = (Term) parent.getItemAtPosition(position);
-                        if(listNum == 2)
+                        if (listNum == 2)
                             raiseIssueManager.setIsPreview(true);
                         if (listNum != 2 || id != 0)
                             setText(term.getTerm(), listNum);

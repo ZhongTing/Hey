@@ -29,7 +29,7 @@ public abstract class APIBase implements Runnable {
 
     protected String requestUrl;
     protected HttpRequestBase httpRequest;
-    private Activity activity;
+    protected Activity activity;
 
     public APIBase(String baseUrl, String action, Callback callback) {
         this.requestUrl = baseUrl + action;
