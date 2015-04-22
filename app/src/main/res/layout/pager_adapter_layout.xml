@@ -12,5 +12,6 @@
         android:layout_marginRight="5dp"
         android:layout_marginBottom="5dp"
         android:id="@+id/listView"
-        android:background="@color/light_yellow" />
+        android:background="@color/light_yellow"
+        />
 </LinearLayout>

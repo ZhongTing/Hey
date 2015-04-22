@@ -21,15 +21,22 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="45dp">
 
-                <TextView
+                <ImageView
                     android:id="@+id/title"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
                     android:text="Hey"
                     android:layout_marginTop="8dp"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:src="@drawable/hey"/>
+                <FrameLayout
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/frame"
+                    android:layout_toRightOf="@id/title">
+                    </FrameLayout>
 
                 <TabWidget
                     android:id="@android:id/tabs"
@@ -37,7 +44,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_toRightOf="@id/title" />
+                    android:layout_toRightOf="@id/frame" />
             </RelativeLayout>
 
             <slm2015.hey.ui.component.Card

@@ -16,7 +16,6 @@ import java.util.Vector;
 
 import slm2015.hey.R;
 import slm2015.hey.manager.APIManager;
-import slm2015.hey.ui.tabsswipe.FunnyPoFragment;
 import slm2015.hey.ui.tabsswipe.FunnyWatchFragment;
 import slm2015.hey.ui.tabsswipe.NewFunnyPoFragment;
 import slm2015.hey.ui.tabsswipe.TabsPagerAdapter;
@@ -119,8 +118,6 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
         this.fragments = new Vector<Fragment>();
         this.fragments.add(Fragment.instantiate(this, NewFunnyPoFragment.class.getName()));
         this.fragments.add(Fragment.instantiate(this, FunnyWatchFragment.class.getName()));
-        this.fragments.add(Fragment.instantiate(this, FunnyPoFragment.class.getName()));
-//        fragments.add(Fragment.instantiate(this, Tab3Fragment.class.getName()));
         this.mPagerAdapter = new TabsPagerAdapter(super.getSupportFragmentManager(), this.fragments);
         //
         this.mViewPager = (ViewPager) super.findViewById(R.id.viewpager);
@@ -135,14 +132,10 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
         mTabHost = (TabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup();
         TabInfo tabInfo = null;
-        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("NewFunnyPo").setIndicator("", getResources().getDrawable(R.mipmap.ic_launcher)), (tabInfo = new TabInfo("NewFunnyPo", NewFunnyPoFragment.class, args)));
+        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("NewFunnyPo").setIndicator("", getResources().getDrawable(R.drawable.funny_po)), (tabInfo = new TabInfo("NewFunnyPo", NewFunnyPoFragment.class, args)));
         this.mapTabInfo.put(tabInfo.tag, tabInfo);
-        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("FunnWatch").setIndicator("", getResources().getDrawable(R.mipmap.ic_launcher)), (tabInfo = new TabInfo("FunnyWatch", FunnyWatchFragment.class, args)));
+        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("FunnWatch").setIndicator("", getResources().getDrawable(R.drawable.funny_watch)), (tabInfo = new TabInfo("FunnyWatch", FunnyWatchFragment.class, args)));
         this.mapTabInfo.put(tabInfo.tag, tabInfo);
-        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("FunnyPo").setIndicator("", getResources().getDrawable(R.mipmap.ic_launcher)), (tabInfo = new TabInfo("FunnyPo", FunnyPoFragment.class, args)));
-        this.mapTabInfo.put(tabInfo.tag, tabInfo);
-//        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("Tab3").setIndicator("Tab 3"), ( tabInfo = new TabInfo("Tab3", Tab3Fragment.class, args)));
-//        this.mapTabInfo.put(tabInfo.tag, tabInfo);
         // Default to first tab
         //this.onTabChanged("Tab1");
         //
