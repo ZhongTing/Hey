@@ -10,11 +10,16 @@ import android.view.View;
 import android.widget.TabHost;
 import android.widget.TabHost.TabContentFactory;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
 import slm2015.hey.R;
+import slm2015.hey.api.APIBase;
+import slm2015.hey.api.user.PullRecommendsAPI;
 import slm2015.hey.manager.APIManager;
 import slm2015.hey.ui.tabsswipe.FunnyPoFragment;
 import slm2015.hey.ui.tabsswipe.FunnyWatchFragment;
@@ -98,7 +103,6 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
         }
         // Intialise ViewPager
         this.intialiseViewPager();
-        APIManager.getInstance().test();
     }
 
     /**
