@@ -23,6 +23,7 @@ import slm2015.hey.api.user.PullRecommendsAPI;
 import slm2015.hey.manager.APIManager;
 import slm2015.hey.ui.tabsswipe.FunnyWatchFragment;
 import slm2015.hey.ui.tabsswipe.NewFunnyPoFragment;
+import slm2015.hey.ui.tabsswipe.NewFunnyWatchFragment;
 import slm2015.hey.ui.tabsswipe.TabsPagerAdapter;
 
 /**
@@ -135,7 +136,7 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
 
         this.fragments = new Vector<Fragment>();
         this.fragments.add(Fragment.instantiate(this, NewFunnyPoFragment.class.getName()));
-        this.fragments.add(Fragment.instantiate(this, FunnyWatchFragment.class.getName()));
+        this.fragments.add(Fragment.instantiate(this, NewFunnyWatchFragment.class.getName()));
         this.mPagerAdapter = new TabsPagerAdapter(super.getSupportFragmentManager(), this.fragments);
         //
         this.mViewPager = (ViewPager) super.findViewById(R.id.viewpager);
@@ -152,7 +153,7 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
         TabInfo tabInfo = null;
         MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("NewFunnyPo").setIndicator("", getResources().getDrawable(R.drawable.funny_po)), (tabInfo = new TabInfo("NewFunnyPo", NewFunnyPoFragment.class, args)));
         this.mapTabInfo.put(tabInfo.tag, tabInfo);
-        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("FunnWatch").setIndicator("", getResources().getDrawable(R.drawable.funny_watch)), (tabInfo = new TabInfo("FunnyWatch", FunnyWatchFragment.class, args)));
+        MainActivity.AddTab(this, this.mTabHost, this.mTabHost.newTabSpec("NewFunnyWatch").setIndicator("", getResources().getDrawable(R.drawable.funny_watch)), (tabInfo = new TabInfo("NewFunnyWatch", FunnyWatchFragment.class, args)));
         this.mapTabInfo.put(tabInfo.tag, tabInfo);
         // Default to first tab
         //this.onTabChanged("Tab1");

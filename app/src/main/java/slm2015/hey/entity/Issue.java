@@ -22,7 +22,13 @@ public class Issue {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
+    public Issue(String s, String d, String p) {
+        this.issueJSON = new JSONObject();
+        setSubject(s);
+        setDescription(d);
+        setPosition(p);
     }
 
     public void updateIssue(){
