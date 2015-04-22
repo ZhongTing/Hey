@@ -9,10 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <slm2015.hey.ui.component.Wizard
-            android:layout_width="match_parent"
-            android:layout_height="50dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,7 +25,7 @@
                 android:textSize="15sp"
                 android:gravity="center"
                 android:layout_margin="5dp"
-                android:singleLine="true"/>
+                android:singleLine="true" />
 
             <Button
                 android:layout_width="50dp"
@@ -73,14 +69,14 @@
                 android:background="@drawable/term_button"
                 android:singleLine="true"
                 android:paddingLeft="5dp"
-                android:hint="search"/>
+                android:hint="search" />
         </RelativeLayout>
+
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpagerforfunnypo"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_margin="5dp">
-        </android.support.v4.view.ViewPager>
+            android:layout_margin="5dp"></android.support.v4.view.ViewPager>
     </LinearLayout>
 </LinearLayout>
