@@ -11,4 +11,7 @@
     <color name="light_blue">#77DDFF</color>
     <color name="blue_green">#76c2af</color>
     <color name="peach_red">#eb547a</color>
+
+    <!--astuetz-->
+    <color name="background_tab_pressed">#6633B5E5</color>
 </resources>
