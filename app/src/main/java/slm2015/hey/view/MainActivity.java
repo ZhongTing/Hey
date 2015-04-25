@@ -28,31 +28,28 @@ public class MainActivity extends FragmentActivity {
         pager.setPageMargin(pageMargin);
 
         tabs.setViewPager(pager);
-        int tabStripColor = 0xFF666666;
-        tabs.setIndicatorColor(tabStripColor);
     }
 
-    public class MyPagerAdapter extends FragmentPagerAdapter {
-
-        private final String[] TITLES = {"Post", "Watch"};
+    public class MyPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
+        private final int[] ICON_RES_IDS = {R.drawable.funny_po, R.drawable.funny_watch};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public CharSequence getPageTitle(int position) {
-            return TITLES[position];
-        }
-
-        @Override
         public int getCount() {
-            return TITLES.length;
+            return ICON_RES_IDS.length;
         }
 
         @Override
         public Fragment getItem(int position) {
             return SuperAwesomeCardFragment.newInstance(position);
+        }
+
+        @Override
+        public int getPageIconResId(int position) {
+            return ICON_RES_IDS[position];
         }
     }
 }
