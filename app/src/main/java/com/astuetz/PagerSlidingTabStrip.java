@@ -39,6 +39,7 @@ import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -123,10 +124,12 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         setFillViewport(true);
         setWillNotDraw(false);
 
-        tabsContainer = new LinearLayout(context);
-        tabsContainer.setOrientation(LinearLayout.HORIZONTAL);
-        tabsContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        addView(tabsContainer);
+        // tabsContainer = new LinearLayout(context);
+        // tabsContainer.setOrientation(LinearLayout.HORIZONTAL);
+        // tabsContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        RelativeLayout mainHeaderLayout = (RelativeLayout) inflate(context, R.layout.main_header, null);
+        tabsContainer = (LinearLayout) mainHeaderLayout.findViewById(R.id.tabs_linear_layout);
+        addView(mainHeaderLayout);
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
 
