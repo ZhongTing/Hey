@@ -20,6 +20,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
@@ -34,6 +35,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -70,8 +72,16 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     private int currentPosition = 0;
     private float currentPositionOffset = 0f;
 
+    private int prevPosOffsetPixelsAbs = 0;
+    private int screenWidthPixels = 0;
+    private int lastFromPosition = -1;
+    private int lastToPosition = -1;
+
     private Paint rectPaint;
     private Paint dividerPaint;
+
+    private float iconAlphaPrim = 1;
+    private float iconAlphaSec = 0.4f;
 
     private int indicatorColor = 0xFF666666;
     private int underlineColor = 0x1A000000;
@@ -89,6 +99,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
     private int tabTextSize = 12;
     private int tabTextColor = 0xFF666666;
+    private int tabTextColorSec = 0x66666666;
     private Typeface tabTypeface = null;
     private int tabTypefaceStyle = Typeface.BOLD;
 
@@ -164,6 +175,15 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
         defaultTabLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         expandedTabLayoutParams = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1.0f);
+
+
+        // screenWidthPixels is used to judge
+        // the direction of swipe gestures
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(metrics);
+        screenWidthPixels = metrics.widthPixels;
+
 
         if (locale == null) {
             locale = getResources().getConfiguration().locale;
@@ -261,15 +281,22 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         for (int i = 0; i < tabCount; i++) {
 
             View v = tabsContainer.getChildAt(i);
-
             v.setBackgroundResource(tabBackgroundResId);
+
 
             if (v instanceof TextView) {
 
                 TextView tab = (TextView) v;
                 tab.setTextSize(TypedValue.COMPLEX_UNIT_PX, tabTextSize);
                 tab.setTypeface(tabTypeface, tabTypefaceStyle);
-                tab.setTextColor(tabTextColor);
+
+
+                if (currentPosition == i) {
+                    tab.setTextColor(tabTextColor);
+                } else {
+                    tab.setTextColor(tabTextColorSec);
+                }
+
 
                 // setAllCaps() is only available from API 14, so the upper case is made manually if we are on a
                 // pre-ICS-build
@@ -279,6 +306,12 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
                     } else {
                         tab.setText(tab.getText().toString().toUpperCase(locale));
                     }
+                }
+            } else if (v instanceof ImageButton) {
+                if (currentPosition == i) {
+                    v.setAlpha(iconAlphaPrim);
+                } else {
+                    v.setAlpha(iconAlphaSec);
                 }
             }
         }
@@ -358,6 +391,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
             currentPosition = position;
             currentPositionOffset = positionOffset;
 
+            setTabWhileScrolling(position, positionOffset, positionOffsetPixels);
+
             scrollToChild(position, (int) (positionOffset * tabsContainer.getChildAt(position).getWidth()));
 
             invalidate();
@@ -385,6 +420,97 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
             }
         }
 
+
+        private void setTabWhileScrolling(int position, float positionOffset, int positionOffsetPixels) {
+
+            int curPosOffsetPixelsAbs = position * screenWidthPixels
+                    + positionOffsetPixels;
+
+            float p = positionOffset;
+            int fromPosition = -1;
+            int toPosition = -1;
+
+            if (curPosOffsetPixelsAbs > prevPosOffsetPixelsAbs) {
+                // Swipe right
+                fromPosition = position;
+                toPosition = position + 1;
+            } else if (curPosOffsetPixelsAbs < prevPosOffsetPixelsAbs) {
+                // Swipe left
+                fromPosition = position + 1;
+                toPosition = position;
+                p = 1 - p;
+            }
+
+
+            if (fromPosition < 0 || fromPosition > tabCount - 1 || toPosition < 0 || toPosition > tabCount - 1) {
+                // Position invalid
+                return;
+            }
+
+
+            String logStrFormat;
+            if (fromPosition == currentPosition) {
+                logStrFormat = "\"%d\"->%d";
+            } else {
+                logStrFormat = "%d->\"%d\"";
+            }
+            // Log.i("DSofter", String.format(logStrFormat, fromPosition, toPosition));
+
+
+            boolean overscrolled = (toPosition == lastToPosition && fromPosition != lastFromPosition);
+            boolean quickscrolled = (toPosition != lastToPosition && fromPosition == lastFromPosition);
+
+            if (toPosition != -1 && !overscrolled) {
+
+                if (quickscrolled) {
+                    // Log.i("DSofter", "quick scrolled: " + String.format("%d->%d %d->%d", lastFromPosition, lastToPosition, fromPosition, toPosition));
+                    setTabTransition(lastToPosition, 1);
+                } else {
+
+                    setTabTransition(fromPosition, p);
+                    setTabTransition(toPosition, 1 - p);
+
+                    if ((fromPosition - lastFromPosition)
+                            * (toPosition - lastToPosition) > 0
+                            && lastFromPosition != -1) {
+                        // Happens when continuous scroll
+                        int delta = (lastFromPosition > fromPosition)
+                                ? -1 : 1;
+                        int i = lastFromPosition;
+                        while (i != fromPosition) {
+                            setTabTransition(i, 1);
+                            i += delta;
+                        }
+
+                        // Log.i("DSofter", "cont");
+                    }
+                }
+
+                lastFromPosition = fromPosition;
+                lastToPosition = toPosition;
+
+
+            }
+
+            prevPosOffsetPixelsAbs = curPosOffsetPixelsAbs;
+
+        }
+
+
+    }
+
+    private void setTabTransition(int position, float progress) {
+        View v = tabsContainer.getChildAt(position);
+        if (v instanceof TextView) {
+            ((TextView) v).setTextColor(getTransitColor(tabTextColor, tabTextColorSec, progress));
+
+            // Log.i("DSofter", position + ": " + progress);
+
+
+        } else if (v instanceof ImageButton) {
+            v.setAlpha(iconAlphaPrim
+                    + (iconAlphaSec - iconAlphaPrim) * progress);
+        }
     }
 
     public void setIndicatorColor(int indicatorColor) {
@@ -493,6 +619,11 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
     public void setTextColor(int textColor) {
         this.tabTextColor = textColor;
+        this.tabTextColorSec = Color.argb(
+                Color.alpha(textColor) * 0x66 / 0xff,
+                Color.red(textColor),
+                Color.green(textColor),
+                Color.blue(textColor));
         updateTabStyles();
     }
 
@@ -504,6 +635,27 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     public int getTextColor() {
         return tabTextColor;
     }
+
+
+    private int getTransitColor(int fromColor, int toColor, float progress) {
+        int a1 = (fromColor >> 24) & 0xff;
+        int r1 = (fromColor >> 16) & 0xff;
+        int g1 = (fromColor >> 8) & 0xff;
+        int b1 = (fromColor >> 0) & 0xff;
+
+        int a2 = (toColor >> 24) & 0xff;
+        int r2 = (toColor >> 16) & 0xff;
+        int g2 = (toColor >> 8) & 0xff;
+        int b2 = (toColor >> 0) & 0xff;
+
+        int a3 = (int) (a1 + (a2 - a1) * progress);
+        int r3 = (int) (r1 + (r2 - r1) * progress);
+        int g3 = (int) (g1 + (g2 - g1) * progress);
+        int b3 = (int) (b1 + (b2 - b1) * progress);
+
+        return ((a3 << 24) | (r3 << 16) | (g3 << 8) | b3) & 0xffffffff;
+    }
+
 
     public void setTypeface(Typeface typeface, int style) {
         this.tabTypeface = typeface;
@@ -534,12 +686,17 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         super.onRestoreInstanceState(savedState.getSuperState());
         currentPosition = savedState.currentPosition;
         requestLayout();
+
+        // Log.i("DSofter", "current pos: " + currentPosition);
+
+        updateTabStyles();
     }
 
     @Override
     public Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
         SavedState savedState = new SavedState(superState);
+        currentPosition = pager.getCurrentItem();
         savedState.currentPosition = currentPosition;
         return savedState;
     }
