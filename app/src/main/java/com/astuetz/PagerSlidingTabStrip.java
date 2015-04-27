@@ -83,7 +83,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     private Paint dividerPaint;
 
     private float iconAlphaPrim = 1;
-    private float iconAlphaSec = 0.4f;
+    private float iconAlphaSec = 0.2f;
 
     private int indicatorColor = 0xFF666666;
     private int underlineColor = 0x1A000000;
@@ -507,8 +507,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 
         } else if (v instanceof ImageButton) {
-            v.setAlpha(iconAlphaPrim
-                    + (iconAlphaSec - iconAlphaPrim) * progress);
+            v.setAlpha(iconAlphaPrim + (iconAlphaSec - iconAlphaPrim) * progress);
         }
     }
 

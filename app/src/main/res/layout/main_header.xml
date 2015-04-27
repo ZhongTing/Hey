@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:id="@+id/main_header_relative_layout"
-    android:layout_height="50dp">
+    android:layout_height="@dimen/header_height">
 
     <ImageView
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:src="@drawable/hey"/>
 
