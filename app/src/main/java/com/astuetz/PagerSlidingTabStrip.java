@@ -66,6 +66,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     public OnPageChangeListener delegatePageListener;
 
     private LinearLayout tabsContainer;
+    private RelativeLayout mainHeaderContainer;
     private ViewPager pager;
 
     private int tabCount;
@@ -92,8 +93,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     private boolean textAllCaps = true;
 
     private int scrollOffset = 52;
-    private int indicatorHeight = 8;
-    private int underlineHeight = 2;
+    private int indicatorHeight = 4;
+    private int underlineHeight = 4;
     private int dividerPadding = 12;
     private int tabPadding = 24;
     private int dividerWidth = 1;
@@ -124,12 +125,9 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         setFillViewport(true);
         setWillNotDraw(false);
 
-        // tabsContainer = new LinearLayout(context);
-        // tabsContainer.setOrientation(LinearLayout.HORIZONTAL);
-        // tabsContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        RelativeLayout mainHeaderLayout = (RelativeLayout) inflate(context, R.layout.main_header, null);
-        tabsContainer = (LinearLayout) mainHeaderLayout.findViewById(R.id.tabs_linear_layout);
-        addView(mainHeaderLayout);
+        mainHeaderContainer = (RelativeLayout) inflate(context, R.layout.main_header, null);
+        tabsContainer = (LinearLayout) mainHeaderContainer.findViewById(R.id.tabs_linear_layout);
+        addView(mainHeaderContainer);
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
 
@@ -350,32 +348,30 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
         final int height = getHeight();
 
-        // draw indicator line
+        // draw underline
+        rectPaint.setColor(underlineColor);
+        canvas.drawRect(0, height - underlineHeight, mainHeaderContainer.getWidth(), height, rectPaint);
 
+        // draw indicator line
         rectPaint.setColor(indicatorColor);
 
         // default: line below current tab
         View currentTab = tabsContainer.getChildAt(currentPosition);
-        float lineLeft = currentTab.getLeft();
-        float lineRight = currentTab.getRight();
+        float lineLeft = currentTab.getLeft() + tabsContainer.getLeft();
+        float lineRight = currentTab.getRight() + tabsContainer.getLeft();
 
         // if there is an offset, start interpolating left and right coordinates between current and next tab
         if (currentPositionOffset > 0f && currentPosition < tabCount - 1) {
 
             View nextTab = tabsContainer.getChildAt(currentPosition + 1);
-            final float nextTabLeft = nextTab.getLeft();
-            final float nextTabRight = nextTab.getRight();
+            final float nextTabLeft = nextTab.getLeft() + tabsContainer.getLeft();
+            final float nextTabRight = nextTab.getRight() + tabsContainer.getLeft();
 
             lineLeft = (currentPositionOffset * nextTabLeft + (1f - currentPositionOffset) * lineLeft);
             lineRight = (currentPositionOffset * nextTabRight + (1f - currentPositionOffset) * lineRight);
         }
 
         canvas.drawRect(lineLeft, height - indicatorHeight, lineRight, height, rectPaint);
-
-        // draw underline
-
-        rectPaint.setColor(underlineColor);
-        canvas.drawRect(0, height - underlineHeight, tabsContainer.getWidth(), height, rectPaint);
 
         // draw divider
 
