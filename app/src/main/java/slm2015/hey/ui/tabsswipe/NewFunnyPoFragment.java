@@ -253,7 +253,8 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
             this.raiseIssueManager.setIsPreview(false);
             int length = RelativeLayout.LayoutParams.FILL_PARENT;
             String text = this.raiseIssueManager.getIssueInString();
-            this.window = new IssuePopupWindow(this.getActivity(), this.popupView, this.raiseIssueManager.getIssue(), length, length);
+            Issue test = this.raiseIssueManager.getIssue();
+            this.window = new IssuePopupWindow(this.getActivity(), this.popupView, test, length, length);
             this.window.getCameraButton().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

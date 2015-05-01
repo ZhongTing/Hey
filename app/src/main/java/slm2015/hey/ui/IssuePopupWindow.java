@@ -32,9 +32,9 @@ public class IssuePopupWindow extends PopupWindow {
         initializeCameraButton(view);
         initializeCancelButton(view);
         initializeRaiseButton(view);
-        this.card = (Card) view.findViewById(R.id.preview);
-        this.card.assignIssue(issue);
         this.issue = issue;
+        this.card = (Card) view.findViewById(R.id.preview);
+        this.card.assignIssue(this.issue);
         this.activity = activity;
         initializeWindow(view, width, height);
     }

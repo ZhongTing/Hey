@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -21,11 +22,13 @@ public class NewFunnyWatchFragment extends Fragment {
 
     private Activity activity;
     private RelativeLayout parentView;
+    private RelativeLayout card_frame;
     private int windowwidth;
     private int screenCenter;
-    private int x_cord, y_cord;
+    private int x_cord, y_cord, moved_x_cord, moved_y_cord, testx, testy;
     private int Likes = 0;
     private float alphaValue = 0;
+    private ViewPager pager;
 
     @Override
     public void onAttach(Activity activity) {
@@ -48,7 +51,7 @@ public class NewFunnyWatchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.new_funnywatch_layout, container, false);
         this.parentView = (RelativeLayout) view.findViewById(R.id.layoutview);
-
+        this.card_frame = (RelativeLayout) view.findViewById(R.id.card_frame);
         windowwidth = this.activity.getWindowManager().getDefaultDisplay().getWidth();
         screenCenter = windowwidth / 2;
         int[] myImageList = new int[]{R.drawable.arrow_head, R.drawable.arrow_head_inactive,
@@ -119,19 +122,33 @@ public class NewFunnyWatchFragment extends Fragment {
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    x_cord = (int) event.getRawX();
-                    y_cord = (int) event.getRawY();
+                    pager.requestDisallowInterceptTouchEvent(true);
 
-                    card.setX(x_cord - screenCenter + 40);
-                    card.setY(y_cord - 150);
+                    x_cord = (int) card.getX();
+                    y_cord = (int) card.getY();
+                    Log.d("x_cord", String.valueOf(x_cord));
+                    Log.d("y_cord", String.valueOf(y_cord));
+
+//                    card.setX(x_cord - screenCenter + 40);
+//                    card.setY(y_cord - 150);
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
+                            testx = (int) event.getX();
+                            testy = (int) event.getY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            x_cord = (int) event.getRawX();
-                            y_cord = (int) event.getRawY();
-                            card.setX(x_cord - screenCenter + 40);
-                            card.setY(y_cord - 150);
+                            moved_x_cord = (int) event.getX() - testx;
+                            moved_y_cord = (int) event.getY() - testy;
+                            Log.d("moved_x_cord", String.valueOf(moved_x_cord));
+                            Log.d("moved_y_cord", String.valueOf(moved_y_cord));
+                            int xt = x_cord + moved_x_cord;
+                            int yt = y_cord + moved_y_cord;
+
+                            Log.d("x", String.valueOf(xt));
+                            Log.d("y", String.valueOf(yt));
+
+                            card.setX(xt);
+                            card.setY(yt);
                             if (x_cord >= screenCenter) {
                                 card
                                         .setRotation((float) ((x_cord - screenCenter) * (Math.PI / 32)));
@@ -168,26 +185,26 @@ public class NewFunnyWatchFragment extends Fragment {
 
                             break;
                         case MotionEvent.ACTION_UP:
-                            x_cord = (int) event.getRawX();
-                            y_cord = (int) event.getRawY();
-
-                            Log.e("X Point", "" + x_cord + " , Y " + y_cord);
-                            imagePass.setAlpha(0);
-                            imageLike.setAlpha(0);
-
-                            if (Likes == 0) {
-                                Log.e("Event Status", "Nothing");
-                                card.setX(40);
-                                card.setY(40);
-                                card.setRotation(0);
-                            } else if (Likes == 1) {
-                                Log.e("Event Status", "Passed");
-                                parentView.removeView(card);
-                            } else if (Likes == 2) {
-
-                                Log.e("Event Status", "Liked");
-                                parentView.removeView(card);
-                            }
+//                            x_cord = (int) event.getRawX();
+//                            y_cord = (int) event.getRawY();
+//
+//                            Log.e("X Point", "" + x_cord + " , Y " + y_cord);
+//                            imagePass.setAlpha(0);
+//                            imageLike.setAlpha(0);
+//
+//                            if (Likes == 0) {
+//                                Log.e("Event Status", "Nothing");
+//                                card.setX(40);
+//                                card.setY(40);
+//                                card.setRotation(0);
+//                            } else if (Likes == 1) {
+//                                Log.e("Event Status", "Passed");
+//                                parentView.removeView(card);
+//                            } else if (Likes == 2) {
+//
+//                                Log.e("Event Status", "Liked");
+//                                parentView.removeView(card);
+//                            }
                             break;
                         default:
                             break;
@@ -196,7 +213,7 @@ public class NewFunnyWatchFragment extends Fragment {
                 }
             });
 
-            parentView.addView(card);
+            card_frame.addView(card);
 
         }
         return view;
@@ -205,5 +222,9 @@ public class NewFunnyWatchFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void setPager(ViewPager pager){
+        this.pager = pager;
     }
 }

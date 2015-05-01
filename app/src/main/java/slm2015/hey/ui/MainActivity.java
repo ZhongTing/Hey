@@ -119,19 +119,11 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
         this.intialiseViewPager();
     }
 
-    /**
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onSaveInstanceState(android.os.Bundle)
-     */
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString("tab", mTabHost.getCurrentTabTag()); //save the tab selected
         super.onSaveInstanceState(outState);
     }
 
-    /**
-     * Initialise ViewPager
-     */
     private void intialiseViewPager() {
 
         this.fragments = new Vector<Fragment>();
@@ -141,6 +133,8 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
         //
         this.mViewPager = (ViewPager) super.findViewById(R.id.viewpager);
         this.mViewPager.setAdapter(this.mPagerAdapter);
+        NewFunnyWatchFragment f = (NewFunnyWatchFragment) this.fragments.get(1);
+        f.setPager(this.mViewPager);
         this.mViewPager.setOnPageChangeListener(this);
     }
 
