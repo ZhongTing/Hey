@@ -10,16 +10,30 @@ import android.util.TypedValue;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import java.util.List;
+import java.util.Vector;
+
 import slm2015.hey.R;
+import slm2015.hey.ui.tabsswipe.NewFunnyWatchFragment;
 
 public class MainActivity extends FragmentActivity {
+    private List<Fragment> fragments;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_hey_main);
 
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
+
+
+        this.fragments = new Vector<Fragment>();
+        this.fragments.add(NewFunnyWatchFragment.newInstance(pager));
+        this.fragments.add(NewFunnyWatchFragment.newInstance(pager));
+
         MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
 
         pager.setAdapter(adapter);
@@ -31,7 +45,8 @@ public class MainActivity extends FragmentActivity {
     }
 
     public class MyPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
-        private final int[] ICON_RES_IDS = {R.drawable.funny_po, R.drawable.funny_watch};
+        private final int[] ICON_RES_IDS = {R.layout.new_funnypo_layout, R.layout.new_funnywatch_layout};
+
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -39,12 +54,12 @@ public class MainActivity extends FragmentActivity {
 
         @Override
         public int getCount() {
-            return ICON_RES_IDS.length;
+            return fragments.size();
         }
 
         @Override
         public Fragment getItem(int position) {
-            return SuperAwesomeCardFragment.newInstance(position);
+            return fragments.get(position);
         }
 
         @Override

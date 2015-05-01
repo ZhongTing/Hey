@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,14 +20,20 @@ import slm2015.hey.ui.component.Card;
 public class NewFunnyWatchFragment extends Fragment {
 
     private Activity activity;
-    private RelativeLayout parentView;
     private RelativeLayout card_frame;
     private int windowwidth;
     private int screenCenter;
-    private int x_cord, y_cord, moved_x_cord, moved_y_cord, testx, testy;
+    private int x_cord, y_cord, moved_x_cord, moved_y_cord, pressX, pressY;
     private int Likes = 0;
     private float alphaValue = 0;
     private ViewPager pager;
+
+    public static NewFunnyWatchFragment newInstance(ViewPager pager) {
+        NewFunnyWatchFragment fragment = new NewFunnyWatchFragment();
+        fragment.setPager(pager);
+
+        return fragment;
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -50,7 +55,6 @@ public class NewFunnyWatchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.new_funnywatch_layout, container, false);
-        this.parentView = (RelativeLayout) view.findViewById(R.id.layoutview);
         this.card_frame = (RelativeLayout) view.findViewById(R.id.card_frame);
         windowwidth = this.activity.getWindowManager().getDefaultDisplay().getWidth();
         screenCenter = windowwidth / 2;
@@ -126,35 +130,30 @@ public class NewFunnyWatchFragment extends Fragment {
 
                     x_cord = (int) card.getX();
                     y_cord = (int) card.getY();
-                    Log.d("x_cord", String.valueOf(x_cord));
-                    Log.d("y_cord", String.valueOf(y_cord));
 
 //                    card.setX(x_cord - screenCenter + 40);
 //                    card.setY(y_cord - 150);
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
-                            testx = (int) event.getX();
-                            testy = (int) event.getY();
+                            pressX = (int) event.getX();
+                            pressY = (int) event.getY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            moved_x_cord = (int) event.getX() - testx;
-                            moved_y_cord = (int) event.getY() - testy;
-                            Log.d("moved_x_cord", String.valueOf(moved_x_cord));
-                            Log.d("moved_y_cord", String.valueOf(moved_y_cord));
+                            int touchX = (int) event.getX();
+                            moved_x_cord = (int) event.getX() - pressX;
+                            moved_y_cord = (int) event.getY() - pressY;
                             int xt = x_cord + moved_x_cord;
                             int yt = y_cord + moved_y_cord;
-
-                            Log.d("x", String.valueOf(xt));
-                            Log.d("y", String.valueOf(yt));
-
                             card.setX(xt);
                             card.setY(yt);
-                            if (x_cord >= screenCenter) {
-                                card
-                                        .setRotation((float) ((x_cord - screenCenter) * (Math.PI / 32)));
-                                if (x_cord > (screenCenter + (screenCenter / 2))) {
+
+                            card.setRotation((float) ((card.getX()+card.getWidth()/2) - screenCenter)/10);
+                            if (moved_x_cord >= 0) {
+//                                card
+//                                        .setRotation((float) moved_x_cord);
+                                if (touchX > (screenCenter + (screenCenter / 2))) {
                                     imageLike.setAlpha(1);
-                                    if (x_cord > (windowwidth - (screenCenter / 4))) {
+                                    if (touchX > (windowwidth - (screenCenter / 4))) {
                                         Likes = 2;
                                     } else {
                                         Likes = 0;
@@ -166,11 +165,12 @@ public class NewFunnyWatchFragment extends Fragment {
                                 imagePass.setAlpha(0);
                             } else {
                                 // rotate
-                                card
-                                        .setRotation((float) ((x_cord - screenCenter) * (Math.PI / 32)));
-                                if (x_cord < (screenCenter / 2)) {
+//                                card
+//                                        .setRotation((float) moved_x_cord);
+
+                                if (touchX < (screenCenter / 2)) {
                                     imagePass.setAlpha(1);
-                                    if (x_cord < screenCenter / 4) {
+                                    if (touchX < screenCenter / 4) {
                                         Likes = 1;
                                     } else {
                                         Likes = 0;
@@ -182,7 +182,6 @@ public class NewFunnyWatchFragment extends Fragment {
 
                                 imageLike.setAlpha(0);
                             }
-
                             break;
                         case MotionEvent.ACTION_UP:
 //                            x_cord = (int) event.getRawX();

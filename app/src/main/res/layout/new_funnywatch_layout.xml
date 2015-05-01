@@ -10,33 +10,26 @@
         android:background="@color/grey"
         android:alpha="0.5"></FrameLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical">
+        >
 
         <RelativeLayout
-            android:id="@+id/layoutview"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            >
+            android:id="@+id/card_frame"
+            android:gravity="center_horizontal"
+            android:alpha="1"></RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/card_frame"
-                android:layout_marginTop="100dp"
-                android:layout_marginLeft="20dp"
-                android:alpha="1"></RelativeLayout>
-
-            <!--</RelativeLayout>-->
+        <!--</RelativeLayout>-->
 
         <!--<RelativeLayout-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom"-->
-            <!--android:gravity="center"-->
-            <!--android:alpha="1">-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:gravity="center"-->
+        <!--android:alpha="1">-->
 
             <ImageButton
                 android:layout_width="70dp"
@@ -57,7 +50,7 @@
                 android:layout_toRightOf="@id/locationButton"
                 android:scaleType="centerCrop"
                 android:layout_margin="5dp"
-                android:layout_alignParentBottom="true" />
+                android:layout_alignBottom="@id/card_frame" />
 
             <ImageButton
                 android:layout_width="90dp"
@@ -68,7 +61,7 @@
                 android:layout_toRightOf="@id/cancelButton"
                 android:scaleType="centerCrop"
                 android:layout_margin="5dp"
-                android:layout_alignParentBottom="true"/>
+                android:layout_alignBottom="@id/card_frame"/>
 
             <ImageButton
                 android:layout_width="70dp"
@@ -79,7 +72,6 @@
                 android:layout_toRightOf="@id/raiseButton"
                 android:scaleType="centerCrop"
                 android:layout_margin="5dp"
-                android:layout_alignParentBottom="true" />
-        </RelativeLayout>
-    </LinearLayout>
+                android:layout_alignBottom="@id/card_frame"/>
+    </RelativeLayout>
 </RelativeLayout>
