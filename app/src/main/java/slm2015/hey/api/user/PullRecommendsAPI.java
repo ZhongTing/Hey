@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import slm2015.hey.api.Get;
-import slm2015.hey.manager.APIManager;
+import slm2015.hey.api.APIManager;
 
 public class PullRecommendsAPI extends Get {
     public PullRecommendsAPI(Callback callback) {

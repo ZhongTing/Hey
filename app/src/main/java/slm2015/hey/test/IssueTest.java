@@ -129,7 +129,7 @@ public class IssueTest extends TestCase {
 
     public void testsetPosition() throws Exception {
         String expect = "testPosition";
-        this.issue.setPosition(expect);
+        this.issue.setPlace(expect);
         Assert.assertEquals(expect, p.get(this.issue));
     }
 
@@ -142,6 +142,6 @@ public class IssueTest extends TestCase {
     }
 
     public void testgetPosition() throws Exception {
-        Assert.assertEquals(this.position, this.issue.getPosition());
+        Assert.assertEquals(this.position, this.issue.getPlace());
     }
 }

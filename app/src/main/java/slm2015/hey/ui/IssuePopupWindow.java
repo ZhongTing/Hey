@@ -15,7 +15,7 @@ import slm2015.hey.R;
 import slm2015.hey.api.APIBase;
 import slm2015.hey.api.issue.RaiseIssueAPI;
 import slm2015.hey.entity.Issue;
-import slm2015.hey.manager.APIManager;
+import slm2015.hey.api.APIManager;
 import slm2015.hey.ui.component.Card;
 
 

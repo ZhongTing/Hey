@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 import slm2015.hey.api.MultipartPost;
 import slm2015.hey.entity.Issue;
-import slm2015.hey.manager.APIManager;
+import slm2015.hey.api.APIManager;
 
 public class RaiseIssueAPI extends MultipartPost {
     public RaiseIssueAPI(Issue issue, Callback callback) {
@@ -17,8 +17,8 @@ public class RaiseIssueAPI extends MultipartPost {
 
         this.setParam("actor", issue.getSubject());
         this.setParam("event", issue.getDescription());
-        if (!issue.getPosition().isEmpty())
-            this.setParam("place", issue.getPosition());
+        if (!issue.getPlace().isEmpty())
+            this.setParam("place", issue.getPlace());
 
         this.TAG = "RaiseIssueAPI";
     }

@@ -1,10 +1,8 @@
-package slm2015.hey.manager;
+package slm2015.hey.api;
 
 import android.app.Activity;
 
 import org.json.JSONObject;
-
-import slm2015.hey.api.APIBase;
 
 public class APIManager {
     // static

@@ -55,7 +55,7 @@ public class Card extends FrameLayout {
     private void findView(View view, Issue issue) {
         this.subjectTextView.setText(issue.getSubject());
         this.descriptionTextView.setText(issue.getDescription());
-        this.positionTextView.setText(issue.getPosition());
+        this.positionTextView.setText(issue.getPlace());
         this.subjectTextView.postInvalidate();
         this.descriptionTextView.postInvalidate();
         this.positionTextView.postInvalidate();

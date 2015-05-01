@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import slm2015.hey.api.APIManager;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.entity.Term;
 
@@ -55,7 +56,7 @@ public class RaiseIssueManager {
                 this.issue.setDescription(content);
                 break;
             case LOCATION:
-                this.issue.setPosition(content);
+                this.issue.setPlace(content);
                 break;
         }
     }
@@ -88,7 +89,7 @@ public class RaiseIssueManager {
     public boolean isPreview() {
         String subject = this.issue.getSubject();
         String description = this.issue.getDescription();
-        String location = this.issue.getPosition();
+        String location = this.issue.getPlace();
         return !(subject.isEmpty() || description.isEmpty()) && this.isPreview;
     }
 
