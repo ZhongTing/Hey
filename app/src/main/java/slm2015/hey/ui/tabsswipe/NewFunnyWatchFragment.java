@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.ui.component.Card;
+import slm2015.hey.ui.util.UiUtility;
 
 public class NewFunnyWatchFragment extends Fragment {
 
@@ -66,6 +67,9 @@ public class NewFunnyWatchFragment extends Fragment {
             final Card card = new Card(this.activity);
 //            myRelView.setTag(i);
             card.assignIssue(issues[i]);
+            int marginTop = UiUtility.dpiToPixel(80, getResources());
+            int others = UiUtility.dpiToPixel(0, getResources());
+            card.setMargin(others, marginTop, others, others);
 
             if (i == 0) {
                 card.setRotation(-1);

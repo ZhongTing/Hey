@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import slm2015.hey.R;
@@ -17,6 +18,7 @@ public class Card extends FrameLayout {
     private TextView positionTextView;
     private ImageView image;
     private Issue issue;
+    private View view;
 
     public Card(Context context) {
         super(context);
@@ -44,11 +46,11 @@ public class Card extends FrameLayout {
     public void assignIssue(Issue issue) {
         this.issue = issue;
         int layoutId = this.issue.getImage() == null ? R.layout.card_no_pic : R.layout.card;
-        View view = inflate(this.getContext(), layoutId, this);
-        this.subjectTextView = (TextView) view.findViewById(R.id.title);
-        this.descriptionTextView = (TextView) view.findViewById(R.id.description);
-        this.positionTextView = (TextView) view.findViewById(R.id.location);
-        this.findView(view, issue);
+        this.view = inflate(this.getContext(), layoutId, this);
+        this.subjectTextView = (TextView) this.view.findViewById(R.id.title);
+        this.descriptionTextView = (TextView) this.view.findViewById(R.id.description);
+        this.positionTextView = (TextView) this.view.findViewById(R.id.location);
+        this.findView(this.view, issue);
         this.bindEvent();
     }
 
@@ -63,5 +65,12 @@ public class Card extends FrameLayout {
 
     private void bindEvent() {
         //todo bind event here
+    }
+
+    public void setMargin(int left, int top, int right, int bottom) {
+        LinearLayout frame = (LinearLayout) this.view.findViewById(R.id.frame);
+        FrameLayout.LayoutParams l = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        l.setMargins(left, top, right, bottom);
+        frame.setLayoutParams(l);
     }
 }
