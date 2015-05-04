@@ -26,8 +26,9 @@ import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.ui.component.Card;
 import slm2015.hey.ui.util.UiUtility;
+import slm2015.hey.view.MainPagerFragment;
 
-public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListener, Animation.AnimationListener {
+public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnTouchListener, Animation.AnimationListener {
 
     private final int SWIPE_WIDTH_DP = 100;
     private final int CARD_MARGIN_TOP = 70;
@@ -47,10 +48,8 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
     private Queue loadCard = new LinkedList();
     private Card animationCard;
 
-    public static NewFunnyWatchFragment newInstance(ViewPager pager) {
-        NewFunnyWatchFragment fragment = new NewFunnyWatchFragment();
-        fragment.setPager(pager);
-        return fragment;
+    public NewFunnyWatchFragment(ViewPager pager) {
+        this.pager = pager;
     }
 
     @Override
@@ -431,5 +430,10 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
     @Override
     public void onAnimationRepeat(Animation animation) {
 
+    }
+
+    @Override
+    protected int getPageIconRedId() {
+        return R.drawable.funny_watch;
     }
 }
