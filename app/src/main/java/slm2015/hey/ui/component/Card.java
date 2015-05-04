@@ -3,6 +3,7 @@ package slm2015.hey.ui.component;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +20,26 @@ public class Card extends FrameLayout {
     private ImageView image;
     private Issue issue;
     private View view;
+
+    private Button imagePass;
+    private Button imageLike;
+
+    public void setImageLike(Button imageLike) {
+        this.imageLike = imageLike;
+    }
+
+    public void setImagePass(Button imagePass) {
+        this.imagePass = imagePass;
+    }
+
+    public Button getImageLike() {
+        return imageLike;
+    }
+
+    public Button getImagePass() {
+
+        return imagePass;
+    }
 
     public Card(Context context) {
         super(context);

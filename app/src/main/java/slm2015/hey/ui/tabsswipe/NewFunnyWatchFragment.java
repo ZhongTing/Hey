@@ -2,6 +2,7 @@ package slm2015.hey.ui.tabsswipe;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -71,8 +72,11 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
         windowwidth = this.activity.getWindowManager().getDefaultDisplay().getWidth();
         screenCenter = windowwidth / 2;
 
-        Issue[] issues = new Issue[]{new Issue("北科紅樓", "玻璃破了", ""), new Issue("垃圾麵", "賣完囉", ""), new Issue("香腸伯", "今天找打手", "在建國南路"), new Issue("starbucks", "is on sale", "")};
+        Issue[] issues = new Issue[]{new Issue("北科紅樓", "玻璃破了", ""), new Issue("垃圾麵", "賣完囉", ""), new Issue("香腸伯", "今天找打手", "在建國南路"), new Issue("北科怪鳥", "is on sale", "")};
+        issues[3].setImage(BitmapFactory.decodeResource(getResources(),
+                R.drawable.post_camera));
         for (int i = 0; i < issues.length; i++) {
+
             final Card card = new Card(this.activity);
 //            myRelView.setTag(i);
             card.assignIssue(issues[i]);
@@ -81,50 +85,58 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
             card.setMargin(others, marginTop, others, others);
 
             card.setY(card.getY() - 10 * i);
-            Log.d("card_y", String.valueOf(card.getY()));
 
-            final Button imageLike = new Button(this.activity);
-            imageLike.setLayoutParams(new LinearLayout.LayoutParams(100, 50));
-            imageLike.setBackgroundDrawable(getResources().getDrawable(
-                    R.drawable.funny_po));
-            imageLike.setX(20);
-            imageLike.setY(80);
-            imageLike.setAlpha(alphaValue);
-            imageLike.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                    //your like action code write here
-                }
-            });
-            card.addView(imageLike);
-
-            final Button imagePass = new Button(this.activity);
-            imagePass.setLayoutParams(new LinearLayout.LayoutParams(100, 50));
-            imagePass.setBackgroundDrawable(getResources().getDrawable(
-                    R.drawable.funny_watch));
-
-            imagePass.setX((windowwidth - 200));
-            imagePass.setY(100);
-            imagePass.setRotation(45);
-            imagePass.setAlpha(alphaValue);
-            imagePass.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                    //your pass action code write here
-                }
-            });
-            card.addView(imagePass);
+            initialImageLike(card);
+            initialImagePass(card);
 
             card_frame.addView(card);
-
             cardDeck.add(card);
         }
         this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
         return view;
+    }
+
+    private void initialImagePass(Card card) {
+        final Button imagePass = new Button(this.activity);
+        imagePass.setLayoutParams(new LinearLayout.LayoutParams(100, 50));
+        imagePass.setBackgroundDrawable(getResources().getDrawable(
+                R.drawable.funny_watch));
+
+        imagePass.setX(card.getX() + UiUtility.dpiToPixel(240, getResources()));
+        imagePass.setY(card.getY() + UiUtility.dpiToPixel(110, getResources()));
+        imagePass.setRotation(45);
+        imagePass.setAlpha(alphaValue);
+        imagePass.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                //your pass action code write here
+            }
+        });
+        card.addView(imagePass);
+        card.setImagePass(imagePass);
+    }
+
+    private void initialImageLike(Card card) {
+        final Button imageLike = new Button(this.activity);
+        imageLike.setLayoutParams(new LinearLayout.LayoutParams(100, 50));
+        imageLike.setBackgroundDrawable(getResources().getDrawable(
+                R.drawable.funny_po));
+        imageLike.setX(card.getX());
+        imageLike.setY(card.getY() + UiUtility.dpiToPixel(110, getResources()));
+        imageLike.setAlpha(alphaValue);
+        imageLike.setRotation(-45);
+        imageLike.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                //your like action code write here
+            }
+        });
+        card.addView(imageLike);
+        card.setImageLike(imageLike);
     }
 
     private void initialDislikeButton(View view) {
@@ -230,41 +242,41 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
             case MotionEvent.ACTION_MOVE:
                 int tempX = (int) event.getX() - pressX;
                 int tempY = (int) event.getY() - pressY;
+                int touchX = (int) event.getX();
+                int touchY = (int) event.getY();
                 moved_x_cord = x_cord + tempX;
                 moved_y_cord = y_cord + tempY;
                 card.setX(moved_x_cord);
                 card.setY(moved_y_cord);
 
+                Button imageLike = card.getImageLike();
+                Button imagePass = card.getImagePass();
+
                 card.setRotation((float) ((card.getX() + card.getWidth() / 2) - screenCenter) / 10);
-//                if (moved_x_cord >= 0) {
-//                    if (touchX > (screenCenter + (screenCenter / 2))) {
-//                        imageLike.setAlpha(1);
-//                        if (touchX > (windowwidth - (screenCenter / 4))) {
-//                            Likes = 2;
-//                        } else {
-//                            Likes = 0;
-//                        }
-//                    } else {
-//                        Likes = 0;
-//                        imageLike.setAlpha(0);
-//                    }
-//                    imagePass.setAlpha(0);
-//                } else {
-//                    // rotate
-//                    if (touchX < (screenCenter / 2)) {
-//                        imagePass.setAlpha(1);
+                if (moved_x_cord >= screenCenter) {
+                    Log.d("touchX", String.valueOf(touchX));
+                    if ((card.getX() + card.getWidth() / 2) > (screenCenter + (screenCenter / 2))) {
+                        imageLike.setAlpha(1);
+                    } else {
+                        imageLike.setAlpha(0);
+                    }
+                    imagePass.setAlpha(0);
+                } else {
+                    // rotate
+                    if ((card.getX() + card.getWidth() / 2) < (screenCenter / 2)) {
+                        imagePass.setAlpha(1);
 //                        if (touchX < screenCenter / 4) {
 //                            Likes = 1;
 //                        } else {
 //                            Likes = 0;
 //                        }
-//                    } else {
+                    } else {
 //                        Likes = 0;
-//                        imagePass.setAlpha(0);
-//                    }
-//
-//                    imageLike.setAlpha(0);
-//                }
+                        imagePass.setAlpha(0);
+                    }
+
+                    imageLike.setAlpha(0);
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 if (Math.abs(moved_x_cord - card_iniX) > UiUtility.dpiToPixel(SWIPE_WIDTH_DP, getResources())) {
