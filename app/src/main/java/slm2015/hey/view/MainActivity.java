@@ -22,8 +22,9 @@ public class MainActivity extends FragmentActivity {
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
 
         List<MainPagerFragment> fragments = new ArrayList<>();
-        fragments.add(new FunnyPostFragment());
         fragments.add(new NewFunnyWatchFragment(pager));
+        fragments.add(new FunnyPostFragment());
+        fragments.add(new FunnyWatchFragment());
 
         pager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragments));
         tabs.setViewPager(pager);

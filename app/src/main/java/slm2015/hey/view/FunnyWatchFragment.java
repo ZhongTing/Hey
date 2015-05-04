@@ -2,9 +2,9 @@ package slm2015.hey.view;
 
 import slm2015.hey.R;
 
-public class FunnyPostFragment extends MainPagerFragment {
+public class FunnyWatchFragment extends MainPagerFragment {
     @Override
     protected int getPageIconRedId() {
-        return R.drawable.funny_po;
+        return R.drawable.funny_watch;
     }
 }
