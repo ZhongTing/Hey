@@ -15,8 +15,8 @@ import java.util.List;
 public class Get extends APIBase {
     protected List<NameValuePair> params;
 
-    public Get(String baseUrl, String action, Callback callback) {
-        super(baseUrl, action, callback);
+    public Get(String baseUrl, String action) {
+        super(baseUrl, action);
 
         this.httpRequest = new HttpGet(this.requestUrl);
 

@@ -1,10 +1,8 @@
 package slm2015.hey.api;
 
-import android.app.Activity;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
-
-import junit.framework.Assert;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -14,8 +12,6 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -25,17 +21,16 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 public abstract class APIBase implements Runnable {
     protected String TAG = "?????API";
 
-    protected Callback callback;
-
     protected String requestUrl;
     protected HttpRequestBase httpRequest;
-    protected Activity activity;
+    private Runnable successCallback;
+    private Runnable failCallback;
+    private Runnable errorCallback;
+    private String response;
 
-    public APIBase(String baseUrl, String action, Callback callback) {
+    public APIBase(String baseUrl, String action) {
         this.requestUrl = baseUrl + action;
         Log.d("APIBase", this.requestUrl);
-
-        this.callback = callback;
     }
 
     private void initConnectionParams() {
@@ -49,24 +44,15 @@ public abstract class APIBase implements Runnable {
         this.httpRequest.setHeader(key, value);
     }
 
-    protected void runSuccess(JSONObject object) throws JSONException {
-        this.callback.requestSuccess(object);
-    }
-
-    protected void runFail(JSONObject object) throws JSONException {
-        this.callback.requestFail();
-    }
-
     protected abstract void doInit() throws UnsupportedEncodingException;
 
-    public void setActivity(Activity activity) {
-        this.activity = activity;
+    private void runOnUiThread(Runnable task) {
+        if (task != null)
+            new Handler(Looper.getMainLooper()).post(task);
     }
 
     @Override
     public void run() {
-        Assert.assertNotNull(activity);
-
         try {
             this.initConnectionParams();
 
@@ -74,31 +60,15 @@ public abstract class APIBase implements Runnable {
 
             final HttpResponse res = new DefaultHttpClient().execute(this.httpRequest);
             HttpEntity entity = res.getEntity();
-            final int status = res.getStatusLine().getStatusCode();
-            final String response = entity == null ? "" : EntityUtils.toString(entity, "utf-8");
+            Integer status = res.getStatusLine().getStatusCode();
+            this.response = entity == null ? "" : EntityUtils.toString(entity, "utf-8");
 
+            Log.d(TAG, status.toString());
             Log.d(TAG, response);
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        JSONObject object = new JSONObject(response);
-                        JSONObject result = object.has("result") ? object.getJSONObject("result") : null;
-
-                        if (object.getString("status").equals("success")) {
-                            APIBase.this.runSuccess(result);
-
-                        } else {
-                            APIBase.this.runFail(result);
-
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
+            if (status == 200)
+                this.runOnUiThread(successCallback);
+            else
+                this.runOnUiThread(failCallback);
 
         } catch (SSLPeerUnverifiedException e) {
             Log.d("APIBase", "SSLPeerUnverifiedException");
@@ -106,20 +76,24 @@ public abstract class APIBase implements Runnable {
 
         } catch (IOException e) {
             e.printStackTrace();
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(activity, "網路發生錯誤！", Toast.LENGTH_SHORT).show();
-                    APIBase.this.callback.requestFail();
-                }
-            });
+            this.runOnUiThread(errorCallback);
         }
     }
 
-    public interface Callback {
-        public void requestSuccess(JSONObject result) throws JSONException;
+    public String getResponse() {
+        return response;
+    }
 
-        public void requestFail();
+    public void setSuccessCallback(Runnable onSuccess) {
+        this.successCallback = onSuccess;
+    }
+
+    public void setFailCallback(Runnable onFail) {
+        this.failCallback = onFail;
+    }
+
+    public void setErrorCallback(Runnable onError) {
+        this.errorCallback = onError;
     }
 }
 

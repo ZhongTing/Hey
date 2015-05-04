@@ -96,17 +96,7 @@ public class MainActivity extends FragmentActivity implements TabHost.OnTabChang
         // Inflate the layout
         setContentView(R.layout.activity_main);
         // Initialise the TabHost
-        APIManager.getInstance().run(this, new PullRecommendsAPI(new APIBase.Callback() {
-            @Override
-            public void requestSuccess(JSONObject result) throws JSONException {
-                init(savedInstanceState);
-            }
 
-            @Override
-            public void requestFail() {
-                init(savedInstanceState);
-            }
-        }));
     }
 
     private void init(Bundle savedInstanceState){

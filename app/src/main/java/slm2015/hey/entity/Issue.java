@@ -6,7 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Issue {
-    //todo implement issue data structure here
+    //todo implement core data structure here
     private String subject = "";
     private String description = "";
     private String place = "";

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/frame"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/frame"
-    android:padding="4dp"
-    android:background="@color/black">
+    android:background="@color/black"
+    android:orientation="vertical"
+    android:padding="4dp">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:gravity="center"
         android:layout_gravity="center_horizontal"
+        android:background="@color/camera_green"
+        android:gravity="center"
         android:text="北科怪鳥"
-        android:textSize="50dp"
-        android:background="@color/camera_green" />
+        android:textSize="50dp" />
 
     <RelativeLayout
         android:layout_width="300dp"
@@ -27,40 +27,39 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:background="@color/preview_yellow"
-            android:alpha="1" />
+            android:alpha="1"
+            android:background="@color/preview_yellow" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:orientation="vertical"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp">
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_centerInParent="true">
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/description"
-                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
                     android:text="一動也不動的站著"
-                    android:textSize="30dp"
-                    android:gravity="center"/>
+                    android:textSize="30dp" />
 
                 <TextView
                     android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:text="在生態池附近"
-                    android:textSize="30dp"
-                    android:gravity="center"/>
+                    android:textSize="30dp" />
             </LinearLayout>
 
         </RelativeLayout>
@@ -68,9 +67,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:src="@drawable/location"
-            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true" />
+            android:layout_margin="10dp"
+            android:src="@drawable/location" />
     </RelativeLayout>
 </LinearLayout>

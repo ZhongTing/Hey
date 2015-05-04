@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Vector;
 
 import slm2015.hey.R;
+import slm2015.hey.core.issue.IssueHandler;
+import slm2015.hey.entity.Issue;
 import slm2015.hey.ui.tabsswipe.NewFunnyWatchFragment;
 
 public class MainActivity extends FragmentActivity {
@@ -42,6 +44,8 @@ public class MainActivity extends FragmentActivity {
         pager.setPageMargin(pageMargin);
 
         tabs.setViewPager(pager);
+
+        new IssueHandler(this).raise(new Issue());
     }
 
     public class MyPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
