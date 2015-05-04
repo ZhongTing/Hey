@@ -8,7 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/grey"
-        android:alpha="0.5"></FrameLayout>
+        android:alpha="0.3"></FrameLayout>
 
     <RelativeLayout
         android:layout_width="fill_parent"
