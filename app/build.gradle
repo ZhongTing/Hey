@@ -30,4 +30,5 @@ dependencies {
     compile('org.apache.httpcomponents:httpmime:4.3.5') {
         exclude module: "httpclient"
     }
+    compile 'com.lorentzos.swipecards:library:1.0.8@aar'
 }
