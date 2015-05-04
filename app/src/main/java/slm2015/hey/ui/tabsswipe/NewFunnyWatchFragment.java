@@ -72,9 +72,10 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
         windowwidth = this.activity.getWindowManager().getDefaultDisplay().getWidth();
         screenCenter = windowwidth / 2;
 
-        Issue[] issues = new Issue[]{new Issue("北科紅樓", "玻璃破了", ""), new Issue("垃圾麵", "賣完囉", ""), new Issue("香腸伯", "今天找打手", "在建國南路"), new Issue("北科怪鳥", "is on sale", "")};
-        issues[3].setImage(BitmapFactory.decodeResource(getResources(),
-                R.drawable.post_camera));
+        Issue[] issues = new Issue[]{new Issue("北科怪鳥", "is on sale", ""), new Issue("北科紅樓", "玻璃破了", ""), new Issue("垃圾麵", "賣完囉", ""), new Issue("香腸伯", "今天找打手", "在建國南路")};
+        issues[0].setImage(BitmapFactory.decodeResource(getResources(),
+                R.drawable.odd_bird));
+        initialBaseCard();
         for (int i = 0; i < issues.length; i++) {
 
             final Card card = new Card(this.activity);
@@ -84,7 +85,7 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
             int others = UiUtility.dpiToPixel(0, getResources());
             card.setMargin(others, marginTop, others, others);
 
-            card.setY(card.getY() - 10 * i);
+//            card.setY(card.getY() - 10 * i);
 
             initialImageLike(card);
             initialImagePass(card);
@@ -94,6 +95,26 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
         }
         this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
         return view;
+    }
+
+    private void initialBaseCard(){
+        for (int i = 0; i < 4; i++) {
+            Issue issue = new Issue("", "檔案讀取中...", "");
+            Card card = new Card(this.activity);
+            card.assignIssue(issue);
+            int marginTop = UiUtility.dpiToPixel(80, getResources());
+            int others = UiUtility.dpiToPixel(0, getResources());
+            card.setMargin(others, marginTop, others, others);
+            if (i == 0)
+                card.setRotation(-1);
+            else if (i == 1)
+                card.setRotation(-5);
+            else if (i == 2)
+                card.setRotation(3);
+            else
+                card.setRotation(7);
+            this.card_frame.addView(card);
+        }
     }
 
     private void initialImagePass(Card card) {

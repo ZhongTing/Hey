@@ -20,7 +20,6 @@ public class Card extends FrameLayout {
     private ImageView image;
     private Issue issue;
     private View view;
-
     private Button imagePass;
     private Button imageLike;
 
@@ -71,6 +70,11 @@ public class Card extends FrameLayout {
         this.subjectTextView = (TextView) this.view.findViewById(R.id.title);
         this.descriptionTextView = (TextView) this.view.findViewById(R.id.description);
         this.positionTextView = (TextView) this.view.findViewById(R.id.location);
+        if(issue.getImage()!=null)
+        {
+            this.image = (ImageView) this.view.findViewById(R.id.image);
+            this.image.setImageBitmap(issue.getImage());
+        }
         this.findView(this.view, issue);
         this.bindEvent();
     }
