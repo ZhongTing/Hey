@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -110,13 +109,20 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
             else {
                 ini_cardY = card.getY();
                 ini_cardX = card.getX();
+                card.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        pager.requestDisallowInterceptTouchEvent(true);
+                        return true;
+                    }
+                });
             }
             this.card_frame.addView(card);
         }
     }
 
     private void initialAnimationCard() {
-        Issue issue = new Issue("", "檔案讀取中...", "");
+        Issue issue = new Issue("", "", "");
         int marginTop = UiUtility.dpiToPixel(CARD_MARGIN_TOP, getResources());
         int others = UiUtility.dpiToPixel(0, getResources());
         this.animationCard = new Card(this.activity);
@@ -250,7 +256,7 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
         final int iniY = -1000;
         Animation animation = new TranslateAnimation(ini_cardX, ini_cardX, iniY, ini_cardY);
         animation.setDuration(100);
-        animation.setRepeatCount(1);
+        animation.setRepeatCount(loadedIssues.size());
 //        card.bringToFront();
 //        this.card_frame.requestLayout();
         card.bringToFront();
@@ -421,6 +427,7 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
     @Override
     public void onAnimationEnd(Animation animation) {
 //        this.cardDeck.get(this.cardDeck.size() - 1).setVisibility(View.VISIBLE);
+        this.animationCard.setVisibility(View.VISIBLE);
         this.card_frame.removeView(this.animationCard);
         this.card_frame.invalidate();
         initialAnimationCard();
