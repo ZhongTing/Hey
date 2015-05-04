@@ -19,15 +19,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.ui.component.Card;
 import slm2015.hey.ui.util.UiUtility;
 
-public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListener {
+public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListener, Animation.AnimationListener {
 
     private final int SWIPE_WIDTH_DP = 100;
+    private final int CARD_MARGIN_TOP = 70;
 
     private Activity activity;
     private RelativeLayout card_frame;
@@ -38,6 +41,11 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
     private float alphaValue = 0;
     private ViewPager pager;
     private ArrayList<Card> cardDeck;
+    private float ini_cardX, ini_cardY;
+    private Issue[] issues = new Issue[]{new Issue("北科紅樓", "玻璃破了", ""), new Issue("垃圾麵", "賣完囉", ""), new Issue("香腸伯", "今天找打手", "在建國南路"), new Issue("starbucks", "is on sale", "")};
+    private Queue loadedIssues = new LinkedList();
+    private Queue loadCard = new LinkedList();
+    private Card animationCard;
 
     public static NewFunnyWatchFragment newInstance(ViewPager pager) {
         NewFunnyWatchFragment fragment = new NewFunnyWatchFragment();
@@ -55,6 +63,8 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         cardDeck = new ArrayList<Card>();
+        for (Issue issue : this.issues)
+            loadedIssues.offer(issue);
     }
 
     @Override
@@ -68,42 +78,27 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
         this.card_frame = (RelativeLayout) view.findViewById(R.id.card_frame);
         initialDislikeButton(view);
         initialLikeButton(view);
+        initialRefreshButton(view);
 
         windowwidth = this.activity.getWindowManager().getDefaultDisplay().getWidth();
         screenCenter = windowwidth / 2;
 
-        Issue[] issues = new Issue[]{new Issue("北科怪鳥", "is on sale", ""), new Issue("北科紅樓", "玻璃破了", ""), new Issue("垃圾麵", "賣完囉", ""), new Issue("香腸伯", "今天找打手", "在建國南路")};
-        issues[0].setImage(BitmapFactory.decodeResource(getResources(),
+
+        this.issues[0].setImage(BitmapFactory.decodeResource(getResources(),
                 R.drawable.odd_bird));
         initialBaseCard();
-        for (int i = 0; i < issues.length; i++) {
-
-            final Card card = new Card(this.activity);
-//            myRelView.setTag(i);
-            card.assignIssue(issues[i]);
-            int marginTop = UiUtility.dpiToPixel(80, getResources());
-            int others = UiUtility.dpiToPixel(0, getResources());
-            card.setMargin(others, marginTop, others, others);
-
-//            card.setY(card.getY() - 10 * i);
-
-            initialImageLike(card);
-            initialImagePass(card);
-
-            card_frame.addView(card);
-            cardDeck.add(card);
-        }
-        this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
+        showLoadedCard();
         return view;
     }
 
-    private void initialBaseCard(){
-        for (int i = 0; i < 4; i++) {
-            Issue issue = new Issue("", "檔案讀取中...", "");
+    private void initialBaseCard() {
+        Issue issue = new Issue("", "檔案讀取中...", "");
+        int marginTop = UiUtility.dpiToPixel(CARD_MARGIN_TOP, getResources());
+        int others = UiUtility.dpiToPixel(0, getResources());
+        initialAnimationCard();
+        for (int i = 0; i < 5; i++) {
             Card card = new Card(this.activity);
             card.assignIssue(issue);
-            int marginTop = UiUtility.dpiToPixel(80, getResources());
-            int others = UiUtility.dpiToPixel(0, getResources());
             card.setMargin(others, marginTop, others, others);
             if (i == 0)
                 card.setRotation(-1);
@@ -111,10 +106,24 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
                 card.setRotation(-5);
             else if (i == 2)
                 card.setRotation(3);
-            else
+            else if (i == 3)
                 card.setRotation(7);
+            else {
+                ini_cardY = card.getY();
+                ini_cardX = card.getX();
+            }
             this.card_frame.addView(card);
         }
+    }
+
+    private void initialAnimationCard() {
+        Issue issue = new Issue("", "檔案讀取中...", "");
+        int marginTop = UiUtility.dpiToPixel(CARD_MARGIN_TOP, getResources());
+        int others = UiUtility.dpiToPixel(0, getResources());
+        this.animationCard = new Card(this.activity);
+        this.animationCard.assignIssue(issue);
+        this.animationCard.setMargin(others, marginTop, others, others);
+        this.card_frame.addView(this.animationCard, 0);
     }
 
     private void initialImagePass(Card card) {
@@ -160,6 +169,17 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
         card.setImageLike(imageLike);
     }
 
+    private void initialRefreshButton(View view) {
+        ImageButton refreshButton = (ImageButton) view.findViewById(R.id.refreshButton);
+        refreshButton.bringToFront();
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        });
+    }
+
     private void initialDislikeButton(View view) {
         final boolean CLICK = true;
         ImageButton dislikeButton = (ImageButton) view.findViewById(R.id.dislikeButton);
@@ -182,6 +202,63 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
                     like(cardDeck.get(cardDeck.size() - 1), CLICK);
             }
         });
+    }
+
+    private void showLoadedCard() {
+//        for (int i = 0; i < this.loadedIssues.size(); i++) {
+        while (this.loadedIssues.size() > 0) {
+            final Card card = new Card(this.activity);
+            card.assignIssue((Issue) this.loadedIssues.poll());
+            int marginTop = UiUtility.dpiToPixel(CARD_MARGIN_TOP, getResources());
+            int others = UiUtility.dpiToPixel(0, getResources());
+            card.setMargin(others, marginTop, others, others);
+
+            initialImageLike(card);
+            initialImagePass(card);
+
+            this.card_frame.addView(card);
+            card.bringToFront();
+            this.card_frame.requestLayout();
+//            refreshAmination(card);
+            this.cardDeck.add(card);
+//            refreshAmination(this.cardDeck.get(this.cardDeck.size() - 1));
+        }
+
+        this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
+    }
+
+    private void refresh() {
+        Issue[] loadedIssues = new Issue[]{new Issue("北科紅樓", "玻璃破了", ""), new Issue("垃圾麵", "賣完囉", ""), new Issue("香腸伯", "今天找打手", "在建國南路"), new Issue("starbucks", "is on sale", "")};
+        for (int i = 0; i < loadedIssues.length; i++) {
+            this.loadedIssues.offer(loadedIssues[i]);
+//            Card card = new Card(this.activity);
+//            card.assignIssue((Issue) this.loadedIssues.poll());
+//            int marginTop = UiUtility.dpiToPixel(100, getResources());
+//            int others = UiUtility.dpiToPixel(0, getResources());
+//            card.setMargin(others, marginTop, others, others);
+//            card.bringToFront();
+//            this.card_frame.addView(card);
+//            this.loadCard.offer(card);
+        }
+
+
+        if (loadedIssues.length > 0)
+            refreshAmination(this.animationCard);
+
+    }
+
+    private void refreshAmination(Card card) {
+        final int iniY = -1000;
+        Animation animation = new TranslateAnimation(ini_cardX, ini_cardX, iniY, ini_cardY);
+        animation.setDuration(100);
+        animation.setRepeatCount(1);
+//        card.bringToFront();
+//        this.card_frame.requestLayout();
+        card.bringToFront();
+        card.setAnimation(animation);
+        card.setVisibility(View.GONE);
+        animation.setAnimationListener(this);
+        animation.start();
     }
 
     private void like(Card card, boolean touchButton) {
@@ -230,7 +307,7 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
         float card_x = card.getX();
         float card_y = card.getY();
         Animation animation = new TranslateAnimation(card_x, posX, card_y, card_y);
-        animation.setDuration(1000);
+        animation.setDuration(300);
         animation.setRepeatCount(0);
         card.setAnimation(animation);
         card.setVisibility(View.GONE);
@@ -264,7 +341,6 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
                 int tempX = (int) event.getX() - pressX;
                 int tempY = (int) event.getY() - pressY;
                 int touchX = (int) event.getX();
-                int touchY = (int) event.getY();
                 moved_x_cord = x_cord + tempX;
                 moved_y_cord = y_cord + tempY;
                 card.setX(moved_x_cord);
@@ -336,5 +412,24 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+//        this.cardDeck.get(this.cardDeck.size() - 1).setVisibility(View.VISIBLE);
+        this.card_frame.removeView(this.animationCard);
+        this.card_frame.invalidate();
+        initialAnimationCard();
+        showLoadedCard();
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
     }
 }
