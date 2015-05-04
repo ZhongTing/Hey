@@ -1,7 +1,6 @@
 package slm2015.hey.view;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,25 +10,12 @@ import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.TextView;
 
-public class SuperAwesomeCardFragment extends Fragment {
+import slm2015.hey.R;
 
-    private static final String ARG_POSITION = "position";
-
-    private int position;
-
-    public static SuperAwesomeCardFragment newInstance(int position) {
-        SuperAwesomeCardFragment fragment = new SuperAwesomeCardFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(ARG_POSITION, position);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
+public class FunnyPostFragment extends MainPagerFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        position = getArguments().getInt(ARG_POSITION);
     }
 
     @Override
@@ -47,10 +33,14 @@ public class SuperAwesomeCardFragment extends Fragment {
         v.setLayoutParams(params);
         v.setLayoutParams(params);
         v.setGravity(Gravity.CENTER);
-        v.setText("Page " + (position + 1));
+        v.setText("Page");
 
         fl.addView(v);
         return fl;
     }
 
+    @Override
+    protected int getPageIconRedId() {
+        return R.drawable.funny_po;
+    }
 }

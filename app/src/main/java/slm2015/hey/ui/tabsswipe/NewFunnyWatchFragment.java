@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,8 +23,9 @@ import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.ui.component.Card;
 import slm2015.hey.ui.util.UiUtility;
+import slm2015.hey.view.MainPagerFragment;
 
-public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListener {
+public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnTouchListener {
 
     private final int SWIPE_WIDTH_DP = 100;
 
@@ -39,10 +39,8 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
     private ViewPager pager;
     private ArrayList<Card> cardDeck;
 
-    public static NewFunnyWatchFragment newInstance(ViewPager pager) {
-        NewFunnyWatchFragment fragment = new NewFunnyWatchFragment();
-        fragment.setPager(pager);
-        return fragment;
+    public NewFunnyWatchFragment(ViewPager pager){
+        this.pager = pager;
     }
 
     @Override
@@ -97,7 +95,7 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
         return view;
     }
 
-    private void initialBaseCard(){
+    private void initialBaseCard() {
         for (int i = 0; i < 4; i++) {
             Issue issue = new Issue("", "檔案讀取中...", "");
             Card card = new Card(this.activity);
@@ -336,5 +334,10 @@ public class NewFunnyWatchFragment extends Fragment implements View.OnTouchListe
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected int getPageIconRedId() {
+        return R.drawable.funny_watch;
     }
 }

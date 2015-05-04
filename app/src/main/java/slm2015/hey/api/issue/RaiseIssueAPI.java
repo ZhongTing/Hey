@@ -1,10 +1,10 @@
 package slm2015.hey.api.issue;
 
 import slm2015.hey.api.APIManager;
-import slm2015.hey.api.MultipartPost;
+import slm2015.hey.api.PostBase;
 import slm2015.hey.entity.Issue;
 
-public class RaiseIssueAPI extends MultipartPost {
+public class RaiseIssueAPI extends PostBase {
     public RaiseIssueAPI(Issue issue) {
         super(APIManager.HEY_SERVER_BASE_URL, "/api/core/raise");
 

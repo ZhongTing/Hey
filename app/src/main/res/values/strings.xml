@@ -4,4 +4,8 @@
     <string name="action_settings">Settings</string>
 
     <string name="preview_string">Preview String</string>
+
+    <!--API -->
+    <string name="bad_request">好像有地方出錯囉 ~ 請稍候再試!!</string>
+    <string name="network_error">網路不穩!!</string>
 </resources>

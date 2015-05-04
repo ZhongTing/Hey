@@ -8,7 +8,7 @@ import slm2015.hey.api.user.PullRecommendsAPI;
 import slm2015.hey.core.BaseAPIHandler;
 import slm2015.hey.entity.Issue;
 
-public class IssueHandler extends BaseAPIHandler{
+public class IssueHandler extends BaseAPIHandler {
     //Todo implement catch, pass, raise core here
 
     public IssueHandler(Context context) {

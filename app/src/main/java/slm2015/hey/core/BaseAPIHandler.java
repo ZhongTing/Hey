@@ -7,6 +7,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import slm2015.hey.R;
 import slm2015.hey.api.APIBase;
 import slm2015.hey.api.APIManager;
 
@@ -61,11 +62,11 @@ public abstract class BaseAPIHandler {
         protected abstract void onSuccess(Object jsonObject) throws JSONException;
 
         protected void onFail(String response) {
-            Toast.makeText(BaseAPIHandler.this.context, "好像有地方出錯囉 ~ 請稍候再試!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(BaseAPIHandler.this.context, R.string.bad_request, Toast.LENGTH_SHORT).show();
         }
 
         private void onError() {
-            Toast.makeText(BaseAPIHandler.this.context, "網路不穩!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(BaseAPIHandler.this.context, R.string.network_error, Toast.LENGTH_SHORT).show();
         }
     }
 }
