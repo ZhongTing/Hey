@@ -60,7 +60,7 @@ public class Card extends FrameLayout {
         if (isInEditMode()) {
             View view = inflate(this.getContext(), R.layout.card, this);
         }
-        //note that the actual view will generate when issue is assigned
+        //note that the actual view will generate when core is assigned
     }
 
     public void assignIssue(Issue issue) {

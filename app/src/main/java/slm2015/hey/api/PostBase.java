@@ -13,11 +13,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
-public class MultipartPost extends APIBase {
+public class PostBase extends APIBase {
     protected MultipartEntityBuilder postParams;
 
-    public MultipartPost(String baseUrl, String action, Callback callback) {
-        super(baseUrl, action, callback);
+    public PostBase(String baseUrl, String action) {
+        super(baseUrl, action);
 
         this.httpRequest = new HttpPost(this.requestUrl);
 

@@ -44,17 +44,7 @@ public class IssuePopupWindow extends PopupWindow {
         this.raiseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                APIManager.getInstance().run(IssuePopupWindow.this.activity, new RaiseIssueAPI(IssuePopupWindow.this.issue, new APIBase.Callback() {
-                    @Override
-                    public void requestSuccess(JSONObject result) throws JSONException {
-                        dismiss();
-                    }
 
-                    @Override
-                    public void requestFail() {
-                        dismiss();
-                    }
-                }));
             }
         });
     }

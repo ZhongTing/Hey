@@ -1,17 +1,12 @@
 package slm2015.hey.api.issue;
 
-import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import slm2015.hey.api.MultipartPost;
-import slm2015.hey.entity.Issue;
 import slm2015.hey.api.APIManager;
+import slm2015.hey.api.PostBase;
+import slm2015.hey.entity.Issue;
 
-public class RaiseIssueAPI extends MultipartPost {
-    public RaiseIssueAPI(Issue issue, Callback callback) {
-        super(APIManager.HEY_SERVER_BASE_URL, "/api/issue/raise", callback);
+public class RaiseIssueAPI extends PostBase {
+    public RaiseIssueAPI(Issue issue) {
+        super(APIManager.HEY_SERVER_BASE_URL, "/api/core/raise");
 
         this.setHeader("Authorization", APIManager.getInstance().getAccessToken());
 
@@ -21,11 +16,5 @@ public class RaiseIssueAPI extends MultipartPost {
             this.setParam("place", issue.getPlace());
 
         this.TAG = "RaiseIssueAPI";
-    }
-
-    @Override
-    protected void runSuccess(JSONObject object) throws JSONException {
-        Toast.makeText(this.activity, "訊息成功送出", Toast.LENGTH_SHORT).show();
-        super.runSuccess(object);
     }
 }
