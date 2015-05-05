@@ -186,25 +186,23 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
     }
 
     private void initialDislikeButton(View view) {
-        final boolean CLICK = true;
         ImageButton dislikeButton = (ImageButton) view.findViewById(R.id.dislikeButton);
         dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (cardDeck.size() > 0)
-                    dislike(cardDeck.get(cardDeck.size() - 1), CLICK);
+                    dislike(cardDeck.get(cardDeck.size() - 1));
             }
         });
     }
 
     private void initialLikeButton(View view) {
-        final boolean CLICK = true;
         ImageButton dislikeButton = (ImageButton) view.findViewById(R.id.likeButton);
         dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (cardDeck.size() > 0)
-                    like(cardDeck.get(cardDeck.size() - 1), CLICK);
+                    like(cardDeck.get(cardDeck.size() - 1));
             }
         });
     }
@@ -266,21 +264,15 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
         animation.start();
     }
 
-    private void like(Card card, boolean touchButton) {
+    private void like(Card card) {
         final boolean LIKE = true;
-        if (touchButton)
-            playAnimation(card, LIKE);
-        else
-            swipe(card, LIKE);
+        playMoveAnimation(card, LIKE);
         removeCard(card, LIKE);
     }
 
-    private void dislike(Card card, boolean touchButton) {
+    private void dislike(Card card) {
         final boolean DISLIKE = false;
-        if (touchButton)
-            playAnimation(card, DISLIKE);
-        else
-            swipe(card, DISLIKE);
+        playMoveAnimation(card, DISLIKE);
         removeCard(card, DISLIKE);
     }
 
@@ -291,32 +283,46 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
             this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
     }
 
-    private void swipe(Card card, boolean like) {
-        final int pos = like ? 1000 : -1000;
-        final float FRAME = (float) 10;
-        if (like) {
-            while (card.getX() < pos) {
-                card.setX(card.getX() + FRAME);
-                card.setY(card.getY() + FRAME);
-            }
-        } else {
-            while (card.getX() > pos) {
-                card.setX(card.getX() - FRAME);
-                card.setY(card.getY() - FRAME);
-            }
-        }
-    }
-
-    private void playAnimation(Card card, boolean like) {
+    private void playMoveAnimation(Card card, boolean like) {
         final int posX = like ? 1000 : -1000;
-        float card_x = card.getX();
-        float card_y = card.getY();
+        float card_x = card.getRotationX();
+        float card_y = card.getRotationY();
         Animation animation = new TranslateAnimation(card_x, posX, card_y, card_y);
-        animation.setDuration(300);
+        animation.setDuration(700);
         animation.setRepeatCount(0);
         card.setAnimation(animation);
         card.setVisibility(View.GONE);
         animation.start();
+    }
+
+    private void playReturnAnimation(final Card card, final int iniX, final int iniY) {
+        float card_x = card.getRotationX();
+        float card_y = card.getRotationY();
+        float deltaX = card.getX() - iniX;
+        float deltaY = card.getY() - iniY;
+        Animation animation = new TranslateAnimation(card_x, -deltaX, card_y, -deltaY);
+        animation.setDuration(300);
+        animation.setRepeatCount(0);
+        animation.setFillEnabled(true);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                card.setRotation(0);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                card.setX(iniX);
+                card.setY(iniY);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        card.setAnimation(animation);
+        card.startAnimation(animation);
     }
 
     @Override
@@ -331,6 +337,8 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         pager.requestDisallowInterceptTouchEvent(true);
+        if (this.cardDeck.size() <= 0)
+            return false;
         int index = this.cardDeck.size() - 1;
         Card card = this.cardDeck.get(index);
         x_cord = (int) card.getX();
@@ -355,6 +363,18 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
                 Button imagePass = card.getImagePass();
 
                 card.setRotation((float) ((card.getX() + card.getWidth() / 2) - screenCenter) / 10);
+
+//                if (card.getImage() != null) {
+//                    Bitmap scaledBitmap = card.getImage();
+//
+//                    android.graphics.Matrix matrix = new android.graphics.Matrix();
+//                    matrix.postRotate(((card.getX() + card.getWidth() / 2) - screenCenter) / 10);
+//
+//
+//                    Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+//                    card.setImage(rotatedBitmap);
+//                }
+
                 if (moved_x_cord >= screenCenter) {
                     Log.d("touchX", String.valueOf(touchX));
                     if ((card.getX() + card.getWidth() / 2) > (screenCenter + (screenCenter / 2))) {
@@ -367,13 +387,7 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
                     // rotate
                     if ((card.getX() + card.getWidth() / 2) < (screenCenter / 2)) {
                         imagePass.setAlpha(1);
-//                        if (touchX < screenCenter / 4) {
-//                            Likes = 1;
-//                        } else {
-//                            Likes = 0;
-//                        }
                     } else {
-//                        Likes = 0;
                         imagePass.setAlpha(0);
                     }
 
@@ -382,36 +396,16 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
                 break;
             case MotionEvent.ACTION_UP:
                 if (Math.abs(moved_x_cord - card_iniX) > UiUtility.dpiToPixel(SWIPE_WIDTH_DP, getResources())) {
-                    final boolean SWIPE = false;
                     if (moved_x_cord - card_iniX >= 0)
-                        like(card, SWIPE);
+                        like(card);
                     else
-                        dislike(card, SWIPE);
+                        dislike(card);
                 } else {
-                    card.setX(card_iniX);
-                    card.setY(card_iniY);
-                    card.setRotation(0);
+                    playReturnAnimation(card, card_iniX, card_iniY);
+//                    card.setX(card_iniX);
+//                    card.setY(card_iniY);
+//                    card.setRotation(0);
                 }
-//                            x_cord = (int) event.getRawX();
-//                            y_cord = (int) event.getRawY();
-//
-//                            Log.e("X Point", "" + x_cord + " , Y " + y_cord);
-//                            imagePass.setAlpha(0);
-//                            imageLike.setAlpha(0);
-//
-//                            if (Likes == 0) {
-//                                Log.e("Event Status", "Nothing");
-//                                card.setX(40);
-//                                card.setY(40);
-//                                card.setRotation(0);
-//                            } else if (Likes == 1) {
-//                                Log.e("Event Status", "Passed");
-//                                parentView.removeView(card);
-//                            } else if (Likes == 2) {
-//
-//                                Log.e("Event Status", "Liked");
-//                                parentView.removeView(card);
-//                            }
                 break;
             default:
                 break;
@@ -426,7 +420,6 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
 
     @Override
     public void onAnimationEnd(Animation animation) {
-//        this.cardDeck.get(this.cardDeck.size() - 1).setVisibility(View.VISIBLE);
         this.animationCard.setVisibility(View.VISIBLE);
         this.card_frame.removeView(this.animationCard);
         this.card_frame.invalidate();
