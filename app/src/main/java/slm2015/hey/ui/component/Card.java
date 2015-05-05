@@ -1,6 +1,7 @@
 package slm2015.hey.ui.component;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -70,13 +71,20 @@ public class Card extends FrameLayout {
         this.subjectTextView = (TextView) this.view.findViewById(R.id.title);
         this.descriptionTextView = (TextView) this.view.findViewById(R.id.description);
         this.positionTextView = (TextView) this.view.findViewById(R.id.location);
-        if(issue.getImage()!=null)
-        {
+        if (issue.getImage() != null) {
             this.image = (ImageView) this.view.findViewById(R.id.image);
             this.image.setImageBitmap(issue.getImage());
         }
         this.findView(this.view, issue);
         this.bindEvent();
+    }
+
+    public Bitmap getImage() {
+        return this.issue.getImage();
+    }
+
+    public void setImage(Bitmap bitmap) {
+        this.image.setImageBitmap(bitmap);
     }
 
     private void findView(View view, Issue issue) {
