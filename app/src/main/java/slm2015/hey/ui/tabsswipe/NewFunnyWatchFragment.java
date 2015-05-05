@@ -31,21 +31,22 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
 
     private final int SWIPE_WIDTH_DP = 100;
     private final int CARD_MARGIN_TOP = 70;
+    private final int MOVE_ANIMATION_DURATION = 700;
+    private final int RETURN_ANIMATION_DURATION = 300;
+    private final int REFRESH_ANIMATION_DURATION = 200;
 
+    private ImageButton dislikeButton, likeButton, refreshButton;
     private Activity activity;
     private RelativeLayout card_frame;
     private int windowwidth;
     private int screenCenter;
     private int x_cord, y_cord, moved_x_cord, moved_y_cord, pressX, pressY, card_iniX, card_iniY;
-    private int Likes = 0;
     private float alphaValue = 0;
     private ViewPager pager;
     private ArrayList<Card> cardDeck;
     private float ini_cardX, ini_cardY;
     private Issue[] issues = new Issue[]{new Issue("北科紅樓", "玻璃破了", ""), new Issue("垃圾麵", "賣完囉", ""), new Issue("香腸伯", "今天找打手", "在建國南路"), new Issue("starbucks", "is on sale", "")};
     private Queue loadedIssues = new LinkedList();
-    private Queue loadCard = new LinkedList();
-    private Card animationCard;
 
     public NewFunnyWatchFragment(ViewPager pager) {
         this.pager = pager;
@@ -93,7 +94,7 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
         Issue issue = new Issue("", "檔案讀取中...", "");
         int marginTop = UiUtility.dpiToPixel(CARD_MARGIN_TOP, getResources());
         int others = UiUtility.dpiToPixel(0, getResources());
-        initialAnimationCard();
+//        initialAnimationCard();
         for (int i = 0; i < 5; i++) {
             Card card = new Card(this.activity);
             card.assignIssue(issue);
@@ -121,15 +122,15 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
         }
     }
 
-    private void initialAnimationCard() {
-        Issue issue = new Issue("", "", "");
-        int marginTop = UiUtility.dpiToPixel(CARD_MARGIN_TOP, getResources());
-        int others = UiUtility.dpiToPixel(0, getResources());
-        this.animationCard = new Card(this.activity);
-        this.animationCard.assignIssue(issue);
-        this.animationCard.setMargin(others, marginTop, others, others);
-        this.card_frame.addView(this.animationCard, 0);
-    }
+//    private void initialAnimationCard() {
+//        Issue issue = new Issue("", "", "");
+//        int marginTop = UiUtility.dpiToPixel(CARD_MARGIN_TOP, getResources());
+//        int others = UiUtility.dpiToPixel(0, getResources());
+//        this.animationCard = new Card(this.activity);
+//        this.animationCard.assignIssue(issue);
+//        this.animationCard.setMargin(others, marginTop, others, others);
+//        this.card_frame.addView(this.animationCard, 0);
+//    }
 
     private void initialImagePass(Card card) {
         final Button imagePass = new Button(this.activity);
@@ -175,9 +176,9 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
     }
 
     private void initialRefreshButton(View view) {
-        ImageButton refreshButton = (ImageButton) view.findViewById(R.id.refreshButton);
-        refreshButton.bringToFront();
-        refreshButton.setOnClickListener(new View.OnClickListener() {
+        this.refreshButton = (ImageButton) view.findViewById(R.id.refreshButton);
+        this.refreshButton.bringToFront();
+        this.refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 refresh();
@@ -186,8 +187,8 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
     }
 
     private void initialDislikeButton(View view) {
-        ImageButton dislikeButton = (ImageButton) view.findViewById(R.id.dislikeButton);
-        dislikeButton.setOnClickListener(new View.OnClickListener() {
+        this.dislikeButton = (ImageButton) view.findViewById(R.id.dislikeButton);
+        this.dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (cardDeck.size() > 0)
@@ -197,8 +198,8 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
     }
 
     private void initialLikeButton(View view) {
-        ImageButton dislikeButton = (ImageButton) view.findViewById(R.id.likeButton);
-        dislikeButton.setOnClickListener(new View.OnClickListener() {
+        this.likeButton = (ImageButton) view.findViewById(R.id.likeButton);
+        this.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (cardDeck.size() > 0)
@@ -209,7 +210,7 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
 
     private void showLoadedCard() {
 //        for (int i = 0; i < this.loadedIssues.size(); i++) {
-        while (this.loadedIssues.size() > 0) {
+        if (this.loadedIssues.size() > 0) {
             final Card card = new Card(this.activity);
             card.assignIssue((Issue) this.loadedIssues.poll());
             int marginTop = UiUtility.dpiToPixel(CARD_MARGIN_TOP, getResources());
@@ -222,46 +223,28 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
             this.card_frame.addView(card);
             card.bringToFront();
             this.card_frame.requestLayout();
-//            refreshAmination(card);
+            refreshAmination(card);
             this.cardDeck.add(card);
-//            refreshAmination(this.cardDeck.get(this.cardDeck.size() - 1));
         }
-
-        this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
     }
 
     private void refresh() {
         Issue[] loadedIssues = new Issue[]{new Issue("北科紅樓", "玻璃破了", ""), new Issue("垃圾麵", "賣完囉", ""), new Issue("香腸伯", "今天找打手", "在建國南路"), new Issue("starbucks", "is on sale", "")};
         for (int i = 0; i < loadedIssues.length; i++) {
             this.loadedIssues.offer(loadedIssues[i]);
-//            Card card = new Card(this.activity);
-//            card.assignIssue((Issue) this.loadedIssues.poll());
-//            int marginTop = UiUtility.dpiToPixel(100, getResources());
-//            int others = UiUtility.dpiToPixel(0, getResources());
-//            card.setMargin(others, marginTop, others, others);
-//            card.bringToFront();
-//            this.card_frame.addView(card);
-//            this.loadCard.offer(card);
         }
-
-
-        if (loadedIssues.length > 0)
-            refreshAmination(this.animationCard);
-
+        showLoadedCard();
     }
 
     private void refreshAmination(Card card) {
         final int iniY = -1000;
         Animation animation = new TranslateAnimation(ini_cardX, ini_cardX, iniY, ini_cardY);
-        animation.setDuration(100);
-        animation.setRepeatCount(loadedIssues.size());
-//        card.bringToFront();
-//        this.card_frame.requestLayout();
+        animation.setDuration(REFRESH_ANIMATION_DURATION);
+        animation.setRepeatCount(0);
         card.bringToFront();
         card.setAnimation(animation);
-        card.setVisibility(View.GONE);
         animation.setAnimationListener(this);
-        animation.start();
+        card.startAnimation(animation);
     }
 
     private void like(Card card) {
@@ -283,13 +266,33 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
             this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
     }
 
-    private void playMoveAnimation(Card card, boolean like) {
+    private void playMoveAnimation(Card card, final boolean like) {
         final int posX = like ? 1000 : -1000;
         float card_x = card.getRotationX();
         float card_y = card.getRotationY();
         Animation animation = new TranslateAnimation(card_x, posX, card_y, card_y);
-        animation.setDuration(700);
+        animation.setDuration(MOVE_ANIMATION_DURATION);
         animation.setRepeatCount(0);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (like) {
+                    //todo save like card
+                } else {
+                    //todo save dislike card
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
         card.setAnimation(animation);
         card.setVisibility(View.GONE);
         animation.start();
@@ -301,7 +304,7 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
         float deltaX = card.getX() - iniX;
         float deltaY = card.getY() - iniY;
         Animation animation = new TranslateAnimation(card_x, -deltaX, card_y, -deltaY);
-        animation.setDuration(300);
+        animation.setDuration(RETURN_ANIMATION_DURATION);
         animation.setRepeatCount(0);
         animation.setFillEnabled(true);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -402,9 +405,6 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
                         dislike(card);
                 } else {
                     playReturnAnimation(card, card_iniX, card_iniY);
-//                    card.setX(card_iniX);
-//                    card.setY(card_iniY);
-//                    card.setRotation(0);
                 }
                 break;
             default:
@@ -415,16 +415,22 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
 
     @Override
     public void onAnimationStart(Animation animation) {
-
+        this.likeButton.setEnabled(false);
+        this.dislikeButton.setEnabled(false);
+        this.refreshButton.setEnabled(false);
     }
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        this.animationCard.setVisibility(View.VISIBLE);
-        this.card_frame.removeView(this.animationCard);
-        this.card_frame.invalidate();
-        initialAnimationCard();
-        showLoadedCard();
+        if (this.loadedIssues.size() > 0) {
+            showLoadedCard();
+        } else {
+            this.likeButton.setEnabled(true);
+            this.dislikeButton.setEnabled(true);
+            this.refreshButton.setEnabled(true);
+            if (this.cardDeck.size() > 0)
+                this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
+        }
     }
 
     @Override
