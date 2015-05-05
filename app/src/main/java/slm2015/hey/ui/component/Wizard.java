@@ -1,6 +1,7 @@
 package slm2015.hey.ui.component;
 
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,9 @@ public class Wizard extends FrameLayout {
     private ViewGroup indicatorGroup;
     private Stack<StepIndicator> stepIndicatorStack = new Stack<>();
     private static int stepIndicatorBaseId = 1000;
+    private ViewPager viewPager;
+    private WizardAdaptor adaptor;
+    private int currentStep = 1;
 
     public Wizard(Context context) {
         super(context);
@@ -35,19 +39,52 @@ public class Wizard extends FrameLayout {
     private void init() {
         inflate(this.getContext(), R.layout.wizard, this);
         this.findViews();
-        this.addStep("主角");
-        this.addStep("描述");
-        this.addStep("地點");
-        this.addStep("預覽");
-        this.setCurrentStep(2);
+        this.bindEvents();
+        if (isInEditMode()) {
+            this.addStep("Step1");
+            this.addStep("Step2");
+            this.addStep("Step3");
+            this.addStep("Step4");
+            this.setCurrentStep(2);
+        }
     }
 
     private void findViews() {
         this.indicatorGroup = (ViewGroup) this.findViewById(R.id.step_indicator_group);
         this.indicatorGroup.removeAllViews();
+        this.viewPager = (ViewPager) this.findViewById(R.id.wizard_viewpager);
     }
 
-    public void addStep(String indicateText) {
+
+    private void bindEvents() {
+        this.viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                setCurrentStep(position + 1);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    public void setAdaptor(WizardAdaptor wizardAdaptor) {
+        this.adaptor = wizardAdaptor;
+        this.viewPager.setAdapter(this.adaptor);
+        for (int i = 0; i < wizardAdaptor.getCount(); i++) {
+            this.addStep(wizardAdaptor.getStepIndicateText(i));
+        }
+        setCurrentStep(1);
+    }
+
+    private void addStep(String indicateText) {
         //crate step
         StepIndicator stepIndicator = new StepIndicator(getContext());
         stepIndicator.setId(stepIndicatorStack.size() + Wizard.stepIndicatorBaseId);
@@ -75,12 +112,16 @@ public class Wizard extends FrameLayout {
         }
     }
 
+    //step range from 0 to n - 1
     private void setCurrentStep(final int step) {
         int totalSteps = this.stepIndicatorStack.size();
         int totalStepWidth = 0;
-        if (step > totalSteps) {
+        if (step > totalSteps || step < 1) {
             return;
         }
+
+        this.currentStep = step;
+        this.viewPager.setCurrentItem(step - 1, true);
 
         //set active
         for (int i = 0; i < totalSteps; i++) {
@@ -109,5 +150,13 @@ public class Wizard extends FrameLayout {
             }
         });
         this.indicatorGroup.requestLayout();
+    }
+
+    public void next() {
+        this.setCurrentStep(this.currentStep + 1);
+    }
+
+    public void back() {
+        this.setCurrentStep(this.currentStep - 1);
     }
 }
