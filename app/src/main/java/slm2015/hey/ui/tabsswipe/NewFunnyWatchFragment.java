@@ -25,9 +25,9 @@ import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.ui.component.Card;
 import slm2015.hey.ui.util.UiUtility;
-import slm2015.hey.view.MainPagerFragment;
+import slm2015.hey.view.tabs.TabPagerFragment;
 
-public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnTouchListener, Animation.AnimationListener {
+public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTouchListener, Animation.AnimationListener {
 
     private final int SWIPE_WIDTH_DP = 100;
     private final int CARD_MARGIN_TOP = 70;
@@ -439,7 +439,7 @@ public class NewFunnyWatchFragment extends MainPagerFragment implements View.OnT
     }
 
     @Override
-    protected int getPageIconRedId() {
+    public int getPageIconRedId() {
         return R.drawable.funny_watch;
     }
 }

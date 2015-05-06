@@ -1,4 +1,4 @@
-package slm2015.hey.view;
+package slm2015.hey.view.main;
 
 
 import android.support.v4.app.Fragment;
@@ -9,10 +9,12 @@ import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.List;
 
-public class MainPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
-    private final List<MainPagerFragment> fragments;
+import slm2015.hey.view.tabs.TabPagerFragment;
 
-    public MainPagerAdapter(FragmentManager supportFragmentManager, List<MainPagerFragment> fragments) {
+public class MainPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
+    private final List<TabPagerFragment> fragments;
+
+    public MainPagerAdapter(FragmentManager supportFragmentManager, List<TabPagerFragment> fragments) {
         super(supportFragmentManager);
         this.fragments = fragments;
     }

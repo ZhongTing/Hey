@@ -1,4 +1,4 @@
-package slm2015.hey.view;
+package slm2015.hey.view.main;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +11,9 @@ import java.util.List;
 
 import slm2015.hey.R;
 import slm2015.hey.ui.tabsswipe.NewFunnyWatchFragment;
+import slm2015.hey.view.tabs.TabPagerFragment;
+import slm2015.hey.view.tabs.post.PostFragment;
+import slm2015.hey.view.tabs.watch.WatchFragment;
 
 public class MainActivity extends FragmentActivity {
     @Override
@@ -21,10 +24,10 @@ public class MainActivity extends FragmentActivity {
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
 
-        List<MainPagerFragment> fragments = new ArrayList<>();
+        List<TabPagerFragment> fragments = new ArrayList<>();
         fragments.add(new NewFunnyWatchFragment(pager));
-        fragments.add(new FunnyPostFragment());
-        fragments.add(new FunnyWatchFragment());
+        fragments.add(new PostFragment());
+        fragments.add(new WatchFragment());
 
         pager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragments));
         tabs.setViewPager(pager);
