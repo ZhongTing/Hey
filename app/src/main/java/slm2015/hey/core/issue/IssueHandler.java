@@ -3,6 +3,7 @@ package slm2015.hey.core.issue;
 import android.content.Context;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import slm2015.hey.api.user.PullRecommendsAPI;
 import slm2015.hey.core.BaseAPIHandler;
@@ -18,7 +19,7 @@ public class IssueHandler extends BaseAPIHandler {
     public void raise(Issue issue) {
         this.runAPI(new PullRecommendsAPI(), new Callback() {
             @Override
-            protected void onSuccess(Object jsonObject) throws JSONException {
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
 
             }
         });
