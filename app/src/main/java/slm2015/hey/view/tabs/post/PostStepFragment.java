@@ -1,4 +1,4 @@
-package slm2015.hey.view;
+package slm2015.hey.view.tabs.post;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

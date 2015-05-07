@@ -1,4 +1,4 @@
-package slm2015.hey.view;
+package slm2015.hey.view.tabs.post;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,12 +10,13 @@ import android.view.ViewGroup;
 import slm2015.hey.R;
 import slm2015.hey.ui.component.Wizard;
 import slm2015.hey.ui.component.WizardAdaptor;
+import slm2015.hey.view.tabs.TabPagerFragment;
 
-public class FunnyPostFragment extends MainPagerFragment {
+public class PostFragment extends TabPagerFragment {
     private Wizard wizard;
 
     @Override
-    protected int getPageIconRedId() {
+    public int getPageIconRedId() {
         return R.drawable.funny_po;
     }
 
