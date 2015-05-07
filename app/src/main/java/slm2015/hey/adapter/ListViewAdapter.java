@@ -65,7 +65,7 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
                 convertView.setBackground(convertView.getResources().getDrawable(R.drawable.term_button));
 //                convertView.setBackgroundColor(convertView.getResources().getColor(R.color.light_blue));
             }
-            holder.text.setText(this.filterData.get(position).getTerm());
+            holder.text.setText(this.filterData.get(position).getText());
         } else {
             holder.text.setText("");
         }
@@ -81,7 +81,7 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
     public boolean checkNewTerm(String content){
         boolean isNewTerm = true;
         for(Term t : this.originalData)
-            if(t.getTerm().equals(content))
+            if(t.getText().equals(content))
                 isNewTerm = false;
         return isNewTerm;
     }
@@ -102,10 +102,10 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
                         ArrayList<Term> filterResultsData = new ArrayList<Term>();
                         boolean hasTerm = false, sameWord = false;
                         for (Term term : originalData) {
-                            if (term.getTerm().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                            if (term.getText().toLowerCase().contains(charSequence.toString().toLowerCase())) {
                                 filterResultsData.add(term);
                                 hasTerm = true;
-                                if(term.getTerm().toLowerCase().equals(charSequence.toString().toLowerCase()))
+                                if(term.getText().toLowerCase().equals(charSequence.toString().toLowerCase()))
                                     sameWord = true;
                             }
                         }

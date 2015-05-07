@@ -18,7 +18,7 @@ public class TermTest extends TestCase {
     }
 
     public void testgetTerm() {
-        Assert.assertEquals(this.termString, this.term.getTerm());
+        Assert.assertEquals(this.termString, this.term.getText());
     }
 
     public void testisSelectedFalse() {

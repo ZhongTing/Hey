@@ -6,15 +6,25 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import slm2015.hey.R;
+import slm2015.hey.core.term.TermLoader;
 import slm2015.hey.ui.component.Wizard;
 
 public class PostStepFragment extends Fragment {
-
-    private static String step = "step_key";
     private Wizard wizard;
+    private ListView listView;
+    private TermAdapter adapter;
+    private TermLoader loader;
+    private TermLoader.Type termType;
+
+    public static PostStepFragment newInstance(Wizard wizard, TermLoader loader, TermLoader.Type type) {
+        PostStepFragment fragment = new PostStepFragment();
+        fragment.setWizard(wizard);
+        fragment.setTermLoader(loader, type);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -25,33 +35,19 @@ public class PostStepFragment extends Fragment {
     }
 
     private void init(View view) {
-        Bundle arguments = this.getArguments();
-        int stepIndex = arguments.getInt(PostStepFragment.step, 0);
-        ((TextView) view.findViewById(R.id.this_step_text_view)).setText(stepIndex + "");
-        view.findViewById(R.id.next_step_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                wizard.next();
-            }
-        });
-        view.findViewById(R.id.previous_step_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                wizard.back();
-            }
-        });
-    }
+        this.adapter = new TermAdapter(this.loader.getTerms(this.termType));
+        this.loader.addObserver(this.adapter);
+        this.listView = (ListView) view.findViewById(R.id.search_list_view);
 
-    public static PostStepFragment newInstance(Wizard wizard, int position) {
-        PostStepFragment fragment = new PostStepFragment();
-        fragment.setWizard(wizard);
-        Bundle bundle = new Bundle();
-        bundle.putInt(step, position + 1);
-        fragment.setArguments(bundle);
-        return fragment;
+        this.listView.setAdapter(this.adapter);
     }
 
     public void setWizard(Wizard wizard) {
         this.wizard = wizard;
+    }
+
+    public void setTermLoader(TermLoader loader, TermLoader.Type type) {
+        this.loader = loader;
+        this.termType = type;
     }
 }

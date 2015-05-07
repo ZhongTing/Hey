@@ -38,7 +38,7 @@ public class StepIndicator extends FrameLayout {
 
     private void init(AttributeSet attrs, int defStyle) {
         inflate(this.getContext(), R.layout.step_indicator, this);
-        this.findview();
+        this.findView();
         this.loadAttribute(attrs, defStyle);
         this.originWidth = LayoutParams.WRAP_CONTENT;
     }
@@ -52,7 +52,7 @@ public class StepIndicator extends FrameLayout {
         a.recycle();
     }
 
-    private void findview() {
+    private void findView() {
         this.indicateTextView = (TextView) findViewById(R.id.step_indicator_text);
         this.indicateHeadImageView = (ImageView) findViewById(R.id.step_indicator_head);
     }

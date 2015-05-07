@@ -2,6 +2,9 @@ package slm2015.hey.core.term;
 
 import android.content.Context;
 
+import junit.framework.Assert;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.core.Subject;
@@ -9,9 +12,9 @@ import slm2015.hey.entity.Term;
 
 public class TermLoader extends Subject implements TermHandler.TermHandlerCallback {
     private TermHandler termHandler;
-    private List<Term> subjects;
-    private List<Term> descriptions;
-    private List<Term> places;
+    private List<Term> subjects = new ArrayList<>();
+    private List<Term> descriptions = new ArrayList<>();
+    private List<Term> places = new ArrayList<>();
 
     public TermLoader(Context context) {
         this.termHandler = new TermHandler(context, this);
@@ -21,16 +24,17 @@ public class TermLoader extends Subject implements TermHandler.TermHandlerCallba
         this.termHandler.loadRecommends();
     }
 
-    public List<Term> getSubjects() {
-        return subjects;
-    }
-
-    public List<Term> getDescriptions() {
-        return descriptions;
-    }
-
-    public List<Term> getPlaces() {
-        return places;
+    public List<Term> getTerms(Type type) {
+        switch (type) {
+            case SUBJECT:
+                return this.subjects;
+            case DESCRIPTION:
+                return this.descriptions;
+            case PLACE:
+                return this.places;
+        }
+        Assert.assertFalse(true);
+        return null;
     }
 
     @Override
@@ -40,5 +44,11 @@ public class TermLoader extends Subject implements TermHandler.TermHandlerCallba
         this.places = places;
 
         notifySubjectChanged();
+    }
+
+    public enum Type {
+        SUBJECT,
+        DESCRIPTION,
+        PLACE, termType,
     }
 }
