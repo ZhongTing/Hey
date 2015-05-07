@@ -342,7 +342,7 @@ public class NewFunnyPoFragment extends Fragment implements ViewPager.OnPageChan
                         if (listNum == 2)
                             raiseIssueManager.setIsPreview(true);
                         if (listNum != 2 || id != 0)
-                            setText(term.getTerm(), listNum);
+                            setText(term.getText(), listNum);
                         else
                             setText("", listNum);
                         setItemSelected(listNum, (int) id);

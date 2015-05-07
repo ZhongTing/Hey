@@ -125,9 +125,10 @@ public class Wizard extends FrameLayout {
 
         //set active
         for (int i = 0; i < totalSteps; i++) {
-            boolean active = i < step;
+            StepIndicator.Status status = i < step ? StepIndicator.Status.DONE: StepIndicator.Status.INACTIVE;
+            status = i == step -1 ? StepIndicator.Status.CURRENT : status;
             StepIndicator stepIndicator = this.stepIndicatorStack.get(i);
-            stepIndicator.setActive(active);
+            stepIndicator.setStatus(status);
             stepIndicator.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
             if (i != step - 1) {
                 totalStepWidth += stepIndicator.getMeasuredWidth();

@@ -9,7 +9,7 @@ public class Term {
         this.isSelected = false;
     }
 
-    public String getTerm(){
+    public String getText(){
         return this.term;
     }
 

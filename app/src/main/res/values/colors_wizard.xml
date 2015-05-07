@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="wizard_step_done">#76c2af</color>
+    <color name="wizard_step_current">#76c2af</color>
+    <color name="wizard_step_inactive">#eb547a</color>
+</resources>

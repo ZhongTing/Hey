@@ -21,7 +21,7 @@ public abstract class BaseAPIHandler {
     protected void runAPI(APIBase api) {
         this.runAPI(api, new Callback() {
             @Override
-            protected void onSuccess(Object jsonObject) throws JSONException {
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
                 Log.d("BaseAPIHandler", "No override on Success Method");
             }
         });
@@ -59,9 +59,9 @@ public abstract class BaseAPIHandler {
     }
 
     public abstract class Callback {
-        protected abstract void onSuccess(Object jsonObject) throws JSONException;
+        public abstract void onSuccess(JSONObject jsonObject) throws JSONException;
 
-        protected void onFail(String response) {
+        public void onFail(String response) {
             Toast.makeText(BaseAPIHandler.this.context, R.string.bad_request, Toast.LENGTH_SHORT).show();
         }
 

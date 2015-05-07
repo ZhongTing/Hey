@@ -19,7 +19,7 @@
             android:layout_toEndOf="@+id/location_step_indicator"
             android:layout_marginLeft="-20dp"
             android:layout_marginStart="-20dp"
-            app:active="false"
+            app:status="inactive"
             app:text="預覽" />
 
         <slm2015.hey.ui.component.StepIndicator
@@ -30,7 +30,7 @@
             android:layout_toEndOf="@+id/description_step_indicator"
             android:layout_marginLeft="-20dp"
             android:layout_marginStart="-20dp"
-            app:active="false"
+            app:status="inactive"
             app:text="地點" />
 
         <slm2015.hey.ui.component.StepIndicator
@@ -41,14 +41,14 @@
             android:layout_toEndOf="@+id/subject_step_indicator"
             android:layout_marginLeft="-20dp"
             android:layout_marginStart="-20dp"
-            app:active="false"
+            app:status="current"
             app:text="描述" />
 
         <slm2015.hey.ui.component.StepIndicator
             android:id="@+id/subject_step_indicator"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:active="true"
+            app:status="done"
             app:text="主角" />
 
     </RelativeLayout >

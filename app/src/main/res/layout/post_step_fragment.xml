@@ -4,30 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/search_list_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
-
-        <Button
-            android:id="@+id/previous_step_button"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:text="back" />
-
-        <TextView
-            android:id="@+id/this_step_text_view"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="1"
-            android:layout_gravity="center"
-            android:gravity="center"/>
-        <Button
-            android:id="@+id/next_step_button"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:text="next" />
-    </LinearLayout>
+        android:background="@color/light_orange">
+    </ListView>
 </RelativeLayout>

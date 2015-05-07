@@ -2,7 +2,11 @@
 <resources>
     <declare-styleable name="StepIndicator">
         <attr name="text" format="string" />
-        <attr name="active" format="boolean" />
+        <attr name="status">
+            <enum name="done" value="0" />
+            <enum name="current" value="1" />
+            <enum name="inactive" value="2" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="PagerSlidingTabStrip">

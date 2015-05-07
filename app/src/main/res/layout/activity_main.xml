@@ -9,7 +9,7 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_height"
-        app:pstsUnderlineColor="@color/blue_green"
+        app:pstsUnderlineColor="@color/wizard_step_current"
         app:pstsUnderlineHeight="0dp"
         app:pstsIndicatorHeight="4dp"
         app:pstsIndicatorColor="@color/sky_blue"

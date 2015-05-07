@@ -40,7 +40,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 //                    if (position < list.size()) {
 //                        Term term = (Term) parent.getItemAtPosition(position);
 //                        if (listNum != 2 || id != 0)
-//                            setText(term.getTerm(), listNum);
+//                            setText(term.getText(), listNum);
 //                        else
 //                            raiseIssueManager.setIsPreview(true);
 //                        setItemSelected(listNum, (int) id);
@@ -73,7 +73,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 //                if (position < termListArray[position].size()) {
 //                    Term term = (Term) parent.getItemAtPosition(position);
 //                    if (position != 2 || id != 0)
-//                        setText(term.getTerm(), listNum);
+//                        setText(term.getText(), listNum);
 //                    else
 //                        raiseIssueManager.setIsPreview(true);
 //                    setItemSelected(listNum, (int) id);
