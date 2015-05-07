@@ -12,9 +12,9 @@ import slm2015.hey.entity.Term;
 
 public class TermLoader extends Subject implements TermHandler.TermHandlerCallback {
     private TermHandler termHandler;
-    private List<Term> subjects = new ArrayList<>();
-    private List<Term> descriptions = new ArrayList<>();
-    private List<Term> places = new ArrayList<>();
+    private List<Term> subjects;
+    private List<Term> descriptions;
+    private List<Term> places;
 
     public TermLoader(Context context) {
         this.termHandler = new TermHandler(context, this);
@@ -49,6 +49,6 @@ public class TermLoader extends Subject implements TermHandler.TermHandlerCallba
     public enum Type {
         SUBJECT,
         DESCRIPTION,
-        PLACE, termType,
+        PLACE
     }
 }
