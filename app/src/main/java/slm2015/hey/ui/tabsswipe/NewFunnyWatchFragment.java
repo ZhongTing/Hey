@@ -47,6 +47,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
     private float ini_cardX, ini_cardY;
     private Issue[] issues = new Issue[]{new Issue("北科紅樓", "玻璃破了", ""), new Issue("垃圾麵", "賣完囉", ""), new Issue("香腸伯", "今天找打手", "在建國南路"), new Issue("starbucks", "is on sale", "")};
     private Queue loadedIssues = new LinkedList();
+    private boolean allEvent = true;
 
     public NewFunnyWatchFragment(ViewPager pager) {
         this.pager = pager;
@@ -266,8 +267,19 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
             this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
     }
 
+    private void setAllEvent(boolean b) {
+        this.allEvent = b;
+        setAllButtonEnable(b);
+    }
+
+    private void setAllButtonEnable(boolean b) {
+        this.likeButton.setEnabled(b);
+        this.dislikeButton.setEnabled(b);
+        this.refreshButton.setEnabled(b);
+    }
+
     private void playMoveAnimation(Card card, final boolean like) {
-        final int posX = like ? 1000 : -1000;
+        final int posX = like ? 500 : -500;
         float card_x = card.getRotationX();
         float card_y = card.getRotationY();
         Animation animation = new TranslateAnimation(card_x, posX, card_y, card_y);
@@ -276,11 +288,12 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                setAllEvent(false);
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                setAllEvent(true);
                 if (like) {
                     //todo save like card
                 } else {
@@ -310,6 +323,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                setAllEvent(false);
                 card.setRotation(0);
             }
 
@@ -317,6 +331,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
             public void onAnimationEnd(Animation animation) {
                 card.setX(iniX);
                 card.setY(iniY);
+                setAllEvent(true);
             }
 
             @Override
@@ -340,7 +355,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         pager.requestDisallowInterceptTouchEvent(true);
-        if (this.cardDeck.size() <= 0)
+        if (this.cardDeck.size() <= 0 || !this.allEvent)
             return false;
         int index = this.cardDeck.size() - 1;
         Card card = this.cardDeck.get(index);
@@ -348,6 +363,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         y_cord = (int) card.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                setAllButtonEnable(false);
                 card_iniX = (int) card.getX();
                 card_iniY = (int) card.getY();
                 pressX = (int) event.getX();
@@ -406,6 +422,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
                 } else {
                     playReturnAnimation(card, card_iniX, card_iniY);
                 }
+                setAllButtonEnable(true);
                 break;
             default:
                 break;
@@ -415,9 +432,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
 
     @Override
     public void onAnimationStart(Animation animation) {
-        this.likeButton.setEnabled(false);
-        this.dislikeButton.setEnabled(false);
-        this.refreshButton.setEnabled(false);
+        setAllEvent(false);
     }
 
     @Override
@@ -425,9 +440,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         if (this.loadedIssues.size() > 0) {
             showLoadedCard();
         } else {
-            this.likeButton.setEnabled(true);
-            this.dislikeButton.setEnabled(true);
-            this.refreshButton.setEnabled(true);
+            setAllEvent(true);
             if (this.cardDeck.size() > 0)
                 this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
         }
