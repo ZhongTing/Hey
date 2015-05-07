@@ -21,7 +21,12 @@
         android:layout_width="300dp"
         android:layout_height="240dp"
         android:layout_gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="5dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/card_background">
 
         <ImageView
             android:id="@+id/image"
