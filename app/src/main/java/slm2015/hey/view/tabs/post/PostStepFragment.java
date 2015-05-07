@@ -13,6 +13,7 @@ import junit.framework.Assert;
 import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.term.TermLoader;
+import slm2015.hey.core.term.TermType;
 import slm2015.hey.ui.component.Wizard;
 
 public class PostStepFragment extends Fragment implements Observer {
@@ -20,9 +21,9 @@ public class PostStepFragment extends Fragment implements Observer {
     private ListView listView;
     private TermAdapter adapter;
     private TermLoader loader;
-    private TermLoader.Type termType;
+    private TermType termType;
 
-    public static PostStepFragment newInstance(Wizard wizard, TermLoader loader, TermLoader.Type type) {
+    public static PostStepFragment newInstance(Wizard wizard, TermLoader loader, TermType type) {
         PostStepFragment fragment = new PostStepFragment();
         fragment.setWizard(wizard);
         fragment.setTermLoader(loader, type);
@@ -55,7 +56,7 @@ public class PostStepFragment extends Fragment implements Observer {
         this.wizard = wizard;
     }
 
-    public void setTermLoader(TermLoader loader, TermLoader.Type type) {
+    public void setTermLoader(TermLoader loader, TermType type) {
         this.loader = loader;
         this.termType = type;
     }

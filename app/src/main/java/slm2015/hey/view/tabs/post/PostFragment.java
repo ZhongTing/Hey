@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import slm2015.hey.R;
 import slm2015.hey.core.term.TermLoader;
+import slm2015.hey.core.term.TermType;
 import slm2015.hey.ui.component.Wizard;
 import slm2015.hey.ui.component.WizardAdaptor;
 import slm2015.hey.view.tabs.TabPagerFragment;
@@ -48,7 +49,7 @@ public class PostFragment extends TabPagerFragment {
     private void initWizard() {
         this.wizard.setAdaptor(new WizardAdaptor(getFragmentManager()) {
             private String[] indicateTexts = {"主角", "描述", "地點", "預覽"};
-            private TermLoader.Type[] types = {TermLoader.Type.SUBJECT, TermLoader.Type.DESCRIPTION, TermLoader.Type.PLACE, TermLoader.Type.SUBJECT};
+            private TermType[] types = {TermType.SUBJECT, TermType.DESCRIPTION, TermType.PLACE, TermType.SUBJECT};
 
             @Override
             public String getStepIndicateText(int stepIndex) {
