@@ -12,9 +12,14 @@ import slm2015.hey.R;
 public class StepIndicator extends FrameLayout {
     private TextView indicateTextView;
     private ImageView indicateHeadImageView;
-    private boolean active;
     private String indicateText;
     private int originWidth;
+
+    public enum Status {
+        DONE,
+        CURRENT,
+        INACTIVE;
+    }
 
     public StepIndicator(Context context) {
         super(context);
@@ -41,7 +46,8 @@ public class StepIndicator extends FrameLayout {
     private void loadAttribute(AttributeSet attrs, int defStyle) {
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.StepIndicator, defStyle, 0);
-        this.setActive(a.getBoolean(R.styleable.StepIndicator_active, false));
+        Status status = Status.values()[a.getInt(R.styleable.StepIndicator_status, 0)];
+        this.setStatus(status);
         this.setIndicateText(a.getString(R.styleable.StepIndicator_text));
         a.recycle();
     }
@@ -51,12 +57,27 @@ public class StepIndicator extends FrameLayout {
         this.indicateHeadImageView = (ImageView) findViewById(R.id.step_indicator_head);
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
-        int color = active ? R.color.blue_green : R.color.peach_red;
-        int source = active ? R.drawable.arrow_head : R.drawable.arrow_head_inactive;
+    public void setStatus(Status status) {
+        int color;
+        int source;
+        switch (status) {
+            case INACTIVE:
+                color = R.color.wizard_step_inactive;
+                source = R.drawable.arrow_head_inactive;
+                break;
+            case CURRENT:
+                color = R.color.wizard_step_current;
+                source = R.drawable.arrow_head_current;
+                break;
+            case DONE:
+            default:
+                color = R.color.wizard_step_done;
+                source = R.drawable.arrow_head_done;
+                break;
+        }
         this.indicateTextView.setBackgroundResource(color);
         this.indicateHeadImageView.setImageResource(source);
+        this.indicateTextView.requestLayout();
     }
 
     public void setIndicateText(String indicateText) {

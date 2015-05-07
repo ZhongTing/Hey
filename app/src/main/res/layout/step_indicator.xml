@@ -11,17 +11,16 @@
         android:layout_weight="1"
         android:text="@string/preview_string"
         android:gravity="center"
-        android:background="@color/blue_green"
+        android:background="@color/wizard_step_current"
         android:paddingLeft="30dp"
         android:paddingRight="10dp"
-        android:paddingEnd="10dp"/>
+        android:paddingEnd="10dp" />
 
     <ImageView
         android:id="@+id/step_indicator_head"
         android:layout_width="20dp"
         android:layout_height="match_parent"
-        android:src="@drawable/arrow_head"
-        android:scaleType="fitXY"/>
-
+        android:src="@drawable/arrow_head_current"
+        android:scaleType="fitXY" />
 
 </LinearLayout>
