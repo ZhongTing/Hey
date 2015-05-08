@@ -47,7 +47,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
     private float ini_cardX, ini_cardY;
     private Issue[] issues = new Issue[]{new Issue("北科紅樓", "玻璃破了", ""), new Issue("垃圾麵", "賣完囉", ""), new Issue("香腸伯", "今天找打手", "在建國南路"), new Issue("starbucks", "is on sale", "")};
     private Queue loadedIssues = new LinkedList();
-    private boolean allEvent = true;
+    private boolean allEvent = true, isRefresh =false;
 
     public NewFunnyWatchFragment(ViewPager pager) {
         this.pager = pager;
@@ -123,16 +123,6 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         }
     }
 
-//    private void initialAnimationCard() {
-//        Issue issue = new Issue("", "", "");
-//        int marginTop = UiUtility.dpiToPixel(CARD_MARGIN_TOP, getResources());
-//        int others = UiUtility.dpiToPixel(0, getResources());
-//        this.animationCard = new Card(this.activity);
-//        this.animationCard.assignIssue(issue);
-//        this.animationCard.setMargin(others, marginTop, others, others);
-//        this.card_frame.addView(this.animationCard, 0);
-//    }
-
     private void initialImagePass(Card card) {
         final Button imagePass = new Button(this.activity);
         imagePass.setLayoutParams(new LinearLayout.LayoutParams(100, 50));
@@ -182,6 +172,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         this.refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setAllButtonEnable(false);
                 refresh();
             }
         });
@@ -192,8 +183,9 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         this.dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cardDeck.size() > 0)
+                if (cardDeck.size() > 0){
                     dislike(cardDeck.get(cardDeck.size() - 1));
+                }
             }
         });
     }
@@ -203,8 +195,9 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         this.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cardDeck.size() > 0)
+                if (cardDeck.size() > 0){
                     like(cardDeck.get(cardDeck.size() - 1));
+                }
             }
         });
     }
@@ -288,7 +281,8 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                setAllEvent(false);
+//                setAllEvent(false);
+                allEvent = false;
             }
 
             @Override
@@ -355,7 +349,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         pager.requestDisallowInterceptTouchEvent(true);
-        if (this.cardDeck.size() <= 0 || !this.allEvent)
+        if (this.cardDeck.size() <= 0 || this.isRefresh)
             return false;
         int index = this.cardDeck.size() - 1;
         Card card = this.cardDeck.get(index);
@@ -364,8 +358,10 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 setAllButtonEnable(false);
-                card_iniX = (int) card.getX();
-                card_iniY = (int) card.getY();
+                if (this.allEvent) {
+                    card_iniX = (int) card.getX();
+                    card_iniY = (int) card.getY();
+                }
                 pressX = (int) event.getX();
                 pressY = (int) event.getY();
                 break;
@@ -382,17 +378,6 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
                 Button imagePass = card.getImagePass();
 
                 card.setRotation((float) ((card.getX() + card.getWidth() / 2) - screenCenter) / 10);
-
-//                if (card.getImage() != null) {
-//                    Bitmap scaledBitmap = card.getImage();
-//
-//                    android.graphics.Matrix matrix = new android.graphics.Matrix();
-//                    matrix.postRotate(((card.getX() + card.getWidth() / 2) - screenCenter) / 10);
-//
-//
-//                    Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
-//                    card.setImage(rotatedBitmap);
-//                }
 
                 if (moved_x_cord >= screenCenter) {
                     Log.d("touchX", String.valueOf(touchX));
@@ -433,6 +418,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
     @Override
     public void onAnimationStart(Animation animation) {
         setAllEvent(false);
+        isRefresh = true;
     }
 
     @Override
@@ -441,6 +427,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
             showLoadedCard();
         } else {
             setAllEvent(true);
+            isRefresh = false;
             if (this.cardDeck.size() > 0)
                 this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
         }
