@@ -404,10 +404,10 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
                         like(card);
                     else
                         dislike(card);
+                    setAllButtonEnable(true);
                 } else {
                     playReturnAnimation(card, card_iniX, card_iniY);
                 }
-                setAllButtonEnable(true);
                 break;
             default:
                 break;
