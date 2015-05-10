@@ -11,6 +11,8 @@ import slm2015.hey.entity.Term;
 
 public class TermAdapter extends BaseAdapter {
     private List<Term> termList;
+    private int selectPosition = -1;
+    private OnTermSelectedListener termSelectedListener;
 
     public TermAdapter(List<Term> termList) {
         this.setTermList(termList);
@@ -37,11 +39,36 @@ public class TermAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = new TextView(parent.getContext());
         }
         ((TextView) convertView).setText(termList.get(position).getText());
+        if (selectPosition == position) {
+            //todo implement selected effect
+        }
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectPosition = position;
+                if (termSelectedListener!=null ){
+                    termSelectedListener.OnTermSelected(termList.get(position).getText());
+                }
+            }
+        });
         return convertView;
+    }
+
+    public void setOnTermSelectedListener(OnTermSelectedListener listener) {
+        this.termSelectedListener = listener;
+    }
+
+    public void filter(String filterString) {
+        //todo implement filter function
+        this.notifyDataSetChanged();
+    }
+
+    public interface OnTermSelectedListener{
+        public void OnTermSelected(String selectedTerm);
     }
 }

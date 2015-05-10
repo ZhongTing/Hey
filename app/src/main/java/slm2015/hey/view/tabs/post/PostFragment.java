@@ -58,7 +58,14 @@ public class PostFragment extends TabPagerFragment {
 
             @Override
             public Fragment getItem(int position) {
-                return PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, types[position]);
+                PostStepFragment fragment = PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, types[position]);
+                fragment.setOnStepFinishListener(new PostStepFragment.OnStepFinishListener() {
+                    @Override
+                    public void OnStepFinish(String selectedTerm) {
+                        //todo implement recode term and prepare to render on preview
+                    }
+                });
+                return fragment;
             }
 
             @Override
