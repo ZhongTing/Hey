@@ -127,7 +127,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         final Button imagePass = new Button(this.activity);
         imagePass.setLayoutParams(new LinearLayout.LayoutParams(100, 50));
         imagePass.setBackgroundDrawable(getResources().getDrawable(
-                R.drawable.funny_watch));
+                R.drawable.soso));
 
         imagePass.setX(card.getX() + UiUtility.dpiToPixel(240, getResources()));
         imagePass.setY(card.getY() + UiUtility.dpiToPixel(110, getResources()));
@@ -149,7 +149,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         final Button imageLike = new Button(this.activity);
         imageLike.setLayoutParams(new LinearLayout.LayoutParams(100, 50));
         imageLike.setBackgroundDrawable(getResources().getDrawable(
-                R.drawable.funny_po));
+                R.drawable.like));
         imageLike.setX(card.getX());
         imageLike.setY(card.getY() + UiUtility.dpiToPixel(110, getResources()));
         imageLike.setAlpha(alphaValue);
@@ -404,10 +404,10 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
                         like(card);
                     else
                         dislike(card);
+                    setAllButtonEnable(true);
                 } else {
                     playReturnAnimation(card, card_iniX, card_iniY);
                 }
-                setAllButtonEnable(true);
                 break;
             default:
                 break;
