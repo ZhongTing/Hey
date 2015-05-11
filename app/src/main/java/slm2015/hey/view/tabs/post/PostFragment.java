@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import slm2015.hey.R;
 import slm2015.hey.core.term.TermLoader;
 import slm2015.hey.core.term.TermType;
+import slm2015.hey.entity.Issue;
 import slm2015.hey.ui.component.Wizard;
 import slm2015.hey.ui.component.WizardAdaptor;
 import slm2015.hey.view.tabs.TabPagerFragment;
@@ -17,6 +18,8 @@ import slm2015.hey.view.tabs.TabPagerFragment;
 public class PostFragment extends TabPagerFragment {
     private Wizard wizard;
     private TermLoader termLoader;
+    private Issue issue = new Issue();
+    private PreviewFragment previewFragment;
 
     @Override
     public int getPageIconRedId() {
@@ -49,7 +52,7 @@ public class PostFragment extends TabPagerFragment {
     private void initWizard() {
         this.wizard.setAdaptor(new WizardAdaptor(getFragmentManager()) {
             private String[] indicateTexts = {"主角", "描述", "地點", "預覽"};
-            private TermType[] types = {TermType.SUBJECT, TermType.DESCRIPTION, TermType.PLACE, TermType.SUBJECT};
+            private TermType[] types = {TermType.SUBJECT, TermType.DESCRIPTION, TermType.PLACE};
 
             @Override
             public String getStepIndicateText(int stepIndex) {
@@ -58,14 +61,31 @@ public class PostFragment extends TabPagerFragment {
 
             @Override
             public Fragment getItem(int position) {
-                PostStepFragment fragment = PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, types[position]);
-                fragment.setOnStepFinishListener(new PostStepFragment.OnStepFinishListener() {
-                    @Override
-                    public void OnStepFinish(String selectedTerm) {
-                        //todo implement recode term and prepare to render on preview
-                    }
-                });
-                return fragment;
+                if (position < types.length) {
+                    final PostStepFragment postStepFragment = PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, types[position]);
+                    postStepFragment.setOnStepFinishListener(new PostStepFragment.OnStepFinishListener() {
+                        @Override
+                        public void OnStepFinish(String selectedTerm) {
+                            //todo implement recode term and prepare to render on preview
+                            switch (postStepFragment.getTermType()) {
+                                case SUBJECT:
+                                    issue.setSubject(selectedTerm);
+                                    break;
+                                case DESCRIPTION:
+                                    issue.setDescription(selectedTerm);
+                                    break;
+                                case PLACE:
+                                    issue.setPlace(selectedTerm);
+                                    previewFragment.reasignIssue(issue);
+                                    break;
+                            }
+                        }
+                    });
+                    return postStepFragment;
+                } else {
+                    previewFragment = PreviewFragment.newInstance(issue, wizard);
+                    return previewFragment;
+                }
             }
 
             @Override

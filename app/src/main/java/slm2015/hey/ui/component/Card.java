@@ -61,6 +61,7 @@ public class Card extends FrameLayout {
         if (isInEditMode()) {
             View view = inflate(this.getContext(), R.layout.card, this);
         }
+//        this.view = inflate(this.getContext(), R.layout.card_no_pic, this);
         //note that the actual view will generate when core is assigned
     }
 

@@ -1,11 +1,15 @@
 package slm2015.hey.view.tabs.post;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -49,7 +53,7 @@ public class PostStepFragment extends Fragment implements Observer {
             @Override
             public void OnTermSelected(String selectedTerm) {
                 //todo
-                if (onStepFinishListener !=null) {
+                if (onStepFinishListener != null) {
                     onStepFinishListener.OnStepFinish(selectedTerm);
                 }
                 wizard.next();
@@ -64,7 +68,7 @@ public class PostStepFragment extends Fragment implements Observer {
         this.listView = (ListView) view.findViewById(R.id.term_list_view);
         this.listView.setAdapter(this.adapter);
         this.searchTextView = (EditText) view.findViewById(R.id.search_text_view);
-        switch (this.termType){
+        switch (this.termType) {
             case SUBJECT:
                 this.searchTextView.setHint("Who?");
                 break;
@@ -77,12 +81,31 @@ public class PostStepFragment extends Fragment implements Observer {
         }
 
         //todo implement text changed listener to fire adapter filter event
-        //this.adapter.filter("test");
+        this.searchTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 
     public void setWizard(Wizard wizard) {
         this.wizard = wizard;
+    }
+
+    public TermType getTermType() {
+        return termType;
     }
 
     public void setTermLoader(TermLoader loader, TermType type) {
@@ -99,6 +122,12 @@ public class PostStepFragment extends Fragment implements Observer {
         if (this.adapter != null) {
             this.adapter.setTermList(this.loader.getTerms(this.termType));
         }
+    }
+
+    private void closeKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(this.searchTextView.getWindowToken(), 0);
     }
 
     public interface OnStepFinishListener {
