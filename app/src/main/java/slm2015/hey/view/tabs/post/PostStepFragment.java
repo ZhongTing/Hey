@@ -64,6 +64,17 @@ public class PostStepFragment extends Fragment implements Observer {
         this.listView = (ListView) view.findViewById(R.id.term_list_view);
         this.listView.setAdapter(this.adapter);
         this.searchTextView = (EditText) view.findViewById(R.id.search_text_view);
+        switch (this.termType){
+            case SUBJECT:
+                this.searchTextView.setHint("Who?");
+                break;
+            case DESCRIPTION:
+                this.searchTextView.setHint("What?");
+                break;
+            case PLACE:
+                this.searchTextView.setHint("Where?");
+                break;
+        }
 
         //todo implement text changed listener to fire adapter filter event
         //this.adapter.filter("test");
