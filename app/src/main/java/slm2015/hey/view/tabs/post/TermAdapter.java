@@ -1,5 +1,7 @@
 package slm2015.hey.view.tabs.post;
 
+import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -7,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import slm2015.hey.R;
 import slm2015.hey.entity.Term;
 
 public class TermAdapter extends BaseAdapter {
@@ -40,19 +43,29 @@ public class TermAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        ViewHolder holder = null;
         if (convertView == null) {
-            convertView = new TextView(parent.getContext());
+            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.listview_adapter_layout, null);
+            holder = new ViewHolder();
+            holder.text = (TextView) convertView.findViewById(R.id.text);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
-        ((TextView) convertView).setText(termList.get(position).getText());
-        if (selectPosition == position) {
-            //todo implement selected effect
-        }
+        final Term term = termList.get(position);
+        holder.text.setText(term.getText());
+        holder.text.setSelected(term.isSelected());
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectPosition = position;
-                if (termSelectedListener!=null ){
-                    termSelectedListener.OnTermSelected(termList.get(position).getText());
+                for (Term t : termList)
+                    t.setIsSelected(false);
+                term.setIsSelected(true);
+                notifyDataSetChanged();
+                if (termSelectedListener != null) {
+                    termSelectedListener.OnTermSelected(term.getText());
                 }
             }
         });
@@ -68,7 +81,11 @@ public class TermAdapter extends BaseAdapter {
         this.notifyDataSetChanged();
     }
 
-    public interface OnTermSelectedListener{
+    public interface OnTermSelectedListener {
         public void OnTermSelected(String selectedTerm);
+    }
+
+    private class ViewHolder {
+        TextView text;
     }
 }

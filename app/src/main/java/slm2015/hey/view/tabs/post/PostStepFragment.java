@@ -52,7 +52,7 @@ public class PostStepFragment extends Fragment implements Observer {
                 if (onStepFinishListener !=null) {
                     onStepFinishListener.OnStepFinish(selectedTerm);
                 }
-                //wizard.next();
+                wizard.next();
             }
         });
         this.loader.addObserver(this);
