@@ -39,7 +39,6 @@ public class PostFragment extends TabPagerFragment {
         this.initTermLoader();
     }
 
-
     private void findViews(View rootView) {
         this.wizard = ((Wizard) rootView.findViewById(R.id.post_wizard));
     }
@@ -93,5 +92,9 @@ public class PostFragment extends TabPagerFragment {
                 return indicateTexts.length;
             }
         });
+    }
+
+    public void closeKeyboard(){
+        // todo implement close keyboard
     }
 }
