@@ -37,7 +37,7 @@ public class PreviewFragment extends Fragment {
             if (resultCode == Activity.RESULT_OK) {
                 Bitmap image = (Bitmap) data.getExtras().get("data");
                 this.issue.setImage(image);
-                reasignIssue(this.issue);
+                reassignIssue(this.issue);
             }
         }
     }
@@ -98,7 +98,7 @@ public class PreviewFragment extends Fragment {
         });
     }
 
-    public void reasignIssue(Issue issue) {
+    public void reassignIssue(Issue issue) {
         this.card.assignIssue(this.issue);
     }
 }
