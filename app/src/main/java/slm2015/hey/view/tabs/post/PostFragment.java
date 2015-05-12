@@ -27,6 +27,11 @@ public class PostFragment extends TabPagerFragment {
     }
 
     @Override
+    public void FragmentSelected() {
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.funnypo_layout, container, false);
         this.init(view);
@@ -92,9 +97,5 @@ public class PostFragment extends TabPagerFragment {
                 return indicateTexts.length;
             }
         });
-    }
-
-    public void closeKeyboard(){
-        // todo implement close keyboard
     }
 }

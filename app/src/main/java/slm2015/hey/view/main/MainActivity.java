@@ -31,15 +31,14 @@ public class MainActivity extends FragmentActivity {
         this.fragments.add(new WatchFragment());
 
         pager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragments));
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                checkKeyboardClose(position);
             }
 
             @Override
             public void onPageSelected(int position) {
-                checkKeyboardClose(position);
+                MainActivity.this.fragments.get(position).FragmentSelected();
             }
 
             @Override
@@ -48,12 +47,5 @@ public class MainActivity extends FragmentActivity {
             }
         });
         tabs.setViewPager(pager);
-    }
-
-    private void checkKeyboardClose(int position){
-        if(position == 0){
-            PostFragment fragment = (PostFragment)this.fragments.get(1);
-            fragment.closeKeyboard();
-        }
     }
 }
