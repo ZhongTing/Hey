@@ -76,7 +76,7 @@ public class PostFragment extends TabPagerFragment {
                                     break;
                                 case PLACE:
                                     issue.setPlace(selectedTerm);
-                                    previewFragment.reasignIssue(issue);
+                                    previewFragment.reassignIssue(issue);
                                     break;
                             }
                         }
