@@ -15,7 +15,7 @@ import java.util.List;
 import slm2015.hey.R;
 import slm2015.hey.entity.Term;
 
-public class TermAdapter extends BaseAdapter implements Filterable{
+public class TermAdapter extends BaseAdapter implements Filterable {
     private List<Term> termList;
     private List<Term> filterList;
     private int selectPosition = -1;
@@ -67,15 +67,17 @@ public class TermAdapter extends BaseAdapter implements Filterable{
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    for (Term t : termList)
-                        t.setIsSelected(false);
-                    filterList.get(position).setIsSelected(true);
-                    if (filterList.get(position).needToAdd())
-                        termList.add(filterList.get(position));
-                    filterList = termList;
-                    notifyDataSetChanged();
-                    if (termSelectedListener != null) {
-                        termSelectedListener.OnTermSelected(filterList.get(position).getText());
+                    if (position < TermAdapter.this.filterList.size()) {
+                        for (Term t : termList)
+                            t.setIsSelected(false);
+                        filterList.get(position).setIsSelected(true);
+                        if (filterList.get(position).needToAdd())
+                            termList.add(filterList.get(position));
+                        filterList = termList;
+                        notifyDataSetChanged();
+                        if (termSelectedListener != null) {
+                            termSelectedListener.OnTermSelected(filterList.get(position).getText());
+                        }
                     }
                 }
             });
