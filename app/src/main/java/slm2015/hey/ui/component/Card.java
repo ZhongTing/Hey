@@ -59,15 +59,14 @@ public class Card extends FrameLayout {
     private void init() {
         //preview in edit mode;
         if (isInEditMode()) {
-            View view = inflate(this.getContext(), R.layout.card, this);
+            inflate(this.getContext(), R.layout.card, this);
         }
-//        this.view = inflate(this.getContext(), R.layout.card_no_pic, this);
-        //note that the actual view will generate when core is assigned
     }
 
     public void assignIssue(Issue issue) {
         this.issue = issue;
         int layoutId = this.issue.getImage() == null ? R.layout.card_no_pic : R.layout.card;
+        this.removeAllViews();
         this.view = inflate(this.getContext(), layoutId, this);
         this.subjectTextView = (TextView) this.view.findViewById(R.id.title);
         this.descriptionTextView = (TextView) this.view.findViewById(R.id.description);
