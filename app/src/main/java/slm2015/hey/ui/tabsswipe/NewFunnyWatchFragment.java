@@ -1,6 +1,7 @@
 package slm2015.hey.ui.tabsswipe;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -47,7 +49,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
     private float ini_cardX, ini_cardY;
     private Issue[] issues = new Issue[]{new Issue("北科紅樓", "玻璃破了", ""), new Issue("垃圾麵", "賣完囉", ""), new Issue("香腸伯", "今天找打手", "在建國南路"), new Issue("starbucks", "is on sale", "")};
     private Queue loadedIssues = new LinkedList();
-    private boolean allEvent = true, isRefresh =false;
+    private boolean allEvent = true, isRefresh = false;
 
     public NewFunnyWatchFragment(ViewPager pager) {
         this.pager = pager;
@@ -183,7 +185,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         this.dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cardDeck.size() > 0){
+                if (cardDeck.size() > 0) {
                     dislike(cardDeck.get(cardDeck.size() - 1));
                 }
             }
@@ -195,7 +197,7 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
         this.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cardDeck.size() > 0){
+                if (cardDeck.size() > 0) {
                     like(cardDeck.get(cardDeck.size() - 1));
                 }
             }
@@ -441,5 +443,14 @@ public class NewFunnyWatchFragment extends TabPagerFragment implements View.OnTo
     @Override
     public int getPageIconRedId() {
         return R.drawable.funny_watch;
+    }
+
+    @Override
+    public void FragmentSelected() {
+        View view = this.getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 }

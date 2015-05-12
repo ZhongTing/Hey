@@ -8,4 +8,9 @@ public class WatchFragment extends TabPagerFragment {
     public int getPageIconRedId() {
         return R.drawable.funny_watch;
     }
+
+    @Override
+    public void FragmentSelected() {
+
+    }
 }
