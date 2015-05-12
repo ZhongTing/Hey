@@ -16,6 +16,7 @@ import slm2015.hey.view.tabs.post.PostFragment;
 import slm2015.hey.view.tabs.watch.WatchFragment;
 
 public class MainActivity extends FragmentActivity {
+    private List<TabPagerFragment> fragments;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,12 +25,35 @@ public class MainActivity extends FragmentActivity {
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
 
-        List<TabPagerFragment> fragments = new ArrayList<>();
-        fragments.add(new NewFunnyWatchFragment(pager));
-        fragments.add(new PostFragment());
-        fragments.add(new WatchFragment());
+        this.fragments = new ArrayList<>();
+        this.fragments.add(new NewFunnyWatchFragment(pager));
+        this.fragments.add(new PostFragment());
+        this.fragments.add(new WatchFragment());
 
         pager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragments));
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                checkKeyboardClose(position);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                checkKeyboardClose(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         tabs.setViewPager(pager);
+    }
+
+    private void checkKeyboardClose(int position){
+        if(position == 0){
+            PostFragment fragment = (PostFragment)this.fragments.get(1);
+            fragment.closeKeyboard();
+        }
     }
 }
