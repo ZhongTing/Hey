@@ -65,7 +65,7 @@ public class Card extends FrameLayout {
         }
     }
 
-    private void initMargin() {
+    public void initDefaultMargin() {
         int marginTop = UiUtility.dpiToPixel(CARD_MARGIN_TOP, getResources());
         int others = UiUtility.dpiToPixel(0, getResources());
         this.setMargin(others, marginTop, others, others);
@@ -85,8 +85,6 @@ public class Card extends FrameLayout {
         }
         this.findView(this.view, issue);
         this.bindEvent();
-
-        this.initMargin();
     }
 
     public void initialImageLike() {

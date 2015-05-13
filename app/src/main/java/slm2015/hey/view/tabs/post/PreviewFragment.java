@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import slm2015.hey.R;
+import slm2015.hey.core.issue.IssueHandler;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.ui.component.Card;
 import slm2015.hey.ui.component.Wizard;
@@ -22,6 +24,7 @@ public class PreviewFragment extends Fragment {
     private Card card;
     private Issue issue;
     private Wizard wizard;
+    private OnPreviewFinishListener previewFinishListener;
 
     public static PreviewFragment newInstance(Issue issue, Wizard wizard) {
         PreviewFragment fragment = new PreviewFragment();
@@ -62,17 +65,14 @@ public class PreviewFragment extends Fragment {
         this.raiseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                APIManager.getInstance().run(getActivity(), new RaiseIssueAPI(PreviewFragment.this.issue, new APIBase.Callback() {
-//                    @Override
-//                    public void requestSuccess(JSONObject result) throws JSONException {
-//                        wizard.back();
-//                    }
-//
-//                    @Override
-//                    public void requestFail() {
-//                        wizard.back();
-//                    }
-//                }));
+                IssueHandler issueHandler = new IssueHandler(PreviewFragment.this.getActivity());
+                issueHandler.raise(PreviewFragment.this.issue, new IssueHandler.RaiseIssueHandlerCallback() {
+                    @Override
+                    public void onRaisedIssue() {
+                        PreviewFragment.this.previewFinishListener.OnPreviewFinish();
+                        Toast.makeText(PreviewFragment.this.getActivity(), "發送成功！", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
@@ -100,5 +100,13 @@ public class PreviewFragment extends Fragment {
 
     public void reassignIssue(Issue issue) {
         this.card.assignIssue(this.issue);
+    }
+
+    public void setOnPreviewFinishListener(OnPreviewFinishListener listener) {
+        this.previewFinishListener = listener;
+    }
+
+    public interface OnPreviewFinishListener {
+        public void OnPreviewFinish();
     }
 }

@@ -89,6 +89,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         if (this.issueLoader.getIssueQueue().size() > 0) {
             final Card card = new Card(this.getActivity());
             card.assignIssue(this.issueLoader.getIssueQueue().poll());
+            card.initDefaultMargin();
             card.initialImageLike();
             card.initialImagePass();
 
@@ -97,7 +98,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
             this.cardFrame.requestLayout();
             refreshAnimation(card);
             this.cardDeck.add(card);
-            
+
         } else {
             this.setAllButtonEnable(true);
         }
@@ -121,6 +122,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         for (int i = 0; i < 5; i++) {
             Card card = new Card(this.getActivity());
             card.assignIssue(issue);
+            card.initDefaultMargin();
             if (i == 0)
                 card.setRotation(-1);
             else if (i == 1)

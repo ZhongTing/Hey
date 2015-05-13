@@ -27,8 +27,7 @@ public class MainActivity extends FragmentActivity {
 
         this.fragments = new ArrayList<>();
         this.fragments.add(WatchFragment.newInstance(pager));
-//        this.fragments.add(new NewFunnyWatchFragment(pager));
-        this.fragments.add(new PostFragment());
+        this.fragments.add(PostFragment.newInstance(pager));
 
         pager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragments));
         tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

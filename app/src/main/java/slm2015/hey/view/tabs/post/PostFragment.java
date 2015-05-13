@@ -3,6 +3,7 @@ package slm2015.hey.view.tabs.post;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,20 @@ import slm2015.hey.view.tabs.TabPagerFragment;
 
 public class PostFragment extends TabPagerFragment {
     private Wizard wizard;
+    private ViewPager pager;
     private TermLoader termLoader;
     private Issue issue = new Issue();
     private PreviewFragment previewFragment;
+
+    static public PostFragment newInstance(ViewPager pager) {
+        PostFragment fragment = new PostFragment();
+        fragment.setPagerSlidingTabStrip(pager);
+        return fragment;
+    }
+
+    private void setPagerSlidingTabStrip(ViewPager pager) {
+        this.pager = pager;
+    }
 
     @Override
     public int getPageIconRedId() {
@@ -88,6 +100,13 @@ public class PostFragment extends TabPagerFragment {
                     return postStepFragment;
                 } else {
                     previewFragment = PreviewFragment.newInstance(issue, wizard);
+                    previewFragment.setOnPreviewFinishListener(new PreviewFragment.OnPreviewFinishListener() {
+                        @Override
+                        public void OnPreviewFinish() {
+                            PostFragment.this.pager.setCurrentItem(0);
+//                            initWizard();
+                        }
+                    });
                     return previewFragment;
                 }
             }

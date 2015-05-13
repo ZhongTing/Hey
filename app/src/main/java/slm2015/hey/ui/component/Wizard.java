@@ -160,4 +160,8 @@ public class Wizard extends FrameLayout {
     public void back() {
         this.setCurrentStep(this.currentStep - 1);
     }
+
+    public void reset() {
+        this.setCurrentStep(1);
+    }
 }
