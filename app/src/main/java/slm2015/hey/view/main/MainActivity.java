@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.R;
-import slm2015.hey.ui.tabsswipe.NewFunnyWatchFragment;
 import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.tabs.post.PostFragment;
 import slm2015.hey.view.tabs.watch.WatchFragment;
 
 public class MainActivity extends FragmentActivity {
     private List<TabPagerFragment> fragments;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,9 +26,9 @@ public class MainActivity extends FragmentActivity {
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
 
         this.fragments = new ArrayList<>();
-        this.fragments.add(new NewFunnyWatchFragment(pager));
+        this.fragments.add(WatchFragment.newInstance(pager));
+//        this.fragments.add(new NewFunnyWatchFragment(pager));
         this.fragments.add(new PostFragment());
-        this.fragments.add(new WatchFragment());
 
         pager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragments));
         tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

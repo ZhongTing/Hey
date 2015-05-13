@@ -19,7 +19,7 @@
             android:layout_height="fill_parent"
             android:id="@+id/card_frame"
             android:gravity="center_horizontal"
-            android:alpha="1"></RelativeLayout>
+            android:alpha="1" />
 
         <!--</RelativeLayout>-->
 

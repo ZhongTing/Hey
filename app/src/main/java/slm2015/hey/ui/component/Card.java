@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
+import slm2015.hey.ui.util.UiUtility;
 
 public class Card extends FrameLayout {
+    private final int CARD_MARGIN_TOP = 70;
 
     private TextView subjectTextView;
     private TextView descriptionTextView;
@@ -23,23 +25,6 @@ public class Card extends FrameLayout {
     private View view;
     private Button imagePass;
     private Button imageLike;
-
-    public void setImageLike(Button imageLike) {
-        this.imageLike = imageLike;
-    }
-
-    public void setImagePass(Button imagePass) {
-        this.imagePass = imagePass;
-    }
-
-    public Button getImageLike() {
-        return imageLike;
-    }
-
-    public Button getImagePass() {
-
-        return imagePass;
-    }
 
     public Card(Context context) {
         super(context);
@@ -56,11 +41,34 @@ public class Card extends FrameLayout {
         this.init();
     }
 
+    public Button getImageLike() {
+        return imageLike;
+    }
+
+    public void setImageLike(Button imageLike) {
+        this.imageLike = imageLike;
+    }
+
+    public Button getImagePass() {
+
+        return imagePass;
+    }
+
+    public void setImagePass(Button imagePass) {
+        this.imagePass = imagePass;
+    }
+
     private void init() {
         //preview in edit mode;
         if (isInEditMode()) {
             inflate(this.getContext(), R.layout.card, this);
         }
+    }
+
+    private void initMargin() {
+        int marginTop = UiUtility.dpiToPixel(CARD_MARGIN_TOP, getResources());
+        int others = UiUtility.dpiToPixel(0, getResources());
+        this.setMargin(others, marginTop, others, others);
     }
 
     public void assignIssue(Issue issue) {
@@ -77,6 +85,51 @@ public class Card extends FrameLayout {
         }
         this.findView(this.view, issue);
         this.bindEvent();
+
+        this.initMargin();
+    }
+
+    public void initialImageLike() {
+        final Button imageLike = new Button(this.getContext());
+        imageLike.setLayoutParams(new LinearLayout.LayoutParams(100, 50));
+        imageLike.setBackgroundDrawable(getResources().getDrawable(
+                R.drawable.like));
+        imageLike.setX(this.getX());
+        imageLike.setY(this.getY() + UiUtility.dpiToPixel(110, getResources()));
+        imageLike.setAlpha(0);
+        imageLike.setRotation(-45);
+        imageLike.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                //your like action code write here
+            }
+        });
+        this.addView(imageLike);
+        this.setImageLike(imageLike);
+    }
+
+    public void initialImagePass() {
+        final Button imagePass = new Button(this.getContext());
+        imagePass.setLayoutParams(new LinearLayout.LayoutParams(100, 50));
+        imagePass.setBackgroundDrawable(getResources().getDrawable(
+                R.drawable.soso));
+
+        imagePass.setX(this.getX() + UiUtility.dpiToPixel(240, getResources()));
+        imagePass.setY(this.getY() + UiUtility.dpiToPixel(110, getResources()));
+        imagePass.setRotation(45);
+        imagePass.setAlpha(0);
+        imagePass.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                //your pass action code write here
+            }
+        });
+        this.addView(imagePass);
+        this.setImagePass(imagePass);
     }
 
     public Bitmap getImage() {
