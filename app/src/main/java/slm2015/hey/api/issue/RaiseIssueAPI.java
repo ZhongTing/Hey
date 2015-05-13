@@ -6,12 +6,12 @@ import slm2015.hey.entity.Issue;
 
 public class RaiseIssueAPI extends PostBase {
     public RaiseIssueAPI(Issue issue) {
-        super(APIManager.HEY_SERVER_BASE_URL, "/api/core/raise");
+        super(APIManager.HEY_SERVER_BASE_URL, "/api/issue/raise");
 
         this.setHeader("Authorization", APIManager.getInstance().getAccessToken());
 
-        this.setParam("actor", issue.getSubject());
-        this.setParam("event", issue.getDescription());
+        this.setParam("subject", issue.getSubject());
+        this.setParam("description", issue.getDescription());
         if (!issue.getPlace().isEmpty())
             this.setParam("place", issue.getPlace());
 
