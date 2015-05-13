@@ -82,7 +82,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         this.screenCenter = this.windowWidth / 2;
 
         initialBaseCard();
-        showLoadedCard();
+        refresh();
     }
 
     private void showLoadedCard() {
@@ -97,6 +97,9 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
             this.cardFrame.requestLayout();
             refreshAnimation(card);
             this.cardDeck.add(card);
+            
+        } else {
+            this.setAllButtonEnable(true);
         }
     }
 
