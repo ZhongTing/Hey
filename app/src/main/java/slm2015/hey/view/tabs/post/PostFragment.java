@@ -80,7 +80,6 @@ public class PostFragment extends TabPagerFragment {
                                     break;
                                 case PLACE:
                                     issue.setPlace(selectedTerm);
-                                    previewFragment.reassignIssue(issue);
                                     break;
                             }
                         }
@@ -93,7 +92,7 @@ public class PostFragment extends TabPagerFragment {
             }
 
             @Override
-            public int getCount() {
+            public int getActualCount() {
                 return indicateTexts.length;
             }
         });

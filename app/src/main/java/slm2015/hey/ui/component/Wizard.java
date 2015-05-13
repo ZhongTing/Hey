@@ -60,7 +60,6 @@ public class Wizard extends FrameLayout {
         this.viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -78,7 +77,7 @@ public class Wizard extends FrameLayout {
     public void setAdaptor(WizardAdaptor wizardAdaptor) {
         this.adaptor = wizardAdaptor;
         this.viewPager.setAdapter(this.adaptor);
-        for (int i = 0; i < wizardAdaptor.getCount(); i++) {
+        for (int i = 0; i < wizardAdaptor.getActualCount(); i++) {
             this.addStep(wizardAdaptor.getStepIndicateText(i));
         }
         setCurrentStep(1);
@@ -121,12 +120,13 @@ public class Wizard extends FrameLayout {
         }
 
         this.currentStep = step;
+        ((WizardAdaptor) this.viewPager.getAdapter()).notifyNewCount(step);
         this.viewPager.setCurrentItem(step - 1, true);
 
         //set active
         for (int i = 0; i < totalSteps; i++) {
-            StepIndicator.Status status = i < step ? StepIndicator.Status.DONE: StepIndicator.Status.INACTIVE;
-            status = i == step -1 ? StepIndicator.Status.CURRENT : status;
+            StepIndicator.Status status = i < step ? StepIndicator.Status.DONE : StepIndicator.Status.INACTIVE;
+            status = i == step - 1 ? StepIndicator.Status.CURRENT : status;
             StepIndicator stepIndicator = this.stepIndicatorStack.get(i);
             stepIndicator.setStatus(status);
             stepIndicator.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
@@ -159,5 +159,9 @@ public class Wizard extends FrameLayout {
 
     public void back() {
         this.setCurrentStep(this.currentStep - 1);
+    }
+
+    public int getCurrentStep() {
+        return currentStep;
     }
 }
