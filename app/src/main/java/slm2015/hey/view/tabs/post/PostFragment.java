@@ -104,7 +104,7 @@ public class PostFragment extends TabPagerFragment {
                         @Override
                         public void OnPreviewFinish() {
                             PostFragment.this.pager.setCurrentItem(0);
-//                            initWizard();
+                            initWizard();
                         }
                     });
                     return previewFragment;
