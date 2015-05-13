@@ -92,6 +92,9 @@ public class PostFragment extends TabPagerFragment {
                                     break;
                                 case PLACE:
                                     issue.setPlace(selectedTerm);
+                                    if (previewFragment != null) {
+                                        previewFragment.reassignCard(issue);
+                                    }
                                     break;
                             }
                         }

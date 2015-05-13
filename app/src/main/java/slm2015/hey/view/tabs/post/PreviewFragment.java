@@ -105,4 +105,9 @@ public class PreviewFragment extends Fragment {
     public interface OnPreviewFinishListener {
         public void OnPreviewFinish();
     }
+
+    public void reassignCard(Issue issue) {
+        this.issue = issue;
+        this.card.assignIssue(issue);
+    }
 }
