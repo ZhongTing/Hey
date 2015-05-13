@@ -73,11 +73,11 @@ public class TermAdapter extends BaseAdapter implements Filterable {
                         filterList.get(position).setIsSelected(true);
                         if (filterList.get(position).needToAdd())
                             termList.add(filterList.get(position));
-                        filterList = termList;
-                        notifyDataSetChanged();
                         if (termSelectedListener != null) {
                             termSelectedListener.OnTermSelected(filterList.get(position).getText());
                         }
+                        filterList = termList;
+                        notifyDataSetChanged();
                     }
                 }
             });
