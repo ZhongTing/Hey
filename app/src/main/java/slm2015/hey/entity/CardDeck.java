@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import slm2015.hey.core.issue.IssueLoader;
-import slm2015.hey.ui.component.Card;
+import slm2015.hey.view.component.Card;
 
 public class CardDeck {
     private final int CARD_MAX_AMOUNT = 5;
@@ -28,8 +28,7 @@ public class CardDeck {
 
     private void iniCardQueue(boolean initial) {
         for (int count = 0; count < this.CARD_MAX_AMOUNT; count++) {
-            Card card = null;
-            card = new Card(this.activity);
+            Card card = new Card(this.activity);
             Issue temp = new Issue();
             card.assignIssue(temp);
             card.initDefaultMargin();
@@ -108,7 +107,7 @@ public class CardDeck {
     }
 
     public interface OnDataSetChanged {
-        public void notifyTest();
+        void notifyTest();
     }
 
     public void setIniCardXY(float initCardX, float initCardY) {
