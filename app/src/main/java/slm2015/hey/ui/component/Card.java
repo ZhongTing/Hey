@@ -151,6 +151,10 @@ public class Card extends FrameLayout {
         //todo bind event here
     }
 
+    public Issue getIssue() {
+        return issue;
+    }
+
     public void setMargin(int left, int top, int right, int bottom) {
         LinearLayout frame = (LinearLayout) this.view.findViewById(R.id.frame);
         FrameLayout.LayoutParams l = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);

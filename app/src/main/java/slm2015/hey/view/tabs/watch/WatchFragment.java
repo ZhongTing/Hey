@@ -16,12 +16,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import java.util.ArrayList;
-import java.util.List;
+import junit.framework.Assert;
 
 import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.issue.IssueLoader;
+import slm2015.hey.entity.CardDeck;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.ui.component.Card;
 import slm2015.hey.ui.util.UiUtility;
@@ -34,11 +34,11 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private final int REFRESH_ANIMATION_DURATION = 200;
 
     private ViewPager pager;
-
     private ImageButton likeButton, dislikeButton, refreshButton;
     private RelativeLayout cardFrame;
-    private List<Card> cardDeck = new ArrayList<>();
+    //    private List<Card> cardDeck = new ArrayList<>();
     private IssueLoader issueLoader;
+    private CardDeck deck;
 
     private int xCord, yCord, movedXCord, movedYCord, pressX, pressY, card_iniX, card_iniY;
     private float initCardX, initCardY;
@@ -82,26 +82,72 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         this.screenCenter = this.windowWidth / 2;
 
         initialBaseCard();
+
+        this.deck = new CardDeck(this.issueLoader, this.getActivity(), this.initCardX, this.initCardY);
+        this.deck.setOnDataSetChanged(new CardDeck.OnDataSetChanged() {
+            @Override
+            public void notifyDatasetChangned(Card card) {
+                WatchFragment.this.cardFrame.addView(card, 5);
+                float x = card.getX();
+                float y = card.getY();
+                float width = card.getWidth();
+                float height = card.getHeight();
+//                WatchFragment.this.cardFrame.invalidate();
+//                WatchFragment.this.cardFrame.requestLayout();
+//                cardFrame.removeAllViews();
+//                for(int i = 0; i < deck.getCardQueue().size(); i++){
+//                    Card c = deck.getCardQueue().get(i);
+//                    cardFrame.addView(c);
+//                    c.bringToFront();
+//                    cardFrame.requestLayout();
+//                }
+            }
+
+            @Override
+            public void notifyTest() {
+                for (int i = 5; i < 10; i++) {
+                    if (deck.getCardQueue().size() > i - 5) {
+                        WatchFragment.this.cardFrame.removeViewAt(i);
+//                                ((ViewGroup) card.getParent()).removeView(card);
+                        Card addCard = deck.getCardQueue().get(i - 5);
+                        WatchFragment.this.cardFrame.addView(addCard, i);
+                    }
+                }
+            }
+        });
         refresh();
     }
 
-    private void showLoadedCard() {
-        if (this.issueLoader.getIssueQueue().size() > 0) {
-            final Card card = new Card(this.getActivity());
-            card.assignIssue(this.issueLoader.getIssueQueue().poll());
-            card.initDefaultMargin();
-            card.initialImageLike();
-            card.initialImagePass();
+    int i = 0;
 
+    private void showLoadedCard(boolean resetI) {
+        i = resetI ? 0 : ++i;
+        while (this.issueLoader.getNewIssues().size() > 5)
+            this.issueLoader.pushToIssues();
+        if (this.issueLoader.getNewIssues().size() > 0) {
+            Issue issue = this.issueLoader.getNewIssues().poll();
+            this.issueLoader.getIssues().add(issue);
+            final Card card = findCard(issue);
+            if (card.getParent() != null)
+                ((ViewGroup) card.getParent()).removeView(card);
             this.cardFrame.addView(card);
             card.bringToFront();
             this.cardFrame.requestLayout();
             refreshAnimation(card);
-            this.cardDeck.add(card);
-
         } else {
             this.setAllButtonEnable(true);
         }
+    }
+
+    //in addition to load the correct card in deck, need to use issue to find the correct card
+    private Card findCard(Issue issue) {
+        for (int i = 0; i < this.deck.getCardQueue().size(); i++) {
+            Card card = this.deck.getCardQueue().get(i);
+            if (card.getIssue() == issue)
+                return card;
+        }
+        Assert.assertFalse(true);
+        return null;
     }
 
     public void refreshAnimation(Card card) {
@@ -163,8 +209,8 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         this.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cardDeck.size() > 0) {
-                    like(cardDeck.get(cardDeck.size() - 1));
+                if (WatchFragment.this.deck.getCardQueue().size() > 0) {
+                    like(deck.getCardQueue().get(deck.getCardQueue().size() - 1));
                 }
             }
         });
@@ -173,7 +219,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private void like(Card card) {
         final boolean LIKE = true;
         playMoveAnimation(card, LIKE);
-        removeCard(card, LIKE);
     }
 
     private void initialDislikeButton(View view) {
@@ -181,8 +226,8 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         this.dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (cardDeck.size() > 0) {
-                    dislike(cardDeck.get(cardDeck.size() - 1));
+                if (WatchFragment.this.deck.getCardQueue().size() > 0) {
+                    dislike(deck.getCardQueue().get(deck.getCardQueue().size() - 1));
                 }
             }
         });
@@ -191,10 +236,9 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private void dislike(Card card) {
         final boolean DISLIKE = false;
         playMoveAnimation(card, DISLIKE);
-        removeCard(card, DISLIKE);
     }
 
-    private void playMoveAnimation(Card card, final boolean like) {
+    private void playMoveAnimation(final Card card, final boolean like) {
         final int posX = like ? 500 : -500;
         float card_x = card.getRotationX();
         float card_y = card.getRotationY();
@@ -210,6 +254,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                removeCard(card, like);
                 setAllEvent(true);
                 if (like) {
                     //todo save like card
@@ -260,13 +305,13 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        if (this.issueLoader.getIssueQueue().size() > 0) {
-            showLoadedCard();
+        if (i < this.deck.getCardQueue().size() - 1) {
+            showLoadedCard(false);
         } else {
             setAllEvent(true);
             isRefresh = false;
-            if (this.cardDeck.size() > 0)
-                this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
+            if (this.deck.getCardQueue().size() > 0)
+                this.deck.getCardQueue().get(this.deck.getCardQueue().size() - 1).setOnTouchListener(this);
         }
     }
 
@@ -276,19 +321,22 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     }
 
     private void removeCard(Card card, boolean like) {
-        // this.card_frame.removeView(card);
-        this.cardDeck.remove(card);
-        if (this.cardDeck.size() > 0)
-            this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
+//         this.cardFrame.removeView(card);
+//        this.cardDeck.remove(card);
+//        if (this.cardDeck.size() > 0)
+//            this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
+        this.deck.operation();
+        if (this.deck.getCardQueue().size() > 0)
+            this.deck.getCardQueue().get(this.deck.getCardQueue().size() - 1).setOnTouchListener(this);
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         pager.requestDisallowInterceptTouchEvent(true);
-        if (this.cardDeck.size() <= 0 || this.isRefresh)
+        if (this.deck.getCardQueue().size() <= 0 || this.isRefresh)
             return false;
-        int index = this.cardDeck.size() - 1;
-        Card card = this.cardDeck.get(index);
+        int index = this.deck.getCardQueue().size() - 1;
+        Card card = this.deck.getCardQueue().get(index);
         xCord = (int) card.getX();
         yCord = (int) card.getY();
         switch (event.getAction()) {
@@ -385,6 +433,14 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
     @Override
     public void onSubjectChanged() {
-        showLoadedCard();
+        if (this.issueLoader.getNewIssues().size() > 0) {
+            this.deck.reloadDeck();
+            showLoadedCard(true);
+        } else {
+            setAllEvent(true);
+            isRefresh = false;
+            if (this.deck.getCardQueue().size() > 0)
+                this.deck.getCardQueue().get(this.deck.getCardQueue().size() - 1).setOnTouchListener(this);
+        }
     }
 }
