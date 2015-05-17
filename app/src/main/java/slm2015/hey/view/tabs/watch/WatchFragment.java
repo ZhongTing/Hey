@@ -83,7 +83,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
         initialBaseCard();
 
-        this.deck = new CardDeck(this.issueLoader, this.getActivity(), this);
+        this.deck = new CardDeck(this.issueLoader, this.getActivity());
         this.deck.setOnDataSetChanged(new CardDeck.OnDataSetChanged() {
             @Override
             public void notifyTest() {

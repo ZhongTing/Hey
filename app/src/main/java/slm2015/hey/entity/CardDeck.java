@@ -19,13 +19,10 @@ public class CardDeck {
     private ArrayList<Card> cardQueue = new ArrayList<>();
     private float initCardX, initCardY;
     private OnDataSetChanged onDataSetChanged;
-    private View.OnTouchListener onTouchListener;
-    private Card popCard;
 
-    public CardDeck(IssueLoader issueLoader, Activity activity, View.OnTouchListener onTouchListener) {
+    public CardDeck(IssueLoader issueLoader, Activity activity) {
         this.issueLoader = issueLoader;
         this.activity = activity;
-        this.onTouchListener = onTouchListener;
         iniCardQueue(INITIAL);
     }
 
@@ -83,10 +80,6 @@ public class CardDeck {
                 onDataSetChanged.notifyTest();
             }
         }
-    }
-
-    public void popCard(){
-        this.popCard = pop();
     }
 
     private void iniCard(Card addCard) {

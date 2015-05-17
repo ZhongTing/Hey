@@ -25,10 +25,13 @@ public class Card extends FrameLayout {
     private View view;
     private Button imagePass;
     private Button imageLike;
+    private int tagWidth, tagHeight;
 
     public Card(Context context) {
         super(context);
         this.init();
+        this.tagWidth = UiUtility.dpiToPixel(100, getResources());
+        this.tagHeight = UiUtility.dpiToPixel(50, getResources());
     }
 
     public Card(Context context, AttributeSet attrs) {
@@ -90,11 +93,11 @@ public class Card extends FrameLayout {
 
     public void initialImageLike() {
         final Button imageLike = new Button(this.getContext());
-        imageLike.setLayoutParams(new LinearLayout.LayoutParams(100, 50));
+        imageLike.setLayoutParams(new LinearLayout.LayoutParams(this.tagWidth, this.tagHeight));
         imageLike.setBackgroundDrawable(getResources().getDrawable(
                 R.drawable.like));
-        imageLike.setX(this.getX());
-        imageLike.setY(this.getY() + UiUtility.dpiToPixel(110, getResources()));
+        imageLike.setX(0);
+        imageLike.setY(UiUtility.dpiToPixel(110, getResources()));
         imageLike.setAlpha(0);
         imageLike.setRotation(-45);
         imageLike.setOnClickListener(new View.OnClickListener() {
@@ -111,12 +114,12 @@ public class Card extends FrameLayout {
 
     public void initialImagePass() {
         final Button imagePass = new Button(this.getContext());
-        imagePass.setLayoutParams(new LinearLayout.LayoutParams(100, 50));
+        imagePass.setLayoutParams(new LinearLayout.LayoutParams(this.tagWidth, this.tagHeight));
         imagePass.setBackgroundDrawable(getResources().getDrawable(
                 R.drawable.soso));
 
-        imagePass.setX(this.getX() + UiUtility.dpiToPixel(240, getResources()));
-        imagePass.setY(this.getY() + UiUtility.dpiToPixel(110, getResources()));
+        imagePass.setX(UiUtility.dpiToPixel(210, getResources()));
+        imagePass.setY(UiUtility.dpiToPixel(110, getResources()));
         imagePass.setRotation(45);
         imagePass.setAlpha(0);
         imagePass.setOnClickListener(new View.OnClickListener() {
