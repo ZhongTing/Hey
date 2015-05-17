@@ -21,7 +21,9 @@ public abstract class WizardAdaptor extends FragmentPagerAdapter {
     }
 
     public void notifyNewCount(int count) {
-        this.count = count;
-        notifyDataSetChanged();
-    };
+        if (count > this.count) {
+            this.count = count;
+            notifyDataSetChanged();
+        }
+    }
 }
