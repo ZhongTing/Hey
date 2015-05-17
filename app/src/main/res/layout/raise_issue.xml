@@ -28,12 +28,12 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="50dp"
+            android:gravity="center">
 
             <ImageButton
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/locationButton"
                 android:background="#00000000"
                 android:src="@drawable/location"
@@ -41,18 +41,18 @@
                 android:layout_margin="5dp"/>
 
             <ImageButton
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:id="@+id/cancelButton"
                 android:background="#00000000"
                 android:src="@drawable/post_no"
-                android:layout_toRightOf="@id/locationButton"
                 android:scaleType="centerCrop"
+                android:layout_toRightOf="@id/locationButton"
                 android:layout_margin="5dp"/>
 
             <ImageButton
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:id="@+id/raiseButton"
                 android:src="@drawable/post_yes"
                 android:background="#00000000"
@@ -61,8 +61,8 @@
                 android:layout_margin="5dp"/>
 
             <ImageButton
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:id="@+id/cameraButton"
                 android:src="@drawable/post_camera"
                 android:background="#00000000"
