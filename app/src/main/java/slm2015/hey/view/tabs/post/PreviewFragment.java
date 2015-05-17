@@ -14,8 +14,8 @@ import android.widget.Toast;
 import slm2015.hey.R;
 import slm2015.hey.core.issue.IssueHandler;
 import slm2015.hey.entity.Issue;
-import slm2015.hey.ui.component.Card;
-import slm2015.hey.ui.component.Wizard;
+import slm2015.hey.view.component.Card;
+import slm2015.hey.view.component.Wizard;
 
 public class PreviewFragment extends Fragment {
     private ImageButton cameraButton;

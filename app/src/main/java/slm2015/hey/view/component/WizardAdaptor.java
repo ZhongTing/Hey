@@ -1,4 +1,4 @@
-package slm2015.hey.ui.component;
+package slm2015.hey.view.component;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;

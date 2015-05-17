@@ -19,7 +19,7 @@ import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.term.TermLoader;
 import slm2015.hey.core.term.TermType;
-import slm2015.hey.ui.component.Wizard;
+import slm2015.hey.view.component.Wizard;
 
 public class PostStepFragment extends Fragment implements Observer {
     private Wizard wizard;

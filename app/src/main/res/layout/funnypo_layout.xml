@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="@color/beige">
 
-    <slm2015.hey.ui.component.Wizard
+    <slm2015.hey.view.component.Wizard
         android:id="@+id/post_wizard"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -23,8 +23,8 @@ import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.entity.Issue;
-import slm2015.hey.ui.component.Card;
-import slm2015.hey.ui.util.UiUtility;
+import slm2015.hey.view.component.Card;
+import slm2015.hey.view.util.UiUtility;
 import slm2015.hey.view.tabs.TabPagerFragment;
 
 public class WatchFragment extends TabPagerFragment implements Animation.AnimationListener, View.OnTouchListener, Observer {
