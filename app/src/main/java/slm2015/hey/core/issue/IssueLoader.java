@@ -13,7 +13,6 @@ import slm2015.hey.entity.Issue;
 public class IssueLoader extends Subject {
     private IssueHandler issueHandler;
     private Integer lastIssueId = null;
-    private Queue<Issue> issueQueue = new LinkedList<>();
     private ArrayList<Issue> issues = new ArrayList<>();
     private Queue<Issue> newIssues = new LinkedList<>();
 
@@ -28,18 +27,12 @@ public class IssueLoader extends Subject {
                 if (issues.size() > 0) {
                     Issue lastIssue = issues.get(issues.size() - 1);
                     IssueLoader.this.lastIssueId = lastIssue.getId();
-                    IssueLoader.this.issueQueue.addAll(issues);
-//                    IssueLoader.this.issues.addAll(issues);
                     IssueLoader.this.newIssues.addAll(issues);
                 }
 
                 notifySubjectChanged();
             }
         });
-    }
-
-    public Queue<Issue> getIssueQueue() {
-        return issueQueue;
     }
 
     public ArrayList<Issue> getIssues() {
@@ -51,7 +44,7 @@ public class IssueLoader extends Subject {
     }
 
     //poll from new Issues to issues
-    public void pushToIssues(){
+    public void pushToIssues() {
         Issue issue = this.newIssues.poll();
         this.issues.add(issue);
     }
