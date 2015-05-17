@@ -11,8 +11,6 @@ import slm2015.hey.view.component.Card;
 
 public class CardDeck {
     private final int CARD_MAX_AMOUNT = 5;
-    private final int REFRESH_ANIMATION_DURATION = 200;
-    private final boolean INITIAL = true;
 
     private IssueLoader issueLoader;
     private Activity activity;
@@ -23,10 +21,10 @@ public class CardDeck {
     public CardDeck(IssueLoader issueLoader, Activity activity) {
         this.issueLoader = issueLoader;
         this.activity = activity;
-        iniCardQueue(INITIAL);
+        iniCardQueue();
     }
 
-    private void iniCardQueue(boolean initial) {
+    private void iniCardQueue() {
         for (int count = 0; count < this.CARD_MAX_AMOUNT; count++) {
             Card card = new Card(this.activity);
             Issue temp = new Issue();
