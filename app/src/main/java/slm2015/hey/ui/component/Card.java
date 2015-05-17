@@ -75,6 +75,7 @@ public class Card extends FrameLayout {
         this.issue = issue;
         int layoutId = this.issue.getImage() == null ? R.layout.card_no_pic : R.layout.card;
         this.removeAllViews();
+        setRotation(0);
         this.view = inflate(this.getContext(), layoutId, this);
         this.subjectTextView = (TextView) this.view.findViewById(R.id.title);
         this.descriptionTextView = (TextView) this.view.findViewById(R.id.description);

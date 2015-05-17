@@ -1,6 +1,8 @@
 package slm2015.hey.entity;
 
 import android.app.Activity;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -17,12 +19,13 @@ public class CardDeck {
     private ArrayList<Card> cardQueue = new ArrayList<>();
     private float initCardX, initCardY;
     private OnDataSetChanged onDataSetChanged;
+    private View.OnTouchListener onTouchListener;
+    private Card popCard;
 
-    public CardDeck(IssueLoader issueLoader, Activity activity, float initCardX, float initCardY) {
+    public CardDeck(IssueLoader issueLoader, Activity activity, View.OnTouchListener onTouchListener) {
         this.issueLoader = issueLoader;
         this.activity = activity;
-        this.initCardX = initCardX;
-        this.initCardY = initCardY;
+        this.onTouchListener = onTouchListener;
         iniCardQueue(INITIAL);
     }
 
@@ -49,6 +52,7 @@ public class CardDeck {
 
     private Card pop() {
         Card card = this.cardQueue.get(this.cardQueue.size() - 1);
+        ((ViewGroup) card.getParent()).removeView(card);
         card.setOnTouchListener(null);
         this.cardQueue.remove(this.cardQueue.size() - 1);
         return card;
@@ -71,20 +75,27 @@ public class CardDeck {
         int index = this.issueLoader.getIssues().size() - this.cardQueue.size() - 1;
         this.issueLoader.getIssues().remove(this.issueLoader.getIssues().size() - 1);
         Card card = pop();
-        card = new Card(this.activity);
         if (index > 0) {
             Issue issue = this.issueLoader.getIssues().get(index);
+            iniCard(card);
             reassignIssue(card, issue, 0);
             if (onDataSetChanged != null) {
-//                onDataSetChanged.notifyDatasetChangned(card);
                 onDataSetChanged.notifyTest();
             }
-//            card.assignIssue(issue);
-//            card.initDefaultMargin();
-//            card.initialImageLike();
-//            card.initialImagePass();
-//            this.cardQueue.add(card);
         }
+    }
+
+    public void popCard(){
+        this.popCard = pop();
+    }
+
+    private void iniCard(Card addCard) {
+        addCard.setX(this.initCardX);
+        addCard.setY(this.initCardY);
+        addCard.initialImageLike();
+        addCard.initialImagePass();
+        if (addCard.getVisibility() != View.VISIBLE)
+            addCard.setVisibility(View.VISIBLE);
     }
 
     private void reassignIssue(Card card, Issue issue, int addTo) {
@@ -104,8 +115,11 @@ public class CardDeck {
     }
 
     public interface OnDataSetChanged {
-        public void notifyDatasetChangned(Card card);
-
         public void notifyTest();
+    }
+
+    public void setIniCardXY(float initCardX, float initCardY) {
+        this.initCardX = initCardX;
+        this.initCardY = initCardY;
     }
 }

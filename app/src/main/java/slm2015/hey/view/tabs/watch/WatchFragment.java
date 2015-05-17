@@ -83,34 +83,21 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
         initialBaseCard();
 
-        this.deck = new CardDeck(this.issueLoader, this.getActivity(), this.initCardX, this.initCardY);
+        this.deck = new CardDeck(this.issueLoader, this.getActivity(), this);
         this.deck.setOnDataSetChanged(new CardDeck.OnDataSetChanged() {
-            @Override
-            public void notifyDatasetChangned(Card card) {
-                WatchFragment.this.cardFrame.addView(card, 5);
-                float x = card.getX();
-                float y = card.getY();
-                float width = card.getWidth();
-                float height = card.getHeight();
-//                WatchFragment.this.cardFrame.invalidate();
-//                WatchFragment.this.cardFrame.requestLayout();
-//                cardFrame.removeAllViews();
-//                for(int i = 0; i < deck.getCardQueue().size(); i++){
-//                    Card c = deck.getCardQueue().get(i);
-//                    cardFrame.addView(c);
-//                    c.bringToFront();
-//                    cardFrame.requestLayout();
-//                }
-            }
-
             @Override
             public void notifyTest() {
                 for (int i = 5; i < 10; i++) {
                     if (deck.getCardQueue().size() > i - 5) {
-                        WatchFragment.this.cardFrame.removeViewAt(i);
-//                                ((ViewGroup) card.getParent()).removeView(card);
+//                        WatchFragment.this.cardFrame.removeViewAt(i);
                         Card addCard = deck.getCardQueue().get(i - 5);
+                        if (addCard.getParent() != null)
+                            ((ViewGroup) addCard.getParent()).removeView(addCard);
                         WatchFragment.this.cardFrame.addView(addCard, i);
+                        float x = addCard.getX();
+                        float y = addCard.getY();
+                        float width = addCard.getWidth();
+                        float height = addCard.getHeight();
                     }
                 }
             }
@@ -118,10 +105,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         refresh();
     }
 
-    int i = 0;
-
     private void showLoadedCard(boolean resetI) {
-        i = resetI ? 0 : ++i;
         while (this.issueLoader.getNewIssues().size() > 5)
             this.issueLoader.pushToIssues();
         if (this.issueLoader.getNewIssues().size() > 0) {
@@ -169,6 +153,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
             Card card = new Card(this.getActivity());
             card.assignIssue(issue);
             card.initDefaultMargin();
+
             if (i == 0)
                 card.setRotation(-1);
             else if (i == 1)
@@ -305,7 +290,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        if (i < this.deck.getCardQueue().size() - 1) {
+        if (this.issueLoader.getNewIssues().size() > 0) {
             showLoadedCard(false);
         } else {
             setAllEvent(true);
@@ -345,6 +330,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
                 if (this.allEvent) {
                     card_iniX = (int) card.getX();
                     card_iniY = (int) card.getY();
+                    deck.setIniCardXY(card_iniX, card_iniY);
                 }
                 pressX = (int) event.getX();
                 pressY = (int) event.getY();
