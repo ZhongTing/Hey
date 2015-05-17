@@ -11,7 +11,7 @@
         android:layout_height="40dp"
         android:orientation="horizontal">
 
-        <slm2015.hey.ui.component.StepIndicator
+        <slm2015.hey.view.component.StepIndicator
             android:id="@+id/preview_step_indicator"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -22,7 +22,7 @@
             app:status="inactive"
             app:text="預覽" />
 
-        <slm2015.hey.ui.component.StepIndicator
+        <slm2015.hey.view.component.StepIndicator
             android:id="@+id/location_step_indicator"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -33,7 +33,7 @@
             app:status="inactive"
             app:text="地點" />
 
-        <slm2015.hey.ui.component.StepIndicator
+        <slm2015.hey.view.component.StepIndicator
             android:id="@+id/description_step_indicator"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -44,7 +44,7 @@
             app:status="current"
             app:text="描述" />
 
-        <slm2015.hey.ui.component.StepIndicator
+        <slm2015.hey.view.component.StepIndicator
             android:id="@+id/subject_step_indicator"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

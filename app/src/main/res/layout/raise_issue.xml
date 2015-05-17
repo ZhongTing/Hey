@@ -16,14 +16,14 @@
         android:layout_marginTop="50dp"
         android:orientation="vertical">
 
-        <slm2015.hey.ui.component.Card
+        <slm2015.hey.view.component.Card
             android:id="@+id/preview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:alpha="1"></slm2015.hey.ui.component.Card>
+            android:alpha="1"></slm2015.hey.view.component.Card>
 
         <RelativeLayout
             android:layout_width="fill_parent"

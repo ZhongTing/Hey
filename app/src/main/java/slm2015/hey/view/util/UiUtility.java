@@ -1,4 +1,4 @@
-package slm2015.hey.ui.util;
+package slm2015.hey.view.util;
 
 import android.content.res.Resources;
 import android.util.TypedValue;

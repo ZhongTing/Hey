@@ -1,4 +1,4 @@
-package slm2015.hey.ui.component;
+package slm2015.hey.view.component;
 
 import android.content.Context;
 import android.content.res.TypedArray;

@@ -1,4 +1,4 @@
-package slm2015.hey.ui.component;
+package slm2015.hey.view.component;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -21,7 +21,9 @@ public abstract class WizardAdaptor extends FragmentPagerAdapter {
     }
 
     public void notifyNewCount(int count) {
-        this.count = count;
-        notifyDataSetChanged();
-    };
+        if (count > this.count) {
+            this.count = count;
+            notifyDataSetChanged();
+        }
+    }
 }

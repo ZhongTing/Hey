@@ -1,4 +1,4 @@
-package slm2015.hey.ui.component;
+package slm2015.hey.view.component;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
-import slm2015.hey.ui.util.UiUtility;
+import slm2015.hey.view.util.UiUtility;
 
 public class Card extends FrameLayout {
     private final int CARD_MARGIN_TOP = 70;

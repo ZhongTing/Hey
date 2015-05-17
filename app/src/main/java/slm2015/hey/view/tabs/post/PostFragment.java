@@ -12,8 +12,8 @@ import slm2015.hey.R;
 import slm2015.hey.core.term.TermLoader;
 import slm2015.hey.core.term.TermType;
 import slm2015.hey.entity.Issue;
-import slm2015.hey.ui.component.Wizard;
-import slm2015.hey.ui.component.WizardAdaptor;
+import slm2015.hey.view.component.Wizard;
+import slm2015.hey.view.component.WizardAdaptor;
 import slm2015.hey.view.tabs.TabPagerFragment;
 
 public class PostFragment extends TabPagerFragment {

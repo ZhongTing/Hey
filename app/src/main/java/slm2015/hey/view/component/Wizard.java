@@ -1,4 +1,4 @@
-package slm2015.hey.ui.component;
+package slm2015.hey.view.component;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
@@ -20,6 +20,7 @@ public class Wizard extends FrameLayout {
     private ViewPager viewPager;
     private WizardAdaptor adaptor;
     private int currentStep = 1;
+    private int currentStepBound = 1;
 
     public Wizard(Context context) {
         super(context);
@@ -77,6 +78,7 @@ public class Wizard extends FrameLayout {
     public void setAdaptor(WizardAdaptor wizardAdaptor) {
         this.adaptor = wizardAdaptor;
         this.viewPager.setAdapter(this.adaptor);
+        this.stepIndicatorStack.clear();
         for (int i = 0; i < wizardAdaptor.getActualCount(); i++) {
             this.addStep(wizardAdaptor.getStepIndicateText(i));
         }
@@ -115,7 +117,7 @@ public class Wizard extends FrameLayout {
     private void setCurrentStep(final int step) {
         int totalSteps = this.stepIndicatorStack.size();
         int totalStepWidth = 0;
-        if (step > totalSteps || step < 1) {
+        if (step > this.currentStepBound || step > totalSteps || step < 1) {
             return;
         }
 
@@ -154,7 +156,11 @@ public class Wizard extends FrameLayout {
     }
 
     public void next() {
-        this.setCurrentStep(this.currentStep + 1);
+        int nextStep = this.currentStep + 1;
+        if (nextStep > this.currentStepBound) {
+            this.currentStepBound = nextStep;
+        }
+        this.setCurrentStep(nextStep);
     }
 
     public void back() {
