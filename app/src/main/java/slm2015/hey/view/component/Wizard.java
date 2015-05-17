@@ -77,6 +77,7 @@ public class Wizard extends FrameLayout {
     public void setAdaptor(WizardAdaptor wizardAdaptor) {
         this.adaptor = wizardAdaptor;
         this.viewPager.setAdapter(this.adaptor);
+        this.stepIndicatorStack.clear();
         for (int i = 0; i < wizardAdaptor.getActualCount(); i++) {
             this.addStep(wizardAdaptor.getStepIndicateText(i));
         }
