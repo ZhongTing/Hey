@@ -2,7 +2,6 @@ package slm2015.hey.entity;
 
 import android.app.Activity;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -10,7 +9,7 @@ import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.view.component.Card;
 
 public class CardDeck {
-    private final int CARD_MAX_AMOUNT = 5;
+    public static final int CARD_MAX_AMOUNT = 10;
 
     private IssueLoader issueLoader;
     private Activity activity;
@@ -38,15 +37,20 @@ public class CardDeck {
 
 
     private Card poll() {
-        Card card = this.cardQueue.get(0);
-        card.setOnTouchListener(null);
-        this.cardQueue.remove(0);
+        Card card = null;
+        if (this.cardQueue.size() > 0) {
+            card = this.cardQueue.get(0);
+            card.setOnTouchListener(null);
+            this.cardQueue.remove(0);
+        } else {
+            card = new Card(this.activity);
+        }
         return card;
     }
 
-    private Card pop() {
+    public Card pop() {
         Card card = this.cardQueue.get(this.cardQueue.size() - 1);
-        ((ViewGroup) card.getParent()).removeView(card);
+//        ((ViewGroup) card.getParent()).removeView(card);
         card.setOnTouchListener(null);
         this.cardQueue.remove(this.cardQueue.size() - 1);
         return card;
@@ -65,12 +69,13 @@ public class CardDeck {
         }
     }
 
-    public void operation() {
+    public void operation(Card card) {
         int index = this.issueLoader.getIssues().size() - this.cardQueue.size() - 1;
-        this.issueLoader.getIssues().remove(this.issueLoader.getIssues().size() - 1);
-        Card card = pop();
-        if (index > 0) {
-            Issue issue = this.issueLoader.getIssues().get(index);
+        ArrayList<Issue> issues = this.issueLoader.getIssues();
+        if (issues.size() > 0)
+            issues.remove(issues.size() - 1);
+        if (index > 0 && index < issues.size() && issues.get(index) != null) {
+            Issue issue = issues.get(index);
             iniCard(card);
             reassignIssue(card, issue, 0);
             if (onDataSetChanged != null) {
@@ -111,5 +116,9 @@ public class CardDeck {
     public void setIniCardXY(float initCardX, float initCardY) {
         this.initCardX = initCardX;
         this.initCardY = initCardY;
+    }
+
+    public Card getLastCard() {
+        return this.cardQueue.size() > 0 ? this.cardQueue.get(this.cardQueue.size() - 1) : null;
     }
 }
