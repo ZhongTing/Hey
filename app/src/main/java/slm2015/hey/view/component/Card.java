@@ -25,7 +25,10 @@ public class Card extends FrameLayout {
     private View view;
     private Button imagePass;
     private Button imageLike;
+    private ImageView incognitoImageView;
     private int tagWidth, tagHeight;
+
+    private boolean incognito = false;
 
     public Card(Context context) {
         super(context);
@@ -83,6 +86,7 @@ public class Card extends FrameLayout {
         this.subjectTextView = (TextView) this.view.findViewById(R.id.title);
         this.descriptionTextView = (TextView) this.view.findViewById(R.id.description);
         this.positionTextView = (TextView) this.view.findViewById(R.id.location);
+        this.incognitoImageView = (ImageView) this.view.findViewById(R.id.incognito);
         if (issue.getImage() != null) {
             this.image = (ImageView) this.view.findViewById(R.id.image);
             this.image.setImageBitmap(issue.getImage());
@@ -164,5 +168,13 @@ public class Card extends FrameLayout {
         FrameLayout.LayoutParams l = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         l.setMargins(left, top, right, bottom);
         frame.setLayoutParams(l);
+    }
+
+    public void setIncognito(boolean incognito) {
+        this.incognito = incognito;
+        float alpha = incognito ? 0.7f : 1f;
+        setAlpha(alpha);
+        int visible = incognito ? View.VISIBLE : View.INVISIBLE;
+        this.incognitoImageView.setVisibility(visible);
     }
 }

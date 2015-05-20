@@ -18,6 +18,7 @@ import slm2015.hey.view.component.Card;
 import slm2015.hey.view.component.Wizard;
 
 public class PreviewFragment extends Fragment {
+    private ImageButton locationButton;
     private ImageButton cameraButton;
     private ImageButton cancelButton;
     private ImageButton raiseButton;
@@ -55,9 +56,21 @@ public class PreviewFragment extends Fragment {
     }
 
     private void initOnCreateView(View view) {
+        initializeLocationButton(view);
         initializeCameraButton(view);
         initializeCancelButton(view);
         initializeRaiseButton(view);
+    }
+
+    private void initializeLocationButton(View view) {
+        this.locationButton = (ImageButton) view.findViewById(R.id.locationButton);
+        this.locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationButton.setSelected(!locationButton.isSelected());
+                PreviewFragment.this.card.setIncognito(locationButton.isSelected());
+            }
+        });
     }
 
     private void initializeRaiseButton(View view) {

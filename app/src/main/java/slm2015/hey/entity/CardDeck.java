@@ -42,8 +42,6 @@ public class CardDeck {
             card = this.cardQueue.get(0);
             card.setOnTouchListener(null);
             this.cardQueue.remove(0);
-        } else {
-            card = new Card(this.activity);
         }
         return card;
     }
@@ -56,16 +54,27 @@ public class CardDeck {
         return card;
     }
 
+    private void checkDeckAmount() {
+        if(this.cardQueue.size() < CARD_MAX_AMOUNT){
+            for(int i = 0 ; i < this.issueLoader.getNewIssues().size(); i++){
+                this.cardQueue.add(new Card(this.activity));
+            }
+        }
+    }
+
     public void reloadDeck() {
         ArrayList<Issue> all = new ArrayList<>();
         all.addAll(this.issueLoader.getIssues());
         all.addAll(this.issueLoader.getNewIssues());
+        checkDeckAmount();
         for (int count = this.CARD_MAX_AMOUNT - 1; count >= 0; count--) {
             int addToIndex = this.cardQueue.size() - 1;
-            Card card = poll();
             int index = all.size() - 1 - count;
-            Issue issue = all.get(index);
-            reassignIssue(card, issue, addToIndex);
+            if (index >= 0 && index < all.size()) {
+                Card card = poll();
+                Issue issue = all.get(index);
+                reassignIssue(card, issue, addToIndex);
+            }
         }
     }
 

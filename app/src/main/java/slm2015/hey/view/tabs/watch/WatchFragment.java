@@ -118,8 +118,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
             if (card.getParent() != null)
                 ((ViewGroup) card.getParent()).removeView(card);
             this.cardFrame.addView(card);
-            card.bringToFront();
-            this.cardFrame.requestLayout();
             refreshAnimation(card);
         } else {
             this.setAllButtonEnable(true);
