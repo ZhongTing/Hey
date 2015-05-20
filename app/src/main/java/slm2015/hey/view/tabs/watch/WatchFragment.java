@@ -2,6 +2,7 @@ package slm2015.hey.view.tabs.watch;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -27,7 +28,7 @@ import slm2015.hey.view.component.Card;
 import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.util.UiUtility;
 
-public class WatchFragment extends TabPagerFragment implements Animation.AnimationListener, View.OnTouchListener, Observer {
+public class WatchFragment extends TabPagerFragment implements Animation.AnimationListener, View.OnTouchListener, Observer, View.OnClickListener {
     private final int SWIPE_WIDTH_DP = 100;
     private final int MOVE_ANIMATION_DURATION = 700;
     private final int RETURN_ANIMATION_DURATION = 300;
@@ -88,14 +89,14 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         this.deck.setOnDataSetChanged(new CardDeck.OnDataSetChanged() {
             @Override
             public void notifyTest() {
-                if(!WatchFragment.this.onMove)
+                if (!WatchFragment.this.onMove)
                     resetCardDeckView();
             }
         });
         refresh();
     }
 
-    private synchronized void resetCardDeckView() {
+    private void resetCardDeckView() {
         for (int i = 5; i < 5 + CardDeck.CARD_MAX_AMOUNT; i++) {
             if (deck.getCardQueue().size() > i - 5) {
 //                        WatchFragment.this.cardFrame.removeViewAt(i);
@@ -192,16 +193,8 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     }
 
     private void initialLikeButton(View view) {
-        final boolean LIKE = true;
         this.likeButton = (ImageButton) view.findViewById(R.id.likeButton);
-        this.likeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (WatchFragment.this.deck.getCardQueue().size() > 0) {
-                    swipeLikeCard(LIKE, !BY_GESTURE);
-                }
-            }
-        });
+        this.likeButton.setOnClickListener(this);
     }
 
     private synchronized void swipeLikeCard(boolean like, boolean isGesture) {
@@ -214,16 +207,8 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     }
 
     private void initialDislikeButton(View view) {
-        final boolean DISLIKE = false;
         this.dislikeButton = (ImageButton) view.findViewById(R.id.dislikeButton);
-        this.dislikeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (WatchFragment.this.deck.getCardQueue().size() > 0) {
-                    swipeLikeCard(DISLIKE, !BY_GESTURE);
-                }
-            }
-        });
+        this.dislikeButton.setOnClickListener(this);
     }
 
     private void playMoveAnimation(final Card card, final boolean like) {
@@ -440,6 +425,24 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
             isRefresh = false;
             if (this.deck.getCardQueue().size() > 0)
                 this.deck.getCardQueue().get(this.deck.getCardQueue().size() - 1).setOnTouchListener(this);
+        }
+    }
+
+    private long mLastClickTime = 0;
+
+    @Override
+    public void onClick(View v) {
+        final boolean LIKE = true;
+
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 100)
+            return;
+        mLastClickTime = SystemClock.elapsedRealtime();
+        if (WatchFragment.this.deck.getCardQueue().size() > 0) {
+            if (v == this.likeButton) {
+                swipeLikeCard(LIKE, !BY_GESTURE);
+            } else if (v == this.dislikeButton) {
+                swipeLikeCard(!LIKE, !BY_GESTURE);
+            }
         }
     }
 }
