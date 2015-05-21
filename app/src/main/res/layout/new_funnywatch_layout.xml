@@ -2,7 +2,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:id="@+id/test">
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
@@ -38,10 +39,21 @@
             android:background="#00000000"
             android:src="@drawable/refresh_button"
             android:scaleType="centerCrop"
-            android:layout_marginBottom="65dp"
+            android:layout_marginBottom="95dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_centerHorizontal="true"
+            android:layout_alignBottom="@id/card_frame" />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/changeViewButton"
+            android:background="#00000000"
+            android:src="@drawable/refresh_button"
+            android:scaleType="centerCrop"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp"
             android:layout_alignBottom="@id/card_frame" />
 
         <ImageButton

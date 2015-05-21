@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.util.UiUtility;
 
 public class WatchFragment extends TabPagerFragment implements Animation.AnimationListener, View.OnTouchListener, Observer, View.OnClickListener {
+    public static final String WATCH_FRAGMENT = "watch_fragment";
     private final int SWIPE_WIDTH_DP = 100;
     private final int MOVE_ANIMATION_DURATION = 700;
     private final int RETURN_ANIMATION_DURATION = 300;
@@ -36,7 +38,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private final boolean BY_GESTURE = true;
 
     private ViewPager pager;
-    private ImageButton likeButton, dislikeButton, refreshButton;
+    private ImageButton likeButton, dislikeButton, refreshButton, changeViewButton;
     private RelativeLayout cardFrame;
     //    private List<Card> cardDeck = new ArrayList<>();
     private IssueLoader issueLoader;
@@ -79,6 +81,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         initialDislikeButton(view);
         initialLikeButton(view);
         initialRefreshButton(view);
+        initialChangeViewButton(view);
 
         this.windowWidth = this.getActivity().getWindowManager().getDefaultDisplay().getWidth();
         this.screenCenter = this.windowWidth / 2;
@@ -88,7 +91,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         this.deck = new CardDeck(this.issueLoader, this.getActivity());
         this.deck.setOnDataSetChanged(new CardDeck.OnDataSetChanged() {
             @Override
-            public void notifyTest() {
+            public void notifyCardDeckChanged() {
                 if (!WatchFragment.this.onMove)
                     resetCardDeckView();
             }
@@ -186,6 +189,20 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
             public void onClick(View v) {
                 setAllButtonEnable(false);
                 refresh();
+            }
+        });
+    }
+
+    private void initialChangeViewButton(View view) {
+        this.changeViewButton = (ImageButton) view.findViewById(R.id.changeViewButton);
+        this.changeViewButton.bringToFront();
+        this.changeViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                if (onChangeViewListener != null) {
+//                    onChangeViewListener.notifyViewChanged();
+//                }
+                changeToListView();
             }
         });
     }
@@ -442,5 +459,16 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
                 swipeLikeCard(!LIKE, !BY_GESTURE);
             }
         }
+    }
+
+    private void changeToListView() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+
+        android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top);
+        transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom);
+        transaction.replace(R.id.test, WatchListViewFragment.newInstance(fragmentManager));
+        transaction.addToBackStack(WatchFragment.WATCH_FRAGMENT);
+        transaction.commit();
     }
 }

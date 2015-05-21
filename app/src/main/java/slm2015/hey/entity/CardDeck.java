@@ -88,7 +88,7 @@ public class CardDeck {
             iniCard(card);
             reassignIssue(card, issue, 0);
             if (onDataSetChanged != null) {
-                onDataSetChanged.notifyTest();
+                onDataSetChanged.notifyCardDeckChanged();
             }
         }
     }
@@ -119,7 +119,7 @@ public class CardDeck {
     }
 
     public interface OnDataSetChanged {
-        void notifyTest();
+        void notifyCardDeckChanged();
     }
 
     public void setIniCardXY(float initCardX, float initCardY) {
