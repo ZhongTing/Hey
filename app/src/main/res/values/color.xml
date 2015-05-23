@@ -12,6 +12,7 @@
     <color name="light_blue">#77DDFF</color>
     <color name="sky_blue">#007ee5</color>
     <color name="peach_red">#eb547a</color>
+    <color name="transparent">#00000000</color>
 
     <!--astuetz-->
     <color name="background_tab_pressed">#6633B5E5</color>

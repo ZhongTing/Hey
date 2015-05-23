@@ -467,7 +467,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
 //        transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top);
         transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom);
-        transaction.replace(R.id.test, WatchListViewFragment.newInstance(fragmentManager));
+        transaction.replace(R.id.test, WatchListViewFragment.newInstance(fragmentManager, this.pager));
         transaction.addToBackStack(WatchFragment.WATCH_FRAGMENT);
         transaction.commit();
     }

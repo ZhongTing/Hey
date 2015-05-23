@@ -9,6 +9,7 @@ public class Issue {
     private String description = "";
     private String place = "";
     private Bitmap image;
+    private boolean like;
 
     public Issue() {
     }
@@ -51,5 +52,13 @@ public class Issue {
 
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    public boolean isLike() {
+        return like;
+    }
+
+    public void setLike(boolean like) {
+        this.like = like;
     }
 }
