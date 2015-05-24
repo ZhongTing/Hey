@@ -2,6 +2,7 @@ package slm2015.hey.view.tabs.post;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -59,7 +60,11 @@ public class PostStepFragment extends Fragment implements Observer {
                 }
                 if (wizard.getCurrentStep() == PREVIEW_STEP) {
                     InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    View view = getActivity().getCurrentFocus();
+                    if (view != null) {
+                        IBinder t = view.getWindowToken();
+                        inputManager.hideSoftInputFromWindow(t, InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
                 }
                 wizard.next();
             }

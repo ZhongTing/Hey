@@ -61,20 +61,21 @@ public class TermAdapter extends BaseAdapter implements Filterable {
             holder = (ViewHolder) convertView.getTag();
         }
         if (position < this.filterList.size()) {
+            final Term term = this.filterList.get(position);
             this.selectPosition = position;
-            holder.text.setSelected(this.filterList.get(position).isSelected());
-            holder.text.setText(this.filterList.get(position).getShowText());
+            holder.text.setSelected(term.isSelected());
+            holder.text.setText(term.getShowText());
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (position < TermAdapter.this.filterList.size()) {
                         for (Term t : termList)
                             t.setIsSelected(false);
-                        filterList.get(position).setIsSelected(true);
-                        if (filterList.get(position).needToAdd())
-                            termList.add(filterList.get(position));
+                        term.setIsSelected(true);
+                        if (term.needToAdd())
+                            termList.add(term);
                         if (termSelectedListener != null) {
-                            termSelectedListener.OnTermSelected(filterList.get(position).getText());
+                            termSelectedListener.OnTermSelected(term.getText());
                         }
                         filterList = termList;
                         notifyDataSetChanged();
@@ -152,7 +153,7 @@ public class TermAdapter extends BaseAdapter implements Filterable {
     }
 
     public interface OnTermSelectedListener {
-        public void OnTermSelected(String selectedTerm);
+        void OnTermSelected(String selectedTerm);
     }
 
     private class ViewHolder {
