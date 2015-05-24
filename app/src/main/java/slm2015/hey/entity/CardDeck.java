@@ -1,9 +1,12 @@
 package slm2015.hey.entity;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.view.component.Card;
@@ -14,6 +17,7 @@ public class CardDeck {
     private IssueLoader issueLoader;
     private Activity activity;
     private ArrayList<Card> cardQueue = new ArrayList<>();
+    private Queue<Card> deprecateQueue = new LinkedList<>();
     private float initCardX, initCardY;
     private OnDataSetChanged onDataSetChanged;
 
@@ -50,13 +54,14 @@ public class CardDeck {
         Card card = this.cardQueue.get(this.cardQueue.size() - 1);
 //        ((ViewGroup) card.getParent()).removeView(card);
         card.setOnTouchListener(null);
+        this.deprecateQueue.offer(card);
         this.cardQueue.remove(this.cardQueue.size() - 1);
         return card;
     }
 
     private void checkDeckAmount() {
-        if(this.cardQueue.size() < CARD_MAX_AMOUNT){
-            for(int i = 0 ; i < this.issueLoader.getNewIssues().size(); i++){
+        if (this.cardQueue.size() < CARD_MAX_AMOUNT) {
+            for (int i = 0; i < this.issueLoader.getNewIssues().size(); i++) {
                 this.cardQueue.add(new Card(this.activity));
             }
         }
@@ -79,11 +84,13 @@ public class CardDeck {
     }
 
     public void operation(Card card) {
-        int index = this.issueLoader.getIssues().size() - this.cardQueue.size() - 1;
+        int index = this.issueLoader.getIssues().size() - this.deprecateQueue.size() - this.cardQueue.size() - 1;
+        Log.d("index = ", String.valueOf(index));
+        this.deprecateQueue.poll();
         ArrayList<Issue> issues = this.issueLoader.getIssues();
         if (issues.size() > 0)
             issues.remove(issues.size() - 1);
-        if (index > 0 && index < issues.size() && issues.get(index) != null) {
+        if (index >= 0 && index < issues.size() && issues.get(index) != null) {
             Issue issue = issues.get(index);
             iniCard(card);
             reassignIssue(card, issue, 0);
