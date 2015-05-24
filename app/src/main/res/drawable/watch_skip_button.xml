@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/watch_jump_pressed" android:state_pressed="true" />
-    <item android:drawable="@drawable/watch_jump_disable" android:state_enabled="false" />
+    <item android:drawable="@drawable/trashcan_pressed" android:state_pressed="true" />
+    <item android:drawable="@drawable/trashcan_disable" android:state_enabled="false" />
     <item android:drawable="@drawable/trashcan" android:state_enabled="true" />
 </selector>
