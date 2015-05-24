@@ -6,7 +6,7 @@
     <ImageView
         android:id="@+id/button"
         android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_height="52dp"
         android:layout_gravity="left|center_vertical"
         android:src="@drawable/watch_like" />
 
@@ -21,17 +21,21 @@
         <TextView
             android:id="@+id/subject"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="25sp"/>
 
         <TextView
             android:id="@+id/description"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/position"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </FrameLayout>

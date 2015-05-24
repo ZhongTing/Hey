@@ -30,7 +30,7 @@ import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.util.UiUtility;
 
 public class WatchFragment extends TabPagerFragment implements Animation.AnimationListener, View.OnTouchListener, Observer, View.OnClickListener {
-    public static final String WATCH_FRAGMENT = "watch_fragment";
+    public static final String SELF_TAG = "watch_fragment";
     private final int SWIPE_WIDTH_DP = 100;
     private final int MOVE_ANIMATION_DURATION = 700;
     private final int RETURN_ANIMATION_DURATION = 300;
@@ -51,6 +51,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private int screenCenter;
     private boolean allEvent = true, isRefresh = false, onMove = false;
     private WatchManager watchManager;
+    private WatchListViewFragment watchListViewFragment;
 
     static public WatchFragment newInstance(ViewPager pager) {
         WatchFragment fragment = new WatchFragment();
@@ -467,12 +468,14 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
     private void changeToListView() {
         FragmentManager fragmentManager = getChildFragmentManager();
-
         android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top);
+        if (this.watchListViewFragment == null)
+            this.watchListViewFragment = WatchListViewFragment.newInstance(fragmentManager, this.pager, this.watchManager);
+        else
+            this.watchListViewFragment.onRefresh();
         transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom);
-        transaction.replace(R.id.test, WatchListViewFragment.newInstance(fragmentManager, this.pager, this.watchManager));
-        transaction.addToBackStack(WatchFragment.WATCH_FRAGMENT);
+        transaction.replace(R.id.test, this.watchListViewFragment);
+        transaction.addToBackStack(WatchFragment.SELF_TAG);
         transaction.commit();
     }
 }
