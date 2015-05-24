@@ -1,7 +1,6 @@
 package slm2015.hey.entity;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -85,7 +84,6 @@ public class CardDeck {
 
     public void operation(Card card) {
         int index = this.issueLoader.getIssues().size() - this.deprecateQueue.size() - this.cardQueue.size() - 1;
-        Log.d("index = ", String.valueOf(index));
         this.deprecateQueue.poll();
         ArrayList<Issue> issues = this.issueLoader.getIssues();
         if (issues.size() > 0)
