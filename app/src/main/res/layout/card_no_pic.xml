@@ -70,12 +70,22 @@
         </RelativeLayout>
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/sandglass_1"
+            android:scaleType="fitCenter" />
+
+        <ImageView
+            android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_margin="10dp"
             android:id="@+id/incognito"
-            android:src="@drawable/location" />
+            android:src="@drawable/location"
+            android:scaleType="fitCenter" />
     </RelativeLayout>
 </LinearLayout>
