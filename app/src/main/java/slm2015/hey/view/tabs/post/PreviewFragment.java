@@ -55,6 +55,11 @@ public class PreviewFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     private void initOnCreateView(View view) {
         initializeLocationButton(view);
         initializeCameraButton(view);

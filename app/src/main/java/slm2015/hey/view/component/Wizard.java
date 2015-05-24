@@ -113,6 +113,10 @@ public class Wizard extends FrameLayout {
         }
     }
 
+    public int getCurrentStep() {
+        return currentStep;
+    }
+
     //step range from 0 to n - 1
     private void setCurrentStep(final int step) {
         int totalSteps = this.stepIndicatorStack.size();

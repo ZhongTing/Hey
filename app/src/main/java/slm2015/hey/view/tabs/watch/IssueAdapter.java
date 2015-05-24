@@ -47,44 +47,45 @@ public class IssueAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         IssueHolder holder = null;
+        final int upsideDownPosition = getCount() - position - 1;
+        LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 //        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.issue_adapter_layout, null);
-            holder = new IssueHolder();
-            holder.front = (LinearLayout) convertView.findViewById(R.id.front);
-            holder.subject = (TextView) convertView.findViewById(R.id.subject);
-            holder.description = (TextView) convertView.findViewById(R.id.description);
-            holder.position = (TextView) convertView.findViewById(R.id.position);
-            convertView.setTag(holder);
+        convertView = inflater.inflate(R.layout.issue_adapter_layout, null);
+        holder = new IssueHolder();
+        holder.front = (LinearLayout) convertView.findViewById(R.id.front);
+        holder.subject = (TextView) convertView.findViewById(R.id.subject);
+        holder.description = (TextView) convertView.findViewById(R.id.description);
+        holder.place = (TextView) convertView.findViewById(R.id.position);
+        convertView.setTag(holder);
 //        } else {
 //            holder = (IssueHolder) convertView.getTag();
 //        }
 
-        if (position < this.issueList.size()) {
-            Issue issue = this.issueList.get(position);
-            if(issue.isLike())
-                holder.getFront().setX(UiUtility.dpiToPixel(50, Resources.getSystem()));
+        if (upsideDownPosition < this.issueList.size()) {
+            Issue issue = this.issueList.get(upsideDownPosition);
+            if (issue.isLike())
+                holder.front.setX(UiUtility.dpiToPixel(50, Resources.getSystem()));
             holder.subject.setText(issue.getSubject());
             holder.description.setText(issue.getDescription());
-            holder.position.setText(issue.getPlace());
+            holder.place.setText(issue.getPlace());
         } else {
             holder.subject.setText("");
             holder.description.setText("");
-            holder.position.setText("");
+            holder.place.setText("");
         }
         final IssueHolder issueHolder = holder;
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 IssueHolder i = issueHolder;
-                if (!issueList.get(position).isLike()) {
+                if (!issueList.get(upsideDownPosition).isLike()) {
                     final boolean LIKE = true;
                     gestureListItem(i.getFront(), LIKE);
-                    issueList.get(position).setLike(LIKE);
+                    issueList.get(upsideDownPosition).setLike(LIKE);
                 } else {
                     final boolean CANCEL = false;
                     gestureListItem(i.getFront(), CANCEL);
-                    issueList.get(position).setLike(CANCEL);
+                    issueList.get(upsideDownPosition).setLike(CANCEL);
                 }
                 return true;
             }
@@ -96,7 +97,7 @@ public class IssueAdapter extends BaseAdapter {
         LinearLayout front;
         TextView subject;
         TextView description;
-        TextView position;
+        TextView place;
 
         public LinearLayout getFront() {
             return this.front;

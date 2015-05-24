@@ -22,6 +22,7 @@ import slm2015.hey.core.term.TermType;
 import slm2015.hey.view.component.Wizard;
 
 public class PostStepFragment extends Fragment implements Observer {
+    private final int PREVIEW_STEP = 3;
     private Wizard wizard;
     private ListView listView;
     private TermAdapter adapter;
@@ -55,6 +56,10 @@ public class PostStepFragment extends Fragment implements Observer {
                 //todo
                 if (onStepFinishListener != null) {
                     onStepFinishListener.OnStepFinish(selectedTerm);
+                }
+                if (wizard.getCurrentStep() == PREVIEW_STEP) {
+                    InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 }
                 wizard.next();
             }

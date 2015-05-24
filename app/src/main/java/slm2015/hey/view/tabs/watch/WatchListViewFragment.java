@@ -15,11 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.R;
-import slm2015.hey.core.Observer;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.view.tabs.TabPagerFragment;
 
-public class WatchListViewFragment extends TabPagerFragment implements Observer, SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener {
+public class WatchListViewFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded {
 
     private ImageButton changeViewButton;
     private FragmentManager fragmentManager;
@@ -27,12 +26,13 @@ public class WatchListViewFragment extends TabPagerFragment implements Observer,
     private IssueAdapter adapter;
     private SwipeRefreshLayout laySwipe;
     private ViewPager pager;
+    private WatchManager watchManager;
 
-    static public WatchListViewFragment newInstance(FragmentManager fragmentManager, ViewPager pager) {
+    static public WatchListViewFragment newInstance(FragmentManager fragmentManager, ViewPager pager, WatchManager watchManager) {
         WatchListViewFragment fragment = new WatchListViewFragment();
         fragment.setFragmentManager(fragmentManager);
         fragment.setPager(pager);
-
+        fragment.setWatchManager(watchManager);
         return fragment;
     }
 
@@ -99,7 +99,7 @@ public class WatchListViewFragment extends TabPagerFragment implements Observer,
     }
 
     private void init(View view) {
-        this.adapter = new IssueAdapter(createFakeIssueList());
+        this.adapter = new IssueAdapter(this.watchManager.getIssues());
         initialChangeViewButton(view);
         initialLaySwipe(view);
         initailListView(view);
@@ -144,6 +144,11 @@ public class WatchListViewFragment extends TabPagerFragment implements Observer,
         this.pager = pager;
     }
 
+    public void setWatchManager(WatchManager watchManager) {
+        this.watchManager = watchManager;
+        this.watchManager.setOnReloaded(this);
+    }
+
     @Override
     public int getPageIconRedId() {
         return R.drawable.funny_watch;
@@ -151,11 +156,6 @@ public class WatchListViewFragment extends TabPagerFragment implements Observer,
 
     @Override
     public void FragmentSelected() {
-
-    }
-
-    @Override
-    public void onSubjectChanged() {
 
     }
 
@@ -167,6 +167,7 @@ public class WatchListViewFragment extends TabPagerFragment implements Observer,
     public void onRefresh() {
         //todo implement reload like WatchFragment
         this.laySwipe.setRefreshing(true);
+        this.watchManager.reload();
     }
 
     @Override
@@ -181,5 +182,12 @@ public class WatchListViewFragment extends TabPagerFragment implements Observer,
             this.laySwipe.setEnabled(true);
         else
             this.laySwipe.setEnabled(false);
+    }
+
+    @Override
+    public void notifyReloaded() {
+        this.laySwipe.setRefreshing(false);
+        this.adapter.setIssueList(this.watchManager.getIssues());
+        this.adapter.notifyDataSetChanged();
     }
 }

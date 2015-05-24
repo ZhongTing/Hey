@@ -35,6 +35,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private final int MOVE_ANIMATION_DURATION = 700;
     private final int RETURN_ANIMATION_DURATION = 300;
     private final int REFRESH_ANIMATION_DURATION = 200;
+    private final int MAX_CARD_ANIMATION = 5;
     private final boolean BY_GESTURE = true;
 
     private ViewPager pager;
@@ -49,6 +50,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private int windowWidth;
     private int screenCenter;
     private boolean allEvent = true, isRefresh = false, onMove = false;
+    private WatchManager watchManager;
 
     static public WatchFragment newInstance(ViewPager pager) {
         WatchFragment fragment = new WatchFragment();
@@ -73,7 +75,8 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     }
 
     private void init(View view) {
-        this.issueLoader = new IssueLoader(this.getActivity());
+        this.watchManager = new WatchManager(this.getActivity());
+        this.issueLoader = this.watchManager.getIssueLoader();
         this.issueLoader.addObserver(this);
 
         this.cardFrame = (RelativeLayout) view.findViewById(R.id.card_frame);
@@ -112,7 +115,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     }
 
     private void showLoadedCard(boolean resetI) {
-        while (this.issueLoader.getNewIssues().size() > 5)
+        while (this.issueLoader.getNewIssues().size() > MAX_CARD_ANIMATION)
             this.issueLoader.pushToIssues();
         if (this.issueLoader.getNewIssues().size() > 0) {
             Issue issue = this.issueLoader.getNewIssues().poll();
@@ -275,7 +278,8 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     }
 
     private void refresh() {
-        this.issueLoader.loadNewIssues();
+//        this.issueLoader.loadNewIssues();
+        this.watchManager.reload();
     }
 
     @Override
@@ -467,7 +471,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
 //        transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top);
         transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom);
-        transaction.replace(R.id.test, WatchListViewFragment.newInstance(fragmentManager, this.pager));
+        transaction.replace(R.id.test, WatchListViewFragment.newInstance(fragmentManager, this.pager, this.watchManager));
         transaction.addToBackStack(WatchFragment.WATCH_FRAGMENT);
         transaction.commit();
     }
