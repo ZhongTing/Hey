@@ -43,9 +43,8 @@ public class IssueLoader extends Subject {
         return newIssues;
     }
 
-    //poll from new Issues to issues
-    public void pushToIssues() {
-        Issue issue = this.newIssues.poll();
-        this.issues.add(issue);
+    public void clearIssues(){
+        this.newIssues.clear();
+        this.issues.clear();
     }
 }

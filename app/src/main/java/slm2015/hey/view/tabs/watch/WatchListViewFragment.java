@@ -40,7 +40,7 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
     }
 
     private void init(View view) {
-        this.adapter = new IssueAdapter(this.watchManager.getIssues());
+        this.adapter = new IssueAdapter(this.watchManager.getHistory());
         initialChangeViewButton(view);
         initialLaySwipe(view);
         initailListView(view);
@@ -87,6 +87,7 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
 
     public void setWatchManager(WatchManager watchManager) {
         this.watchManager = watchManager;
+        this.watchManager.addObserver(this);
         this.watchManager.setOnReloaded(this);
     }
 
@@ -128,7 +129,7 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
     @Override
     public void notifyReloaded() {
         this.laySwipe.setRefreshing(false);
-        this.adapter.setIssueList(this.watchManager.getIssues());
+        this.adapter.setIssueList(this.watchManager.getHistory());
         this.adapter.notifyDataSetChanged();
     }
 }

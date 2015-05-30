@@ -7,21 +7,23 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.view.component.Card;
+import slm2015.hey.view.tabs.watch.WatchManager;
 
 public class CardDeck {
     public static final int CARD_MAX_AMOUNT = 10;
 
-    private IssueLoader issueLoader;
+//    private IssueLoader issueLoader;
     private Activity activity;
     private ArrayList<Card> cardQueue = new ArrayList<>();
     private Queue<Card> deprecateQueue = new LinkedList<>();
     private float initCardX, initCardY;
     private OnDataSetChanged onDataSetChanged;
+    private WatchManager watchManager;
 
-    public CardDeck(IssueLoader issueLoader, Activity activity) {
-        this.issueLoader = issueLoader;
+    public CardDeck(WatchManager watchManager, Activity activity) {
+//        this.issueLoader = issueLoader;
+        this.watchManager = watchManager;
         this.activity = activity;
         iniCardQueue();
     }
@@ -60,7 +62,7 @@ public class CardDeck {
 
     private void checkDeckAmount() {
         if (this.cardQueue.size() < CARD_MAX_AMOUNT) {
-            for (int i = 0; i < this.issueLoader.getNewIssues().size(); i++) {
+            for (int i = 0; i < this.watchManager.getNewIssues().size(); i++) {
                 this.cardQueue.add(new Card(this.activity));
             }
         }
@@ -68,8 +70,8 @@ public class CardDeck {
 
     public void reloadDeck() {
         ArrayList<Issue> all = new ArrayList<>();
-        all.addAll(this.issueLoader.getIssues());
-        all.addAll(this.issueLoader.getNewIssues());
+        all.addAll(this.watchManager.getIssues());
+        all.addAll(this.watchManager.getNewIssues());
         checkDeckAmount();
         for (int count = this.CARD_MAX_AMOUNT - 1; count >= 0; count--) {
             int addToIndex = this.cardQueue.size() - 1;
@@ -82,12 +84,16 @@ public class CardDeck {
         }
     }
 
-    public void operation(Card card) {
-        int index = this.issueLoader.getIssues().size() - this.deprecateQueue.size() - this.cardQueue.size() - 1;
+    public void operation(Card card, boolean like) {
+        int index = this.watchManager.getIssues().size() - this.deprecateQueue.size() - this.cardQueue.size() - 1;
         this.deprecateQueue.poll();
-        ArrayList<Issue> issues = this.issueLoader.getIssues();
-        if (issues.size() > 0)
+        ArrayList<Issue> issues = this.watchManager.getIssues();
+        if (issues.size() > 0) {
+            Issue issue = issues.get(issues.size()-1);
+            issue.setLike(like);
+            this.watchManager.getModifiedIssues().add(0, issue);
             issues.remove(issues.size() - 1);
+        }
         if (index >= 0 && index < issues.size() && issues.get(index) != null) {
             Issue issue = issues.get(index);
             iniCard(card);
