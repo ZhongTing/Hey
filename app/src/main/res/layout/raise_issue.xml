@@ -3,32 +3,24 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/mainmenu"
-        android:alpha="0"></FrameLayout>
-
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="40dp">
 
         <slm2015.hey.view.component.Card
             android:id="@+id/preview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:alpha="1"></slm2015.hey.view.component.Card>
+            android:alpha="1" />
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="35dp"
             android:gravity="center">
 
             <ImageButton
@@ -48,6 +40,7 @@
                 android:src="@drawable/cancel_button"
                 android:scaleType="centerCrop"
                 android:layout_toRightOf="@id/locationButton"
+                android:layout_toEndOf="@+id/locationButton"
                 android:layout_margin="5dp"/>
 
             <ImageButton
@@ -57,6 +50,7 @@
                 android:src="@drawable/raise_button"
                 android:background="#00000000"
                 android:layout_toRightOf="@id/cancelButton"
+                android:layout_toEndOf="@+id/cancelButton"
                 android:scaleType="centerCrop"
                 android:layout_margin="5dp"/>
 
