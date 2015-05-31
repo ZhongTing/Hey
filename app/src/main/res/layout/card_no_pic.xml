@@ -86,6 +86,7 @@
             android:layout_margin="10dp"
             android:id="@+id/incognito"
             android:src="@drawable/location"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:visibility="invisible" />
     </RelativeLayout>
 </LinearLayout>

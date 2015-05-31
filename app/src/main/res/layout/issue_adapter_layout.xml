@@ -3,12 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <ImageView
-        android:id="@+id/button"
-        android:layout_width="45dp"
-        android:layout_height="52dp"
-        android:layout_gravity="left|center_vertical"
-        android:src="@drawable/watch_like" />
+    <!--<ImageView-->
+        <!--android:id="@+id/button"-->
+        <!--android:layout_width="45dp"-->
+        <!--android:layout_height="52dp"-->
+        <!--android:layout_gravity="left|center_vertical"-->
+        <!--android:src="@drawable/watch_like" />-->
+
+
 
     <LinearLayout
         android:id="@+id/front"
@@ -37,5 +39,13 @@
             android:layout_height="wrap_content"
             android:textSize="20sp" />
     </LinearLayout>
+    <ImageView
+        android:id="@+id/like"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:rotation="-45"
+        android:layout_gravity="left|center_vertical"
+        android:src="@drawable/like"
+        android:visibility="invisible"/>
 
 </FrameLayout>

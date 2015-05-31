@@ -1,13 +1,11 @@
 package slm2015.hey.view.tabs.watch;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,7 +13,6 @@ import java.util.List;
 
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
-import slm2015.hey.view.util.UiUtility;
 
 public class IssueAdapter extends BaseAdapter {
     private List<Issue> issueList;
@@ -56,6 +53,7 @@ public class IssueAdapter extends BaseAdapter {
         holder.subject = (TextView) convertView.findViewById(R.id.subject);
         holder.description = (TextView) convertView.findViewById(R.id.description);
         holder.place = (TextView) convertView.findViewById(R.id.position);
+        holder.like = (ImageView) convertView.findViewById(R.id.like);
         convertView.setTag(holder);
 //        } else {
 //            holder = (IssueHolder) convertView.getTag();
@@ -63,8 +61,11 @@ public class IssueAdapter extends BaseAdapter {
 
         if (upsideDownPosition < this.issueList.size()) {
             Issue issue = this.issueList.get(upsideDownPosition);
-            if (issue.isLike())
-                holder.front.setX(UiUtility.dpiToPixel(50, Resources.getSystem()));
+            if (issue.isLike()) {
+                gestureListItem(holder.getFront(), true);
+                holder.like.setVisibility(View.VISIBLE);
+//                holder.front.setX(UiUtility.dpiToPixel(50, Resources.getSystem()));
+            }
             holder.subject.setText(issue.getSubject());
             holder.description.setText(issue.getDescription());
             holder.place.setText(issue.getPlace());
@@ -78,15 +79,11 @@ public class IssueAdapter extends BaseAdapter {
             @Override
             public boolean onLongClick(View v) {
                 IssueHolder i = issueHolder;
-                if (!issueList.get(upsideDownPosition).isLike()) {
-                    final boolean LIKE = true;
-                    gestureListItem(i.getFront(), LIKE);
-                    issueList.get(upsideDownPosition).setLike(LIKE);
-                } else {
-                    final boolean CANCEL = false;
-                    gestureListItem(i.getFront(), CANCEL);
-                    issueList.get(upsideDownPosition).setLike(CANCEL);
-                }
+                boolean isLike = !issueList.get(upsideDownPosition).isLike();
+                gestureListItem(i.getFront(), isLike);
+                issueList.get(upsideDownPosition).setLike(isLike);
+                int visible = isLike ? View.VISIBLE : View.INVISIBLE;
+                i.like.setVisibility(visible);
                 return true;
             }
         });
@@ -98,6 +95,7 @@ public class IssueAdapter extends BaseAdapter {
         TextView subject;
         TextView description;
         TextView place;
+        ImageView like;
 
         public LinearLayout getFront() {
             return this.front;
@@ -105,14 +103,14 @@ public class IssueAdapter extends BaseAdapter {
     }
 
     private void gestureListItem(final View rowView, boolean like) {
-        final int deltaX = UiUtility.dpiToPixel(50, Resources.getSystem());
-        final float fromXDelta = like ? 0 : deltaX;
-        final float toXDelta = like ? deltaX : 0;
-        final float fromYDelta = 0;
-        Animation animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, fromYDelta);
-        animation.setDuration(500);
-        animation.setFillAfter(true);
-        animation.setRepeatCount(0);
-        rowView.startAnimation(animation);
+//        final int deltaX = UiUtility.dpiToPixel(50, Resources.getSystem());
+//        final float fromXDelta = like ? 0 : deltaX;
+//        final float toXDelta = like ? deltaX : 0;
+//        final float fromYDelta = 0;
+//        Animation animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, fromYDelta);
+//        animation.setDuration(500);
+//        animation.setFillAfter(true);
+//        animation.setRepeatCount(0);
+//        rowView.startAnimation(animation);
     }
 }
