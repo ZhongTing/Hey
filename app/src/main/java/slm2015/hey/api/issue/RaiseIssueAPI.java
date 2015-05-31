@@ -13,7 +13,9 @@ public class RaiseIssueAPI extends PostBase {
 
         this.setParam("subject", issue.getSubject());
         this.setParam("description", issue.getDescription());
-        this.setFileParam("photo", Helper.limitBitmapSize(issue.getImage()));
+        if (issue.getImage()!=null) {
+            this.setFileParam("photo", Helper.limitBitmapSize(issue.getImage()));
+        }
         if (!issue.getPlace().isEmpty())
             this.setParam("place", issue.getPlace());
 
