@@ -3,18 +3,17 @@ package slm2015.hey.entity;
 public class Term {
     private String term;
     private String showText;
-    private boolean isSelected;
+    private boolean isNotInRecommendList;
 
     public Term(String term) {
         this.term = term;
         this.showText = term;
-        this.isSelected = false;
     }
 
-    public Term(String term, boolean add) {
+    public Term(String term, boolean isNotInRecommendList) {
         this.term = term;
-        this.showText = add ? "找不到\"" + term + "\"嗎？按一下新增" : term;
-        this.isSelected = false;
+        this.isNotInRecommendList = isNotInRecommendList;
+        this.showText = isNotInRecommendList ? "找不到\"" + term + "\"嗎？按一下新增" : term;
     }
 
     public String getShowText() {
@@ -25,18 +24,12 @@ public class Term {
         return this.term;
     }
 
-    public boolean isSelected() {
-        return this.isSelected;
+    public boolean isNotInRecommendList() {
+        return this.isNotInRecommendList;
     }
 
-    public void setIsSelected(boolean isSelected) {
-        this.isSelected = isSelected;
-    }
-
-    public boolean needToAdd() {
-        boolean needToAdd = !this.term.equals((String) this.showText);
-        if(needToAdd)
-            this.showText = this.term;
-        return needToAdd;
+    public void normalize() {
+        this.showText = this.term;
+        this.isNotInRecommendList = false;
     }
 }

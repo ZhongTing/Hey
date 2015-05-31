@@ -18,9 +18,9 @@ import slm2015.hey.entity.Term;
 public class TermAdapter extends BaseAdapter implements Filterable {
     private List<Term> termList;
     private List<Term> filterList;
-    private int selectPosition = -1;
     private OnTermSelectedListener termSelectedListener;
     private Filter filter;
+    private String selectedTermShowText;
 
     public TermAdapter(List<Term> termList) {
         this.setTermList(termList);
@@ -29,18 +29,18 @@ public class TermAdapter extends BaseAdapter implements Filterable {
     public void setTermList(List<Term> termList) {
         this.termList = termList;
         if (termList != null)
-            this.filterList = new ArrayList<Term>(this.termList);
+            this.filterList = new ArrayList<>(this.termList);
         this.notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return this.termList != null ? this.termList.size() : 0;
+        return this.filterList != null ? this.filterList.size() : 0;
     }
 
     @Override
     public Object getItem(int position) {
-        return this.termList.get(position);
+        return this.filterList.get(position);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class TermAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
+        ViewHolder holder;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.listview_adapter_layout, null);
@@ -60,49 +60,44 @@ public class TermAdapter extends BaseAdapter implements Filterable {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (position < this.filterList.size()) {
-            final Term term = this.filterList.get(position);
-            this.selectPosition = position;
-            holder.text.setSelected(term.isSelected());
-            holder.text.setText(term.getShowText());
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (position < TermAdapter.this.filterList.size()) {
-                        for (Term t : termList)
-                            t.setIsSelected(false);
-                        term.setIsSelected(true);
-                        if (term.needToAdd())
-                            termList.add(term);
-                        if (termSelectedListener != null) {
-                            termSelectedListener.OnTermSelected(term.getText());
-                        }
-                        filterList = termList;
-                        notifyDataSetChanged();
-                    }
+
+        final Term term = this.filterList.get(position);
+        holder.text.setSelected(term.getShowText().equals(this.selectedTermShowText));
+        holder.text.setText(term.getShowText());
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (term.isNotInRecommendList()) {
+                    term.normalize();
+                    termList.add(0, term);
                 }
-            });
-        } else {
-            holder.text.setText("");
-            holder.text.setSelected(false);
-        }
+                selectedTermShowText = term.getShowText();
+                if (termSelectedListener != null) {
+                    termSelectedListener.OnTermSelected(term.getText());
+                }
+                filterList = termList;
+                notifyDataSetChanged();
+
+//
+//                    if (position < TermAdapter.this.filterList.size()) {
+//                        for (Term t : termList)
+//                            t.setIsSelected(false);
+//                        term.setIsSelected(true);
+//                        if (term.isNotInRecommendList())
+//                            termList.add(term);
+//                        if (termSelectedListener != null) {
+//                            termSelectedListener.OnTermSelected(term.getText());
+//                        }
+//                        filterList = termList;
+//                        notifyDataSetChanged();
+//                    }
+            }
+        });
         return convertView;
     }
 
     public void setOnTermSelectedListener(OnTermSelectedListener listener) {
         this.termSelectedListener = listener;
-    }
-
-    public void filter(CharSequence filterString) {
-        //todo implement filter function
-        this.filterList.clear();
-        if (filterString != null) {
-            for (Term t : this.termList) {
-                if (t.getText().toLowerCase().contains(filterString.toString().toLowerCase()))
-                    this.filterList.add(t);
-            }
-        }
-//        this.notifyDataSetChanged();
     }
 
     @Override
@@ -118,7 +113,7 @@ public class TermAdapter extends BaseAdapter implements Filterable {
                             results.count = termList.size();
                         }
                     } else {
-                        ArrayList<Term> filterResultsData = new ArrayList<Term>();
+                        ArrayList<Term> filterResultsData = new ArrayList<>();
                         boolean sameWord = false;
                         for (Term term : termList) {
                             if (term.getText().toLowerCase().contains(charSequence.toString().toLowerCase())) {
