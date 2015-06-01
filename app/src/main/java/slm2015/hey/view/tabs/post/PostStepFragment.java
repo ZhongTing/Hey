@@ -21,6 +21,7 @@ import slm2015.hey.core.Observer;
 import slm2015.hey.core.term.TermLoader;
 import slm2015.hey.core.term.TermType;
 import slm2015.hey.view.component.Wizard;
+import slm2015.hey.view.util.UiUtility;
 
 public class PostStepFragment extends Fragment implements Observer {
     private final int PREVIEW_STEP = 3;
@@ -59,12 +60,7 @@ public class PostStepFragment extends Fragment implements Observer {
                     onStepFinishListener.OnStepFinish(selectedTerm);
                 }
                 if (wizard.getCurrentStep() == PREVIEW_STEP) {
-                    InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    View view = getActivity().getCurrentFocus();
-                    if (view != null) {
-                        IBinder t = view.getWindowToken();
-                        inputManager.hideSoftInputFromWindow(t, InputMethodManager.HIDE_NOT_ALWAYS);
-                    }
+                    UiUtility.closeKeyBoard(getActivity());
                 }
                 wizard.next();
             }
@@ -132,12 +128,6 @@ public class PostStepFragment extends Fragment implements Observer {
         if (this.adapter != null) {
             this.adapter.setTermList(this.loader.getTerms(this.termType));
         }
-    }
-
-    private void closeKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(this.searchTextView.getWindowToken(), 0);
     }
 
     public interface OnStepFinishListener {
