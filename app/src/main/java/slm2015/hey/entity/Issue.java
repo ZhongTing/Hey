@@ -3,7 +3,9 @@ package slm2015.hey.entity;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class Issue {
     //todo implement core data structure here
@@ -68,9 +70,16 @@ public class Issue {
 
     public String getTimestamp() {
         Date now = new Date();
-        Long differenceTime = now.getTime() - this.timestamp.getTime();
+        if (this.timestamp != null) {
+            Long differenceTime = now.getTime() - this.timestamp.getTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeZone(TimeZone.getTimeZone("IST"));
+            calendar.setTimeInMillis(differenceTime);
+            Log.e("Issue Time Min", ((Integer) calendar.get(Calendar.MINUTE)).toString());
 
-        Log.e("Issue Time Difference", differenceTime.toString());
+            Log.e("Issue Time Difference", differenceTime.toString());
+        }
+
         // textView is the TextView view that should display it
         return "Test";
     }
