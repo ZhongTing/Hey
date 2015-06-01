@@ -275,6 +275,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         this.likeButton.setEnabled(b);
         this.dislikeButton.setEnabled(b);
         this.refreshButton.setEnabled(b);
+        this.changeViewButton.setEnabled(b);
     }
 
     private void refresh() {
