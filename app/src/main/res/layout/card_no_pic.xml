@@ -85,7 +85,7 @@
             android:layout_alignParentRight="true"
             android:layout_margin="10dp"
             android:id="@+id/incognito"
-            android:src="@drawable/location"
+            android:src="@drawable/lock"
             android:scaleType="fitCenter"
             android:visibility="invisible" />
     </RelativeLayout>
