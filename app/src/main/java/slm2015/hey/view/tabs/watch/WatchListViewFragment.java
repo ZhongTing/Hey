@@ -120,10 +120,13 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         this.pager.requestDisallowInterceptTouchEvent(true);
-        if (firstVisibleItem == 0)
-            this.laySwipe.setEnabled(true);
-        else
-            this.laySwipe.setEnabled(false);
+        boolean enable = false;
+        if(issueListView != null && issueListView.getChildCount() > 0){
+            boolean firstItemVisible = issueListView.getFirstVisiblePosition() == 0;
+            boolean topOfFirstItemVisible = issueListView.getChildAt(0).getTop() == 0;
+            enable = firstItemVisible && topOfFirstItemVisible;
+        }
+        this.laySwipe.setEnabled(enable);
     }
 
     @Override
