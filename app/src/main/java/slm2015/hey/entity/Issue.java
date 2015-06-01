@@ -69,14 +69,12 @@ public class Issue {
     }
 
     public String getTimestamp() {
-        Date now = new Date();
-        if (this.timestamp != null) {
-            Long differenceTime = now.getTime() - this.timestamp.getTime();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeZone(TimeZone.getTimeZone("IST"));
-            calendar.setTimeInMillis(differenceTime);
-            Log.e("Issue Time Min", ((Integer) calendar.get(Calendar.MINUTE)).toString());
+        Calendar now = Calendar.getInstance();
 
+        if (this.timestamp != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(this.timestamp);
+            Long differenceTime = now.getTimeInMillis() - calendar.getTimeInMillis();
             Log.e("Issue Time Difference", differenceTime.toString());
         }
 
