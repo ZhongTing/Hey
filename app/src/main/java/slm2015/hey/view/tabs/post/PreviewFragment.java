@@ -3,13 +3,20 @@ package slm2015.hey.view.tabs.post;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import slm2015.hey.R;
 import slm2015.hey.core.issue.IssueHandler;
@@ -18,6 +25,7 @@ import slm2015.hey.view.component.Card;
 import slm2015.hey.view.component.Wizard;
 
 public class PreviewFragment extends Fragment {
+    private static final int PICK_IMAGE = 0;
     private ImageButton locationButton;
     private ImageButton cameraButton;
     private ImageButton cancelButton;
@@ -35,13 +43,23 @@ public class PreviewFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0) {
-            if (resultCode == Activity.RESULT_OK) {
-                Bitmap image = (Bitmap) data.getExtras().get("data");
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (resultCode == Activity.RESULT_OK && requestCode == PreviewFragment.PICK_IMAGE) {
+            Bitmap image;
+            try {
+                if (intent.getExtras() != null) {
+                    image = intent.getExtras().getParcelable("data");
+                } else {
+                    Uri selectedImage = intent.getData();
+                    InputStream imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                    image = BitmapFactory.decodeStream(imageStream);
+                }
                 this.issue.setImage(image);
                 this.card.assignIssue(issue);
+            } catch (Exception e) {
+                e.printStackTrace();
+                //todo handle error;
             }
         }
     }
@@ -100,8 +118,21 @@ public class PreviewFragment extends Fragment {
         this.cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                startActivityForResult(intent, 0);
+                final List<Intent> initialIntent = new ArrayList<Intent>();
+                final Intent galleryIntent = new Intent();
+                galleryIntent.setType("image/*");
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                final Intent cameraIntent = new Intent("android.media.action.IMAGE_CAPTURE");
+                if (initialIntent.size() == 0) {
+                    initialIntent.add(galleryIntent);
+                }
+
+                // Chooser of filesystem options.
+                final Intent chooserIntent = Intent.createChooser(cameraIntent, "Select Source");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, initialIntent.toArray(new Parcelable[initialIntent.size()]));
+                cameraIntent.putExtra(Intent.EXTRA_TITLE, "test");
+                cameraIntent.putExtra(Intent.EXTRA_INTENT, galleryIntent);
+                startActivityForResult(chooserIntent, PreviewFragment.PICK_IMAGE);
             }
         });
     }
@@ -121,7 +152,7 @@ public class PreviewFragment extends Fragment {
     }
 
     public interface OnPreviewFinishListener {
-        public void OnPreviewFinish();
+        void OnPreviewFinish();
     }
 
     public void reassignCard(Issue issue) {

@@ -54,7 +54,7 @@ public class PostStepFragment extends Fragment implements Observer {
         this.adapter.setOnTermSelectedListener(new TermAdapter.OnTermSelectedListener() {
             @Override
             public void OnTermSelected(String selectedTerm) {
-                //todo
+                searchTextView.setText("");
                 if (onStepFinishListener != null) {
                     onStepFinishListener.OnStepFinish(selectedTerm);
                 }
@@ -141,6 +141,6 @@ public class PostStepFragment extends Fragment implements Observer {
     }
 
     public interface OnStepFinishListener {
-        public void OnStepFinish(String selectedTerm);
+        void OnStepFinish(String selectedTerm);
     }
 }
