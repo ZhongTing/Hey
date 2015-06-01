@@ -13,6 +13,7 @@ import slm2015.hey.api.issue.FetchIssueAPI;
 import slm2015.hey.api.issue.RaiseIssueAPI;
 import slm2015.hey.core.BaseAPIHandler;
 import slm2015.hey.entity.Issue;
+import slm2015.hey.util.Converter;
 
 public class IssueHandler extends BaseAPIHandler {
     public IssueHandler(Context context) {
@@ -44,9 +45,11 @@ public class IssueHandler extends BaseAPIHandler {
                     issue.setId(jsonObject.getInt("id"));
                     issue.setSubject(jsonObject.getString("subject"));
                     issue.setDescription(jsonObject.getString("description"));
+                    issue.setTimestamp(Converter.convertToDate(jsonObject.getString("timestamp")));
                     if (jsonObject.has("place"))
                         issue.setPlace(jsonObject.getString("place"));
 
+                    issue.getTimestamp();
                     list.add(issue);
                 }
                 return list;
