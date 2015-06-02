@@ -49,6 +49,9 @@ public class IssueHandler extends BaseAPIHandler {
                     if (jsonObject.has("place"))
                         issue.setPlace(jsonObject.getString("place"));
 
+                    if (jsonObject.has("photoURL"))
+                        issue.setPhotoURL(jsonObject.getString("photoURL"));
+
                     issue.getTimestamp();
                     list.add(issue);
                 }
@@ -58,10 +61,10 @@ public class IssueHandler extends BaseAPIHandler {
     }
 
     public interface FetchIssueHandlerCallback {
-        public void onReceiveIssues(List<Issue> issues);
+        void onReceiveIssues(List<Issue> issues);
     }
 
     public interface RaiseIssueHandlerCallback {
-        public void onRaisedIssue();
+        void onRaisedIssue();
     }
 }

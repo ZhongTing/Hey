@@ -16,6 +16,7 @@ public class Issue {
     private Bitmap image;
     private boolean like;
     private Date timestamp;
+    private String photoURL;
 
     public Issue() {
     }
@@ -84,5 +85,13 @@ public class Issue {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
     }
 }
