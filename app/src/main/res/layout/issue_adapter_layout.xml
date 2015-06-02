@@ -10,7 +10,17 @@
         <!--android:layout_gravity="left|center_vertical"-->
         <!--android:src="@drawable/watch_like" />-->
 
+    <LinearLayout
+        android:id="@+id/back"
+        android:tag="back"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="open"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/front"
@@ -25,20 +35,24 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="25sp"/>
+            android:textSize="25sp"
+            android:text="subject"/>
 
         <TextView
             android:id="@+id/description"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:text="description"/>
 
         <TextView
             android:id="@+id/position"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:text="place"/>
     </LinearLayout>
+
     <ImageView
         android:id="@+id/like"
         android:layout_width="60dp"

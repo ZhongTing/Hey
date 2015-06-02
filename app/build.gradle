@@ -24,6 +24,10 @@ android {
     }
 }
 
+repositories {
+    maven { url 'http://clinker.47deg.com/nexus/content/groups/public' }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
@@ -32,4 +36,7 @@ dependencies {
     }
     compile 'com.lorentzos.swipecards:library:1.0.8@aar'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    compile('com.fortysevendeg.swipelistview:swipelistview:1.0-SNAPSHOT@aar') {
+        transitive = true
+    }
 }
