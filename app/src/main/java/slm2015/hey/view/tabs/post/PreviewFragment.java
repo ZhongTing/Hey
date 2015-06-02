@@ -26,7 +26,7 @@ import slm2015.hey.view.component.Wizard;
 
 public class PreviewFragment extends Fragment {
     private static final int PICK_IMAGE = 0;
-    private ImageButton locationButton;
+    private ImageButton incognitoButton;
     private ImageButton cameraButton;
     private ImageButton cancelButton;
     private ImageButton raiseButton;
@@ -79,19 +79,20 @@ public class PreviewFragment extends Fragment {
     }
 
     private void initOnCreateView(View view) {
-        initializeLocationButton(view);
+        initializeIncognitoButton(view);
         initializeCameraButton(view);
         initializeCancelButton(view);
         initializeRaiseButton(view);
     }
 
-    private void initializeLocationButton(View view) {
-        this.locationButton = (ImageButton) view.findViewById(R.id.locationButton);
-        this.locationButton.setOnClickListener(new View.OnClickListener() {
+    private void initializeIncognitoButton(View view) {
+        this.incognitoButton = (ImageButton) view.findViewById(R.id.locationButton);
+        this.incognitoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                locationButton.setSelected(!locationButton.isSelected());
-                PreviewFragment.this.card.setIncognito(locationButton.isSelected());
+                incognitoButton.setSelected(!incognitoButton.isSelected());
+                PreviewFragment.this.card.setIncognito(incognitoButton.isSelected());
+                PreviewFragment.this.card.getIssue().setIncognito(incognitoButton.isSelected());
             }
         });
     }
@@ -103,8 +104,7 @@ public class PreviewFragment extends Fragment {
             public void onClick(View v) {
                 IssueHandler issueHandler = new IssueHandler(PreviewFragment.this.getActivity());
 
-                //todo - raise issue api need privacy info
-                issueHandler.raise(PreviewFragment.this.issue, false, new IssueHandler.RaiseIssueHandlerCallback() {
+                issueHandler.raise(PreviewFragment.this.issue, PreviewFragment.this.issue.isIncognito(), new IssueHandler.RaiseIssueHandlerCallback() {
                     @Override
                     public void onRaisedIssue() {
                         PreviewFragment.this.previewFinishListener.OnPreviewFinish();

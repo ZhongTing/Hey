@@ -5,7 +5,6 @@ import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class Issue {
     //todo implement core data structure here
@@ -16,6 +15,7 @@ public class Issue {
     private Bitmap image;
     private boolean like;
     private Date timestamp;
+    private boolean incognito;
 
     public Issue() {
     }
@@ -84,5 +84,13 @@ public class Issue {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public void setIncognito(boolean incognito) {
+        this.incognito = incognito;
+    }
+
+    public boolean isIncognito() {
+        return incognito;
     }
 }
