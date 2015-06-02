@@ -26,6 +26,7 @@ public class Card extends FrameLayout {
     private Button imagePass;
     private Button imageLike;
     private ImageView incognitoImageView;
+    private TextView timestampTextView;
     private int tagWidth, tagHeight;
 
     private boolean incognito = false;
@@ -87,6 +88,8 @@ public class Card extends FrameLayout {
         this.descriptionTextView = (TextView) this.view.findViewById(R.id.description);
         this.positionTextView = (TextView) this.view.findViewById(R.id.location);
         this.incognitoImageView = (ImageView) this.view.findViewById(R.id.incognito);
+        this.timestampTextView = (TextView) this.view.findViewById(R.id.timestampTextView);
+
         if (issue.getImage() != null) {
             this.image = (ImageView) this.view.findViewById(R.id.image);
             this.image.setImageBitmap(issue.getImage());
@@ -153,6 +156,7 @@ public class Card extends FrameLayout {
         this.subjectTextView.postInvalidate();
         this.descriptionTextView.postInvalidate();
         this.positionTextView.postInvalidate();
+        this.timestampTextView.setText(issue.getTimestamp());
     }
 
     private void bindEvent() {
