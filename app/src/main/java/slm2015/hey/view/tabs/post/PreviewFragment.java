@@ -102,7 +102,9 @@ public class PreviewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 IssueHandler issueHandler = new IssueHandler(PreviewFragment.this.getActivity());
-                issueHandler.raise(PreviewFragment.this.issue, new IssueHandler.RaiseIssueHandlerCallback() {
+
+                //todo - raise issue api need privacy info
+                issueHandler.raise(PreviewFragment.this.issue, false, new IssueHandler.RaiseIssueHandlerCallback() {
                     @Override
                     public void onRaisedIssue() {
                         PreviewFragment.this.previewFinishListener.OnPreviewFinish();

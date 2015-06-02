@@ -55,7 +55,7 @@ public class IssueAdapter extends BaseAdapter {
         holder.description = (TextView) convertView.findViewById(R.id.description);
         holder.place = (TextView) convertView.findViewById(R.id.position);
         holder.like = (ImageView) convertView.findViewById(R.id.like);
-        holder.time = (TextView) convertView.findViewById(R.id.timestampTextView);
+        holder.time = (TextView) convertView.findViewById(R.id.timestamptextview);
         Log.e("****", "cccc");
         convertView.setTag(holder);
 //        } else {

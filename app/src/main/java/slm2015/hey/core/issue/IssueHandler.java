@@ -20,8 +20,8 @@ public class IssueHandler extends BaseAPIHandler {
         super(context);
     }
 
-    public void raise(Issue issue, final RaiseIssueHandlerCallback callback) {
-        this.runAPI(new RaiseIssueAPI(issue), new Callback() {
+    public void raise(Issue issue, boolean privacy, final RaiseIssueHandlerCallback callback) {
+        this.runAPI(new RaiseIssueAPI(issue, privacy), new Callback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
                 callback.onRaisedIssue();
