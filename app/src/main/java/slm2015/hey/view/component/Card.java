@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
@@ -97,7 +98,13 @@ public class Card extends FrameLayout {
             this.imageView.setImageBitmap(issue.getImage());
         }
         if (issue.getPhotoURL() != null) {
-            ImageLoader.getInstance().displayImage(issue.getPhotoURL(), this.imageView);
+            ImageLoader.getInstance().loadImage(issue.getPhotoURL(), new SimpleImageLoadingListener() {
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    imageView.setImageBitmap(loadedImage);
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                }
+            });
         }
         this.findView(this.view, issue);
         this.bindEvent();
