@@ -49,6 +49,10 @@ public class PostStepFragment extends Fragment implements Observer {
         return view;
     }
 
+    public void reset() {
+        this.adapter.reset();
+    }
+
     //init once when create object
     private void init() {
         this.adapter = new TermAdapter(this.loader.getTerms(this.termType));

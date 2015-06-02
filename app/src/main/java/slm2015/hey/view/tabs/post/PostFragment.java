@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import slm2015.hey.R;
 import slm2015.hey.core.term.TermLoader;
 import slm2015.hey.core.term.TermType;
@@ -66,9 +69,29 @@ public class PostFragment extends TabPagerFragment {
     }
 
     private void initWizard() {
-        this.wizard.setAdaptor(new WizardAdaptor(getFragmentManager()) {
+        WizardAdaptor wizardAdaptor = new WizardAdaptor(getFragmentManager()) {
             private String[] indicateTexts = {"主角", "描述", "地點", "預覽"};
             private TermType[] types = {TermType.SUBJECT, TermType.DESCRIPTION, TermType.PLACE};
+            private List<PostStepFragment> postStepFragments;
+
+            PostStepFragment getPostStepFragment(int position) {
+                if (postStepFragments == null) {
+                    postStepFragments = new ArrayList<>();
+                    postStepFragments.add(PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, TermType.SUBJECT));
+                    postStepFragments.add(PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, TermType.DESCRIPTION));
+                    postStepFragments.add(PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, TermType.PLACE));
+                }
+                return postStepFragments.get(position);
+            }
+
+            //the pager will keep old reference fragment, so reset old fragment first
+            //then call initWizard to reset adapter
+            private void reset() {
+                for (PostStepFragment fragment : postStepFragments) {
+                    fragment.reset();
+                }
+                initWizard();
+            }
 
             @Override
             public String getStepIndicateText(int stepIndex) {
@@ -78,7 +101,7 @@ public class PostFragment extends TabPagerFragment {
             @Override
             public Fragment getItem(int position) {
                 if (position < types.length) {
-                    final PostStepFragment postStepFragment = PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, types[position]);
+                    final PostStepFragment postStepFragment = getPostStepFragment(position);
                     postStepFragment.setOnStepFinishListener(new PostStepFragment.OnStepFinishListener() {
                         @Override
                         public void OnStepFinish(String selectedTerm) {
@@ -106,7 +129,7 @@ public class PostFragment extends TabPagerFragment {
                         @Override
                         public void OnPreviewFinish() {
                             PostFragment.this.pager.setCurrentItem(0, true);
-                            initWizard();
+                            reset();
                         }
                     });
                     return previewFragment;
@@ -117,6 +140,7 @@ public class PostFragment extends TabPagerFragment {
             public int getActualCount() {
                 return indicateTexts.length;
             }
-        });
+        };
+        this.wizard.setAdaptor(wizardAdaptor);
     }
 }

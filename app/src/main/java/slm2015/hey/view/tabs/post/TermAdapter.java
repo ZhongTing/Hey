@@ -33,6 +33,10 @@ public class TermAdapter extends BaseAdapter implements Filterable {
         this.notifyDataSetChanged();
     }
 
+    public void reset() {
+        selectedTermShowText = "";
+    }
+
     @Override
     public int getCount() {
         return this.filterList != null ? this.filterList.size() : 0;

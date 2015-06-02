@@ -9,9 +9,12 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import junit.framework.Assert;
+
 import java.util.Stack;
 
 import slm2015.hey.R;
+import slm2015.hey.view.tabs.post.PostStepFragment;
 
 public class Wizard extends FrameLayout {
     private ViewGroup indicatorGroup;
@@ -76,6 +79,7 @@ public class Wizard extends FrameLayout {
     }
 
     public void setAdaptor(WizardAdaptor wizardAdaptor) {
+        Assert.assertNotNull(wizardAdaptor);
         this.adaptor = wizardAdaptor;
         this.viewPager.setAdapter(this.adaptor);
         this.stepIndicatorStack.clear();
