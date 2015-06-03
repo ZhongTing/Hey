@@ -1,8 +1,6 @@
 package slm2015.hey.view.tabs.post;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -10,16 +8,18 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import junit.framework.Assert;
 
+import java.util.List;
+
 import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.term.TermLoader;
 import slm2015.hey.core.term.TermType;
+import slm2015.hey.entity.Term;
 import slm2015.hey.view.component.Wizard;
 import slm2015.hey.view.util.UiUtility;
 
@@ -130,7 +130,10 @@ public class PostStepFragment extends Fragment implements Observer {
     @Override
     public void onSubjectChanged() {
         if (this.adapter != null) {
-            this.adapter.setTermList(this.loader.getTerms(this.termType));
+            List<Term> termList = this.loader.getTerms(this.termType);
+            if(this.termType == termType.PLACE)
+                termList.add(0, new Term("無"));
+            this.adapter.setTermList(termList);
         }
     }
 
