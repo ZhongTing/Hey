@@ -71,16 +71,33 @@ public class Issue {
 
     public String getTimestamp() {
         Calendar now = Calendar.getInstance();
-
+        Calendar calendar = Calendar.getInstance();
+        String time = "" ;
         if (this.timestamp != null) {
-            Calendar calendar = Calendar.getInstance();
             calendar.setTime(this.timestamp);
             Long differenceTime = now.getTimeInMillis() - calendar.getTimeInMillis();
-            Log.e("Issue Time Difference", differenceTime.toString());
-        }
+            differenceTime = differenceTime/1000 ;
+            if ( differenceTime > 60 ) {
+                differenceTime = differenceTime / 60 ;
+                if( differenceTime > 60 ){
+                    differenceTime = differenceTime / 60 ;
+                    if(differenceTime > 24){
+                        time = Long.toString( differenceTime );
+                        time = time + "天前" ;
+                    }else{
+                        time = Long.toString( differenceTime );
+                        time = time + "分鐘前" ;
+                    }
+                }else{
+                    time = Long.toString( differenceTime );
+                    time = time + "秒前" ;
+                }
+            }else{
+                time = "0秒前" ;
+            }
 
-        // textView is the TextView view that should display it
-        return "Test";
+        }
+        return time;
     }
 
     public void setTimestamp(Date timestamp) {
