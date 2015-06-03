@@ -1,7 +1,5 @@
 package slm2015.hey.util;
 
-import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,7 +13,6 @@ public class Converter {
         Date result = null;
         try {
             result = format.parse(date);
-            Log.e("Converter", result.toString());
         } catch (ParseException e) {
             e.printStackTrace();
         }

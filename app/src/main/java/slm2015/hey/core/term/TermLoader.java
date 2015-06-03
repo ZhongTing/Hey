@@ -4,6 +4,7 @@ import android.content.Context;
 
 import junit.framework.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.core.BaseLoader;
@@ -42,6 +43,12 @@ public class TermLoader extends BaseLoader implements TermHandler.TermHandlerCal
     @Override
     public void onReceiveRecommends(List<Subject> recommends, List<Term> descriptions, List<Term> places) {
         this.recommends = recommends;
+
+        this.subjects = new ArrayList<>();
+        for (Subject subject : recommends) {
+            this.subjects.add(subject.getTerm());
+        }
+
         this.descriptions = descriptions;
         this.places = places;
 
