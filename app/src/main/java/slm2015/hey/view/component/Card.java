@@ -83,7 +83,7 @@ public class Card extends FrameLayout {
 
     public void assignIssue(Issue issue) {
         this.issue = issue;
-        int layoutId = this.issue.getImage() == null ? R.layout.card_no_pic : R.layout.card;
+        int layoutId = this.hasImage() ? R.layout.card_no_pic : R.layout.card;
         this.removeAllViews();
         setRotation(0);
         this.view = inflate(this.getContext(), layoutId, this);
@@ -108,6 +108,10 @@ public class Card extends FrameLayout {
         }
         this.findView(this.view, issue);
         this.bindEvent();
+    }
+
+    private boolean hasImage() {
+        return this.issue.getImage() == null && this.issue.getPhotoURL() == null;
     }
 
     public void initialImageLike() {
