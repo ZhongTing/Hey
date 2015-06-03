@@ -16,38 +16,25 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
-            <ImageButton
-                android:id="@+id/changeViewButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:background="#00000000"
-                android:scaleType="centerCrop"
-                android:src="@drawable/changet_to_cardview_button"/>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="50dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/light_orange">
-
             <ListView
                 android:id="@+id/issue_listview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:background="@color/light_orange"
                 android:layout_below="@id/refreshButton"
+                android:background="@color/light_orange"
                 android:descendantFocusability="beforeDescendants"
                 android:divider="@color/beige"
-                android:dividerHeight="5dp"/>
+                android:dividerHeight="5dp" />
 
-            </FrameLayout>
+            <ImageView
+                android:id="@+id/changeViewButton"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/changet_to_cardview_button" />
+
         </RelativeLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

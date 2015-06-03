@@ -16,7 +16,7 @@ import slm2015.hey.view.tabs.TabPagerFragment;
 
 public class WatchListViewFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded {
 
-    private ImageButton changeViewButton;
+    private View changeViewButton;
     private FragmentManager fragmentManager;
     private ListView issueListView;
     private IssueAdapter adapter;
@@ -61,14 +61,13 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
 //                pager.requestDisallowInterceptTouchEvent(true);
 //                return true;
 //            }
-//        });
+//        })
         this.issueListView.setOnScrollListener(this);
     }
 
 
     private void initialChangeViewButton(View view) {
-        this.changeViewButton = (ImageButton) view.findViewById(R.id.changeViewButton);
-        this.changeViewButton.bringToFront();
+        this.changeViewButton = view.findViewById(R.id.changeViewButton);
         this.changeViewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

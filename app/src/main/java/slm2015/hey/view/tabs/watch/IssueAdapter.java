@@ -50,13 +50,12 @@ public class IssueAdapter extends BaseAdapter {
 //        if (convertView == null) {
         convertView = inflater.inflate(R.layout.issue_adapter_layout, null);
         holder = new IssueHolder();
-        holder.front = (LinearLayout) convertView.findViewById(R.id.front);
+        holder.front = (ViewGroup) convertView.findViewById(R.id.front);
         holder.subject = (TextView) convertView.findViewById(R.id.subject);
         holder.description = (TextView) convertView.findViewById(R.id.description);
         holder.place = (TextView) convertView.findViewById(R.id.position);
         holder.like = (ImageView) convertView.findViewById(R.id.like);
         holder.time = (TextView) convertView.findViewById(R.id.timestamptextview);
-        Log.e("****", "cccc");
         convertView.setTag(holder);
 //        } else {
 //            holder = (IssueHolder) convertView.getTag();
@@ -68,7 +67,6 @@ public class IssueAdapter extends BaseAdapter {
                 gestureListItem(holder.getFront(), true);
                 holder.like.setVisibility(View.VISIBLE);
 //                holder.front.setX(UiUtility.dpiToPixel(50, Resources.getSystem()));
-                Log.e("****", "AAAA");
             }
             holder.subject.setText(issue.getSubject());
             holder.description.setText(issue.getDescription());
@@ -81,7 +79,6 @@ public class IssueAdapter extends BaseAdapter {
             holder.description.setText("");
             holder.place.setText("");
             holder.time.setText("");
-            Log.e("****", "BBBB");
         }
         final IssueHolder issueHolder = holder;
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -100,14 +97,14 @@ public class IssueAdapter extends BaseAdapter {
     }
 
     private class IssueHolder {
-        LinearLayout front;
+        ViewGroup front;
         TextView subject;
         TextView description;
         TextView place;
         ImageView like;
         TextView time;
 
-        public LinearLayout getFront() {
+        public ViewGroup getFront() {
             return this.front;
         }
     }
