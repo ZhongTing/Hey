@@ -5,7 +5,6 @@ import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class Issue {
     //todo implement core data structure here
@@ -102,5 +101,12 @@ public class Issue {
 
     public String getPhotoURL() {
         return photoURL;
+    }
+
+    public void reset() {
+        this.image = null;
+        this.description = "";
+        this.place = "";
+        this.subject = "";
     }
 }

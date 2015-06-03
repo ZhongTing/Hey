@@ -161,4 +161,9 @@ public class PreviewFragment extends Fragment {
         this.issue = issue;
         this.card.assignIssue(issue);
     }
+
+    public void reset() {
+        this.issue.reset();
+        this.card.assignIssue(issue);
+    }
 }

@@ -90,6 +90,7 @@ public class PostFragment extends TabPagerFragment {
                 for (PostStepFragment fragment : postStepFragments) {
                     fragment.reset();
                 }
+                previewFragment.reset();
                 initWizard();
             }
 
