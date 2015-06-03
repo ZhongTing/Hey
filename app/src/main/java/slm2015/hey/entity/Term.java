@@ -27,6 +27,16 @@ public class Term {
         return this.isNotInRecommendList;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o.getClass().equals(getClass())) {
+            Term target = (Term) o;
+            return target.showText.equals(this.showText) && target.term.equals(this.term);
+        } else {
+            return false;
+        }
+    }
+
     public void normalize() {
         this.showText = this.term;
         this.isNotInRecommendList = false;

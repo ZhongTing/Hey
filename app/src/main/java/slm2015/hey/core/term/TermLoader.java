@@ -66,6 +66,16 @@ public class TermLoader extends BaseLoader implements TermHandler.TermHandlerCal
         this.subjects = new ArrayList<>();
         for (Subject subject : recommends) {
             this.subjects.add(subject.getTerm());
+
+            List<Term> additionDescriptions = new ArrayList<>();
+            additionDescriptions.addAll(descriptions);
+            additionDescriptions.removeAll(subject.getDescriptionList());
+            subject.getDescriptionList().addAll(additionDescriptions);
+           
+            List<Term> additionPlace = new ArrayList<>();
+            additionPlace.addAll(places);
+            additionPlace.removeAll(subject.getPlaceList());
+            subject.getPlaceList().addAll(additionPlace);
         }
 
         this.descriptions = descriptions;
