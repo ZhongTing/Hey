@@ -81,19 +81,26 @@ public class Issue {
                 if (differenceTime > 60) {
                     differenceTime = differenceTime / 60;
                     if (differenceTime > 24) {
+                        differenceTime = differenceTime / 24;
                         time = Long.toString(differenceTime);
                         time = time + "天前";
                     } else {
                         time = Long.toString(differenceTime);
-                        time = time + "分鐘前";
+                        time = time + "小時前";
                     }
                 } else {
                     time = Long.toString(differenceTime);
-                    time = time + "秒前";
+                    time = time + "分鐘前";
                 }
             } else {
-                time = "0秒前";
-            }
+                if ( differenceTime > 0) {
+                    time = Long.toString(differenceTime);
+                    time = time + "秒前";
+                }else{
+                    time = "0秒前";
+                }
+
+             }
         }
         return time;
     }
