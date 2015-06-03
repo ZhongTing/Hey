@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.R;
+import slm2015.hey.util.LocalPreference;
 import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.tabs.post.PostFragment;
 import slm2015.hey.view.tabs.watch.WatchFragment;
@@ -27,6 +28,7 @@ public class MainActivity extends FragmentActivity {
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         ImageLoader.getInstance().init(new ImageLoaderConfiguration.Builder(getBaseContext()).build());
+        LocalPreference.init(this);
 
         this.fragments = new ArrayList<>();
         this.fragments.add(WatchFragment.newInstance(pager));

@@ -1,6 +1,8 @@
 package slm2015.hey.view.tabs.post;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +23,7 @@ import java.util.List;
 import slm2015.hey.R;
 import slm2015.hey.core.issue.IssueHandler;
 import slm2015.hey.entity.Issue;
+import slm2015.hey.util.LocalPreference;
 import slm2015.hey.view.component.Card;
 import slm2015.hey.view.component.Wizard;
 
@@ -86,15 +89,37 @@ public class PreviewFragment extends Fragment {
     }
 
     private void initializeIncognitoButton(View view) {
-        this.incognitoButton = (ImageButton) view.findViewById(R.id.locationButton);
+        this.incognitoButton = (ImageButton) view.findViewById(R.id.incognitoButton);
         this.incognitoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 incognitoButton.setSelected(!incognitoButton.isSelected());
+                if (incognitoButton.isSelected() && LocalPreference.instance().getPrivacyModeHintEnabled()) {
+                    showPrivacyModeHint();
+                }
                 PreviewFragment.this.card.setIncognito(incognitoButton.isSelected());
                 PreviewFragment.this.card.getIssue().setIncognito(incognitoButton.isSelected());
             }
         });
+    }
+
+    private void showPrivacyModeHint() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Hint");
+        builder.setMessage("你已進入隱私模式，Hey將不會把此次分享相關資訊作為智慧型推薦清單統計，若有自定義詞也將不會被建立。");
+        builder.setPositiveButton("好", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("以後別再提示了", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                LocalPreference.instance().setPrivacyModeHintEnabled(false);
+            }
+        });
+        builder.show();
     }
 
     private void initializeRaiseButton(View view) {

@@ -24,9 +24,9 @@
             android:gravity="center">
 
             <ImageButton
+                android:id="@+id/incognitoButton"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:id="@+id/locationButton"
                 android:background="#00000000"
                 android:src="@drawable/lock_button"
                 android:scaleType="centerCrop"
@@ -39,8 +39,8 @@
                 android:background="#00000000"
                 android:src="@drawable/cancel_button"
                 android:scaleType="centerCrop"
-                android:layout_toRightOf="@id/locationButton"
-                android:layout_toEndOf="@+id/locationButton"
+                android:layout_toRightOf="@id/incognitoButton"
+                android:layout_toEndOf="@+id/incognitoButton"
                 android:layout_margin="5dp"/>
 
             <ImageButton
