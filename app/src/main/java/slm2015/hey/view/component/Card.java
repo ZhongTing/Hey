@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.view.util.UiUtility;
@@ -20,7 +23,7 @@ public class Card extends FrameLayout {
     private TextView subjectTextView;
     private TextView descriptionTextView;
     private TextView positionTextView;
-    private ImageView image;
+    private ImageView imageView;
     private Issue issue;
     private View view;
     private Button imagePass;
@@ -89,10 +92,19 @@ public class Card extends FrameLayout {
         this.positionTextView = (TextView) this.view.findViewById(R.id.location);
         this.incognitoImageView = (ImageView) this.view.findViewById(R.id.incognito);
         this.timestampTextView = (TextView) this.view.findViewById(R.id.timestampTextView);
+        this.imageView = (ImageView) this.view.findViewById(R.id.image);
 
         if (issue.getImage() != null) {
-            this.image = (ImageView) this.view.findViewById(R.id.image);
-            this.image.setImageBitmap(issue.getImage());
+            this.imageView.setImageBitmap(issue.getImage());
+        }
+        if (issue.getPhotoURL() != null) {
+            ImageLoader.getInstance().loadImage(issue.getPhotoURL(), new SimpleImageLoadingListener() {
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    imageView.setImageBitmap(loadedImage);
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                }
+            });
         }
         this.findView(this.view, issue);
         this.bindEvent();
@@ -146,7 +158,7 @@ public class Card extends FrameLayout {
     }
 
     public void setImage(Bitmap bitmap) {
-        this.image.setImageBitmap(bitmap);
+        this.imageView.setImageBitmap(bitmap);
     }
 
     private void findView(View view, Issue issue) {

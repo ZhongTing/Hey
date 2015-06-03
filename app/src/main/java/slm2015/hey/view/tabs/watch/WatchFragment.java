@@ -63,7 +63,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_funnywatch_layout, container, false);
+        View view = inflater.inflate(R.layout.watch_deck_layout, container, false);
         this.init(view);
         return view;
     }

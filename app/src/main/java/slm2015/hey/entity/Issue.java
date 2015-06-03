@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class Issue {
     //todo implement core data structure here
@@ -16,6 +17,7 @@ public class Issue {
     private boolean like;
     private Date timestamp;
     private boolean incognito;
+    private String photoURL;
 
     public Issue() {
     }
@@ -92,5 +94,13 @@ public class Issue {
 
     public boolean isIncognito() {
         return incognito;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
     }
 }
