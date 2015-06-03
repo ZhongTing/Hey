@@ -40,9 +40,9 @@ public class TermHandler extends BaseAPIHandler {
                 while (keys.hasNext()) {
                     String key = keys.next();
                     Subject subject = new Subject(key);
-                    JSONObject subjectRelativeObject = object.getJSONObject(key);
-                    subject.getDescriptionList().addAll(this.parseDescriptions(subjectRelativeObject.getJSONArray("descriptions")));
-                    subject.getPlaceList().addAll(this.parsePlaces(subjectRelativeObject.getJSONArray("descriptions")));
+                    JSONObject subjectObject = object.getJSONObject(key);
+                    subject.getDescriptionList().addAll(this.parseDescriptions(subjectObject.getJSONArray("descriptions")));
+                    subject.getPlaceList().addAll(this.parsePlaces(subjectObject.getJSONArray("places")));
                     list.add(subject);
                 }
                 return list;
@@ -58,6 +58,7 @@ public class TermHandler extends BaseAPIHandler {
 
             private List<Term> parsePlaces(JSONArray array) throws JSONException {
                 List<Term> list = new ArrayList<>();
+                list.add(new Term("無"));
                 for (int i = 0; i < array.length(); i++) {
                     list.add(new Term(array.getString(i)));
                 }
@@ -67,6 +68,6 @@ public class TermHandler extends BaseAPIHandler {
     }
 
     public interface TermHandlerCallback {
-        public void onReceiveRecommends(List<Subject> subjects, List<Term> descriptions, List<Term> places);
+        void onReceiveRecommends(List<Subject> subjects, List<Term> descriptions, List<Term> places);
     }
 }

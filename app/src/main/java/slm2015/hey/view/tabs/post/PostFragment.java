@@ -116,8 +116,7 @@ public class PostFragment extends TabPagerFragment {
                                     issue.setDescription(selectedTerm);
                                     break;
                                 case PLACE:
-                                    String place = selectedTerm.equals("無") ? "" : selectedTerm;
-                                    issue.setPlace(place);
+                                    issue.setPlace(selectedTerm);
                                     if (previewFragment != null) {
                                         previewFragment.reassignCard(issue);
                                     }

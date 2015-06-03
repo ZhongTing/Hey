@@ -13,13 +13,10 @@ import android.widget.ListView;
 
 import junit.framework.Assert;
 
-import java.util.List;
-
 import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.term.TermLoader;
 import slm2015.hey.core.term.TermType;
-import slm2015.hey.entity.Term;
 import slm2015.hey.view.component.Wizard;
 import slm2015.hey.view.util.UiUtility;
 
@@ -130,10 +127,7 @@ public class PostStepFragment extends Fragment implements Observer {
     @Override
     public void onLoaderChanged() {
         if (this.adapter != null) {
-            List<Term> termList = this.loader.getTerms(this.termType);
-            if (this.termType == TermType.PLACE)
-                termList.add(0, new Term("無"));
-            this.adapter.setTermList(termList);
+            this.adapter.setTermList(this.loader.getTerms(this.termType));
         }
     }
 
