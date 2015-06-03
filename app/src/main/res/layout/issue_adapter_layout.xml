@@ -32,7 +32,7 @@
             android:layout_centerHorizontal="true"
             android:rotation="-30"
             android:src="@drawable/like"
-            android:visibility="visible" />
+            android:visibility="invisible" />
 
     </RelativeLayout>
 
