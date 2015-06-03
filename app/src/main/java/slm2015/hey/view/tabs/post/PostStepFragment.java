@@ -131,7 +131,7 @@ public class PostStepFragment extends Fragment implements Observer {
     public void onLoaderChanged() {
         if (this.adapter != null) {
             List<Term> termList = this.loader.getTerms(this.termType);
-            if(this.termType == termType.PLACE)
+            if (this.termType == TermType.PLACE)
                 termList.add(0, new Term("無"));
             this.adapter.setTermList(termList);
         }

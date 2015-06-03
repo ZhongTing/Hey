@@ -110,12 +110,13 @@ public class PostFragment extends TabPagerFragment {
                             switch (postStepFragment.getTermType()) {
                                 case SUBJECT:
                                     issue.setSubject(selectedTerm);
+                                    termLoader.setCurrentSubject(selectedTerm);
                                     break;
                                 case DESCRIPTION:
                                     issue.setDescription(selectedTerm);
                                     break;
                                 case PLACE:
-                                    String place = selectedTerm == "無" ? "" : selectedTerm;
+                                    String place = selectedTerm.equals("無") ? "" : selectedTerm;
                                     issue.setPlace(place);
                                     if (previewFragment != null) {
                                         previewFragment.reassignCard(issue);

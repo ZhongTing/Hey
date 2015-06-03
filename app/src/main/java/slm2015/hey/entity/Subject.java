@@ -23,4 +23,8 @@ public class Subject {
     public List<Term> getPlaceList() {
         return placeList;
     }
+
+    public boolean is(String content) {
+        return term.getText().equals(content);
+    }
 }

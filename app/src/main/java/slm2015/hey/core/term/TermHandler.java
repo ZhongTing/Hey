@@ -38,7 +38,12 @@ public class TermHandler extends BaseAPIHandler {
                 List<Subject> list = new ArrayList<>();
                 Iterator<String> keys = object.keys();
                 while (keys.hasNext()) {
-                    list.add(new Subject(keys.next()));
+                    String key = keys.next();
+                    Subject subject = new Subject(key);
+                    JSONObject subjectRelativeObject = object.getJSONObject(key);
+                    subject.getDescriptionList().addAll(this.parseDescriptions(subjectRelativeObject.getJSONArray("descriptions")));
+                    subject.getPlaceList().addAll(this.parsePlaces(subjectRelativeObject.getJSONArray("descriptions")));
+                    list.add(subject);
                 }
                 return list;
             }

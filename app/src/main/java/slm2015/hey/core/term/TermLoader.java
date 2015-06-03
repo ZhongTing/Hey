@@ -13,7 +13,9 @@ import slm2015.hey.entity.Term;
 
 public class TermLoader extends BaseLoader implements TermHandler.TermHandlerCallback {
     private TermHandler termHandler;
-    private List<Subject> recommends;
+    private List<Subject> subjectRecommends;
+    private List<Term> descriptionRecommends;
+    private List<Term> placeRecommends;
 
     private List<Term> subjects;
     private List<Term> descriptions;
@@ -40,9 +42,26 @@ public class TermLoader extends BaseLoader implements TermHandler.TermHandlerCal
         return null;
     }
 
+    public void setCurrentSubject(String content) {
+        boolean isFind = false;
+        for (Subject subject : subjectRecommends) {
+            if (subject.is(content)) {
+                this.descriptions = subject.getDescriptionList();
+                this.places = subject.getPlaceList();
+                isFind = true;
+                break;
+            }
+        }
+        if (!isFind) {
+            this.descriptions = descriptionRecommends;
+            this.places = placeRecommends;
+        }
+        this.notifyLoaderChanged();
+    }
+
     @Override
     public void onReceiveRecommends(List<Subject> recommends, List<Term> descriptions, List<Term> places) {
-        this.recommends = recommends;
+        this.subjectRecommends = recommends;
 
         this.subjects = new ArrayList<>();
         for (Subject subject : recommends) {
@@ -51,6 +70,9 @@ public class TermLoader extends BaseLoader implements TermHandler.TermHandlerCal
 
         this.descriptions = descriptions;
         this.places = places;
+
+        this.descriptionRecommends = descriptions;
+        this.placeRecommends = places;
 
         notifyLoaderChanged();
     }
