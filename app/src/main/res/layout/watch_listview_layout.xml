@@ -33,7 +33,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/changet_to_cardview_button" />
+                android:src="@drawable/change_to_card_deck_button" />
 
         </RelativeLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
