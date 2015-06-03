@@ -432,7 +432,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     }
 
     @Override
-    public void onSubjectChanged() {
+    public void onLoaderChanged() {
 //        if (this.watchManager.getNewIssues().size() > 0) {
 //            this.deck.reloadDeck();
 //            showLoadedCard(true);

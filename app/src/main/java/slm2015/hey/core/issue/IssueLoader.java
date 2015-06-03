@@ -7,10 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import slm2015.hey.core.Subject;
+import slm2015.hey.core.BaseLoader;
 import slm2015.hey.entity.Issue;
 
-public class IssueLoader extends Subject {
+public class IssueLoader extends BaseLoader {
     private IssueHandler issueHandler;
     private Integer lastIssueId = null;
     private ArrayList<Issue> issues = new ArrayList<>();
@@ -30,7 +30,7 @@ public class IssueLoader extends Subject {
                     IssueLoader.this.newIssues.addAll(issues);
                 }
 
-                notifySubjectChanged();
+                notifyLoaderChanged();
             }
         });
     }

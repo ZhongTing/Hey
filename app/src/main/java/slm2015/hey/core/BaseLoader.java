@@ -3,7 +3,7 @@ package slm2015.hey.core;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Subject {
+public abstract class BaseLoader {
     private List<Observer> observers = new ArrayList<>();
 
     public void addObserver(Observer observer) {
@@ -14,9 +14,9 @@ public abstract class Subject {
         this.observers.remove(observer);
     }
 
-    public void notifySubjectChanged() {
+    public void notifyLoaderChanged() {
         for (Observer observer : observers) {
-            observer.onSubjectChanged();
+            observer.onLoaderChanged();
         }
     }
 }

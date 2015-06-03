@@ -6,8 +6,7 @@ public class Term {
     private boolean isNotInRecommendList;
 
     public Term(String term) {
-        this.term = term;
-        this.showText = term;
+        this(term, false);
     }
 
     public Term(String term, boolean isNotInRecommendList) {

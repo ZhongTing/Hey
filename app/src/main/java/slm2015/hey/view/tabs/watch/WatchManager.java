@@ -58,7 +58,7 @@ public class WatchManager implements Observer {
     }
 
     @Override
-    public void onSubjectChanged() {
+    public void onLoaderChanged() {
         cloneToSelf();
         this.issueLoader.clearIssues();
         this.issuesForWatch = (ArrayList) this.oldIssues.clone();

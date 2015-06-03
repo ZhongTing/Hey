@@ -6,11 +6,14 @@ import junit.framework.Assert;
 
 import java.util.List;
 
-import slm2015.hey.core.Subject;
+import slm2015.hey.core.BaseLoader;
+import slm2015.hey.entity.Subject;
 import slm2015.hey.entity.Term;
 
-public class TermLoader extends Subject implements TermHandler.TermHandlerCallback {
+public class TermLoader extends BaseLoader implements TermHandler.TermHandlerCallback {
     private TermHandler termHandler;
+    private List<Subject> recommends;
+
     private List<Term> subjects;
     private List<Term> descriptions;
     private List<Term> places;
@@ -37,11 +40,11 @@ public class TermLoader extends Subject implements TermHandler.TermHandlerCallba
     }
 
     @Override
-    public void onReceiveRecommends(List<Term> subjects, List<Term> descriptions, List<Term> places) {
-        this.subjects = subjects;
+    public void onReceiveRecommends(List<Subject> recommends, List<Term> descriptions, List<Term> places) {
+        this.recommends = recommends;
         this.descriptions = descriptions;
         this.places = places;
 
-        notifySubjectChanged();
+        notifyLoaderChanged();
     }
 }

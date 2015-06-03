@@ -128,7 +128,7 @@ public class PostStepFragment extends Fragment implements Observer {
     }
 
     @Override
-    public void onSubjectChanged() {
+    public void onLoaderChanged() {
         if (this.adapter != null) {
             List<Term> termList = this.loader.getTerms(this.termType);
             if(this.termType == termType.PLACE)

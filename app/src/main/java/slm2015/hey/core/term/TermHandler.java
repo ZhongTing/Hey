@@ -7,10 +7,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import slm2015.hey.api.user.PullRecommendsAPI;
 import slm2015.hey.core.BaseAPIHandler;
+import slm2015.hey.entity.Subject;
 import slm2015.hey.entity.Term;
 
 public class TermHandler extends BaseAPIHandler {
@@ -25,14 +27,31 @@ public class TermHandler extends BaseAPIHandler {
         this.runAPI(new PullRecommendsAPI(), new Callback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
-                List<Term> subjects = parseTermArray(jsonObject.getJSONArray("subject"));
-                List<Term> descriptions = parseTermArray(jsonObject.getJSONArray("description"));
-                List<Term> places = parseTermArray(jsonObject.getJSONArray("place"));
+                List<Subject> subjects = parseSubjects(jsonObject.getJSONObject("subjects"));
+                List<Term> descriptions = parseDescriptions(jsonObject.getJSONArray("descriptions"));
+                List<Term> places = parsePlaces(jsonObject.getJSONArray("places"));
 
                 callback.onReceiveRecommends(subjects, descriptions, places);
             }
 
-            private List<Term> parseTermArray(JSONArray array) throws JSONException {
+            private List<Subject> parseSubjects(JSONObject object) throws JSONException {
+                List<Subject> list = new ArrayList<>();
+                Iterator<String> keys = object.keys();
+                while (keys.hasNext()) {
+                    list.add(new Subject(keys.next()));
+                }
+                return list;
+            }
+
+            private List<Term> parseDescriptions(JSONArray array) throws JSONException {
+                List<Term> list = new ArrayList<>();
+                for (int i = 0; i < array.length(); i++) {
+                    list.add(new Term(array.getString(i)));
+                }
+                return list;
+            }
+
+            private List<Term> parsePlaces(JSONArray array) throws JSONException {
                 List<Term> list = new ArrayList<>();
                 for (int i = 0; i < array.length(); i++) {
                     list.add(new Term(array.getString(i)));
@@ -43,6 +62,6 @@ public class TermHandler extends BaseAPIHandler {
     }
 
     public interface TermHandlerCallback {
-        public void onReceiveRecommends(List<Term> subjects, List<Term> descriptions, List<Term> places);
+        public void onReceiveRecommends(List<Subject> subjects, List<Term> descriptions, List<Term> places);
     }
 }
