@@ -49,7 +49,7 @@ public class Issue {
     }
 
     public void setPlace(String location) {
-        this.place = location;
+        this.place = location.equals("無") ? "" : location;
     }
 
     public Bitmap getImage() {
@@ -93,14 +93,14 @@ public class Issue {
                     time = time + "分鐘前";
                 }
             } else {
-                if ( differenceTime > 0) {
+                if (differenceTime > 0) {
                     time = Long.toString(differenceTime);
                     time = time + "秒前";
-                }else{
+                } else {
                     time = "0秒前";
                 }
 
-             }
+            }
         }
         return time;
     }
