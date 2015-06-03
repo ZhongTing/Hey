@@ -1,7 +1,6 @@
 package slm2015.hey.entity;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -72,30 +71,29 @@ public class Issue {
     public String getTimestamp() {
         Calendar now = Calendar.getInstance();
         Calendar calendar = Calendar.getInstance();
-        String time = "" ;
+        String time = "";
         if (this.timestamp != null) {
             calendar.setTime(this.timestamp);
             Long differenceTime = now.getTimeInMillis() - calendar.getTimeInMillis();
-            differenceTime = differenceTime/1000 ;
-            if ( differenceTime > 60 ) {
-                differenceTime = differenceTime / 60 ;
-                if( differenceTime > 60 ){
-                    differenceTime = differenceTime / 60 ;
-                    if(differenceTime > 24){
-                        time = Long.toString( differenceTime );
-                        time = time + "天前" ;
-                    }else{
-                        time = Long.toString( differenceTime );
-                        time = time + "分鐘前" ;
+            differenceTime = differenceTime / 1000;
+            if (differenceTime > 60) {
+                differenceTime = differenceTime / 60;
+                if (differenceTime > 60) {
+                    differenceTime = differenceTime / 60;
+                    if (differenceTime > 24) {
+                        time = Long.toString(differenceTime);
+                        time = time + "天前";
+                    } else {
+                        time = Long.toString(differenceTime);
+                        time = time + "分鐘前";
                     }
-                }else{
-                    time = Long.toString( differenceTime );
-                    time = time + "秒前" ;
+                } else {
+                    time = Long.toString(differenceTime);
+                    time = time + "秒前";
                 }
-            }else{
-                time = "0秒前" ;
+            } else {
+                time = "0秒前";
             }
-
         }
         return time;
     }
