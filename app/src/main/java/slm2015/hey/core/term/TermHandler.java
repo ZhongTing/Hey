@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import slm2015.hey.api.user.PullRecommendsAPI;
@@ -27,22 +26,20 @@ public class TermHandler extends BaseAPIHandler {
         this.runAPI(new PullRecommendsAPI(), new Callback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
-                List<Subject> subjects = parseSubjects(jsonObject.getJSONObject("subjects"));
+                List<Subject> subjects = parseSubjects(jsonObject.getJSONArray("subjects"));
                 List<Term> descriptions = parseDescriptions(jsonObject.getJSONArray("descriptions"));
                 List<Term> places = parsePlaces(jsonObject.getJSONArray("places"));
 
                 callback.onReceiveRecommends(subjects, descriptions, places);
             }
 
-            private List<Subject> parseSubjects(JSONObject object) throws JSONException {
+            private List<Subject> parseSubjects(JSONArray array) throws JSONException {
                 List<Subject> list = new ArrayList<>();
-                Iterator<String> keys = object.keys();
-                while (keys.hasNext()) {
-                    String key = keys.next();
-                    Subject subject = new Subject(key);
-                    JSONObject subjectObject = object.getJSONObject(key);
-                    subject.getDescriptionList().addAll(this.parseDescriptions(subjectObject.getJSONArray("descriptions")));
-                    subject.getPlaceList().addAll(this.parsePlaces(subjectObject.getJSONArray("places")));
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject object = array.getJSONObject(i);
+                    Subject subject = new Subject(object.getString("content"));
+                    subject.getDescriptionList().addAll(this.parseDescriptions(object.getJSONArray("descriptions")));
+                    subject.getPlaceList().addAll(this.parsePlaces(object.getJSONArray("places")));
                     list.add(subject);
                 }
                 return list;
