@@ -1,13 +1,11 @@
 package slm2015.hey.view.tabs.watch;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -65,7 +63,7 @@ public class IssueAdapter extends BaseAdapter {
             Issue issue = this.issueList.get(upsideDownPosition);
             if (issue.isLike()) {
                 gestureListItem(holder.getFront(), true);
-                holder.like.setVisibility(View.VISIBLE);
+                holder.like.setAlpha(1);
 //                holder.front.setX(UiUtility.dpiToPixel(50, Resources.getSystem()));
             }
             holder.subject.setText(issue.getSubject());
@@ -88,8 +86,8 @@ public class IssueAdapter extends BaseAdapter {
                 boolean isLike = !issueList.get(upsideDownPosition).isLike();
                 gestureListItem(i.getFront(), isLike);
                 issueList.get(upsideDownPosition).setLike(isLike);
-                int visible = isLike ? View.VISIBLE : View.INVISIBLE;
-                i.like.setVisibility(visible);
+                float alpha = isLike ? 1f : 0.2f;
+                i.like.setAlpha(alpha);
                 return true;
             }
         });
