@@ -61,11 +61,12 @@ public class IssueAdapter extends BaseAdapter {
 
         if (upsideDownPosition < this.issueList.size()) {
             Issue issue = this.issueList.get(upsideDownPosition);
-            if (issue.isLike()) {
-                gestureListItem(holder.getFront(), true);
-                holder.like.setAlpha(1);
-//                holder.front.setX(UiUtility.dpiToPixel(50, Resources.getSystem()));
-            }
+//            if (issue.isLike()) {
+//                gestureListItem(holder.getFront(), true);
+//                holder.like.setAlpha(1);
+//            }
+            float alpha = issue.isLike() ? 1f : 0.2f;
+            holder.like.setAlpha(alpha);
             holder.subject.setText(issue.getSubject());
             holder.description.setText(issue.getDescription());
             holder.place.setText(issue.getPlace());

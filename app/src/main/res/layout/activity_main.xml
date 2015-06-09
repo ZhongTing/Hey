@@ -17,6 +17,16 @@
         app:pstsDividerColor="@android:color/transparent"
         android:background="@color/grey" />
 
+
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sliding_menu_button"
+        android:id="@+id/sliding_button"
+        android:background="@color/transparent"
+        android:layout_margin="5dp"/>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
