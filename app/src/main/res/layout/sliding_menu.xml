@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageButton
-        android:layout_width="130dp"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:src="@drawable/add_selector_button"
         android:background="@color/grey"
         android:layout_alignParentBottom="true"
         android:id="@+id/add_selector_button"/>
     <ListView
-        android:layout_width="130dp"
+        android:layout_width="200dp"
         android:layout_height="fill_parent"
         android:background="@color/grey"
         android:id="@+id/selectorListView"
