@@ -34,7 +34,8 @@ public class AddSelectorActivity extends Activity {
         this.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                boolean confirm = false;
+                backToMainActivity(confirm);
             }
         });
     }
@@ -75,16 +76,21 @@ public class AddSelectorActivity extends Activity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
+    private void backToMainActivity(boolean backPressed) {
         Intent intent = new Intent();
         String addSelector = this.add_selector_edittext.getText().toString();
-        if (addSelector.isEmpty())
+        if (backPressed || addSelector.isEmpty())
             setResult(Activity.RESULT_CANCELED);
         else {
             intent.putExtra("selector", addSelector);
             setResult(Activity.RESULT_OK, intent);
         }
-        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        boolean backPressed = true;
+        backToMainActivity(backPressed);
     }
 }
