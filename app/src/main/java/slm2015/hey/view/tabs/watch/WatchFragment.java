@@ -47,6 +47,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private int windowWidth;
     private int screenCenter;
     private boolean allEvent = true, isRefresh = false, onMove = false;
+
     private WatchManager watchManager;
     private WatchListViewFragment watchListViewFragment;
 
@@ -320,6 +321,10 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         this.deck.operation(card, like);
 //        if (deck.getCardQueue().size() > 0)
 //            deck.getCardQueue().get(deck.getCardQueue().size() - 1).setOnTouchListener(WatchFragment.this);
+    }
+
+    public WatchManager getWatchManager() {
+        return watchManager;
     }
 
     @Override

@@ -10,6 +10,7 @@ import java.util.Queue;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.entity.Issue;
+import slm2015.hey.entity.Selector;
 
 public class WatchManager implements Observer {
     private IssueLoader issueLoader;
@@ -19,6 +20,7 @@ public class WatchManager implements Observer {
     private List<OnReloaded> observers;
     private ArrayList<Issue> issuesForWatch;
     private ArrayList<Issue> modifiedIssues;
+    private ArrayList<Selector> selectorList;
 
     public WatchManager(Context context) {
         this.issueLoader = new IssueLoader(context);
@@ -28,6 +30,7 @@ public class WatchManager implements Observer {
         this.issuesForWatch = new ArrayList<>();
         this.modifiedIssues = new ArrayList<>();
         this.observers = new ArrayList<>();
+        this.selectorList = new ArrayList<>();
     }
 
     public void reload() {
@@ -99,5 +102,9 @@ public class WatchManager implements Observer {
     public void pushToIssues() {
         Issue issue = this.newIssues.poll();
         this.oldIssues.add(issue);
+    }
+
+    public void addSelector(Selector selector) {
+        this.selectorList.add(selector);
     }
 }

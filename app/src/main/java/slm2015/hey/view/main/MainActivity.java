@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.R;
+import slm2015.hey.entity.Selector;
 import slm2015.hey.util.LocalPreference;
 import slm2015.hey.view.selector.AddSelectorActivity;
 import slm2015.hey.view.selector.SelectorAdapter;
@@ -103,9 +104,16 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ADD_SELECTOR){
-            if(resultCode == Activity.RESULT_OK)
-                this.selectorAdapter.addSelector(data.getStringExtra("selector"));
+        if (requestCode == ADD_SELECTOR) {
+            if (resultCode == Activity.RESULT_OK)
+                AddSelector(new Selector(data.getStringExtra("selector")));
         }
+    }
+
+    private void AddSelector(Selector selector) {
+        final int WATCH_FRAGMENT = 0;
+        WatchFragment fragment = (WatchFragment) this.fragments.get(WATCH_FRAGMENT);
+        this.selectorAdapter.addSelector(selector);
+        fragment.getWatchManager().addSelector(selector);
     }
 }
