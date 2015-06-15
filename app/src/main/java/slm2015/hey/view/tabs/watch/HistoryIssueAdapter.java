@@ -13,11 +13,11 @@ import java.util.List;
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
 
-public class IssueAdapter extends BaseAdapter {
+public class HistoryIssueAdapter extends BaseAdapter {
     private List<Issue> issueList;
     private IssueHolder issueHolder;
 
-    public IssueAdapter(List<Issue> issueList) {
+    public HistoryIssueAdapter(List<Issue> issueList) {
         setIssueList(issueList);
     }
 
@@ -62,12 +62,6 @@ public class IssueAdapter extends BaseAdapter {
 
         if (upsideDownPosition < this.issueList.size()) {
             Issue issue = this.issueList.get(upsideDownPosition);
-            if (issue.isLike()) {
-                gestureListItem(holder.getFront(), true);
-                holder.like.setAlpha(1);
-//                holder.front.setX(UiUtility.dpiToPixel(50, Resources.getSystem()));
-            }
-
 
             if (issue.getPlace().equals("")) {
                 holder.locationImg.setVisibility(View.GONE);
@@ -77,6 +71,9 @@ public class IssueAdapter extends BaseAdapter {
                 holder.place.setVisibility(View.VISIBLE);
                 holder.place.setText(issue.getPlace());
             }
+
+            float alpha = issue.isLike() ? 1f : 0.2f;
+            holder.like.setAlpha(alpha);
             holder.subject.setText(issue.getSubject());
             holder.description.setText(issue.getDescription());
             holder.time.setText(issue.getTimestamp());
