@@ -17,18 +17,18 @@ import java.lang.reflect.Field;
 import slm2015.hey.R;
 import slm2015.hey.view.tabs.TabPagerFragment;
 
-public class WatchListViewFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded {
+public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded {
 
     private View changeViewButton;
     private FragmentManager fragmentManager;
     private ListView issueListView;
-    private IssueAdapter adapter;
+    private HistoryIssueAdapter adapter;
     private SwipeRefreshLayout laySwipe;
     private ViewPager pager;
     private WatchManager watchManager;
 
-    static public WatchListViewFragment newInstance(FragmentManager fragmentManager, ViewPager pager, WatchManager watchManager) {
-        WatchListViewFragment fragment = new WatchListViewFragment();
+    static public WatchHistoryFragment newInstance(FragmentManager fragmentManager, ViewPager pager, WatchManager watchManager) {
+        WatchHistoryFragment fragment = new WatchHistoryFragment();
         fragment.setFragmentManager(fragmentManager);
         fragment.setPager(pager);
         fragment.setWatchManager(watchManager);
@@ -43,10 +43,10 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
     }
 
     private void init(View view) {
-        this.adapter = new IssueAdapter(this.watchManager.getHistory());
+        this.adapter = new HistoryIssueAdapter(this.watchManager.getHistory());
         initialChangeViewButton(view);
         initialLaySwipe(view);
-        initailListView(view);
+        initialListView(view);
     }
 
     private void initialLaySwipe(View view) {
@@ -54,7 +54,7 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
         laySwipe.setOnRefreshListener(this);
     }
 
-    private void initailListView(View view) {
+    private void initialListView(View view) {
         this.issueListView = (ListView) view.findViewById(R.id.issue_listview);
         this.issueListView.setAdapter(this.adapter);
 
@@ -142,7 +142,7 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
     //java.IllegalStateException error, No Activity, only when navigating to Fragment for the SECOND time
     //http://stackoverflow.com/questions/14929907/causing-a-java-illegalstateexception-error-no-activity-only-when-navigating-to
     private static final Field sChildFragmentManagerField;
-    private static final String LOGTAG = "WatchListViewFrament";
+    private static final String LOG_TAG = "WatchHistoryFragment";
 
     static {
         Field f = null;
@@ -150,7 +150,7 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
             f = Fragment.class.getDeclaredField("mChildFragmentManager");
             f.setAccessible(true);
         } catch (NoSuchFieldException e) {
-            Log.e(LOGTAG, "Error getting mChildFragmentManager field", e);
+            Log.e(LOG_TAG, "Error getting mChildFragmentManager field", e);
         }
         sChildFragmentManagerField = f;
     }
@@ -163,7 +163,7 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
             try {
                 sChildFragmentManagerField.set(this, null);
             } catch (Exception e) {
-                Log.e(LOGTAG, "Error setting mChildFragmentManager field", e);
+                Log.e(LOG_TAG, "Error setting mChildFragmentManager field", e);
             }
         }
     }

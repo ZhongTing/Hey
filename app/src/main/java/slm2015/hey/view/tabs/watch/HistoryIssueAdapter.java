@@ -13,11 +13,11 @@ import java.util.List;
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
 
-public class IssueAdapter extends BaseAdapter {
+public class HistoryIssueAdapter extends BaseAdapter {
     private List<Issue> issueList;
     private IssueHolder issueHolder;
 
-    public IssueAdapter(List<Issue> issueList) {
+    public HistoryIssueAdapter(List<Issue> issueList) {
         setIssueList(issueList);
     }
 
