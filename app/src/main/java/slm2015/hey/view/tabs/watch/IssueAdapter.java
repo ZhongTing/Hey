@@ -53,6 +53,7 @@ public class IssueAdapter extends BaseAdapter {
         holder.description = (TextView) convertView.findViewById(R.id.description);
         holder.place = (TextView) convertView.findViewById(R.id.position);
         holder.like = (ImageView) convertView.findViewById(R.id.like);
+        holder.locationImg = (ImageView) convertView.findViewById(R.id.location);
         holder.time = (TextView) convertView.findViewById(R.id.timestamptextview);
         convertView.setTag(holder);
 //        } else {
@@ -66,9 +67,18 @@ public class IssueAdapter extends BaseAdapter {
                 holder.like.setAlpha(1);
 //                holder.front.setX(UiUtility.dpiToPixel(50, Resources.getSystem()));
             }
+
+
+            if (issue.getPlace().equals("")) {
+                holder.locationImg.setVisibility(View.GONE);
+                holder.place.setVisibility(View.GONE);
+            } else {
+                holder.locationImg.setVisibility(View.VISIBLE);
+                holder.place.setVisibility(View.VISIBLE);
+                holder.place.setText(issue.getPlace());
+            }
             holder.subject.setText(issue.getSubject());
             holder.description.setText(issue.getDescription());
-            holder.place.setText(issue.getPlace());
             holder.time.setText(issue.getTimestamp());
 
 
@@ -94,19 +104,6 @@ public class IssueAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private class IssueHolder {
-        ViewGroup front;
-        TextView subject;
-        TextView description;
-        TextView place;
-        ImageView like;
-        TextView time;
-
-        public ViewGroup getFront() {
-            return this.front;
-        }
-    }
-
     private void gestureListItem(final View rowView, boolean like) {
 //        final int deltaX = UiUtility.dpiToPixel(50, Resources.getSystem());
 //        final float fromXDelta = like ? 0 : deltaX;
@@ -117,5 +114,19 @@ public class IssueAdapter extends BaseAdapter {
 //        animation.setFillAfter(true);
 //        animation.setRepeatCount(0);
 //        rowView.startAnimation(animation);
+    }
+
+    private class IssueHolder {
+        ViewGroup front;
+        TextView subject;
+        TextView description;
+        TextView place;
+        ImageView like;
+        ImageView locationImg;
+        TextView time;
+
+        public ViewGroup getFront() {
+            return this.front;
+        }
     }
 }
