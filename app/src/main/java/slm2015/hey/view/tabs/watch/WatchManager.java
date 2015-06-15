@@ -140,12 +140,8 @@ public class WatchManager implements Observer {
     }
 
     public void removeIssue(Issue issue) {
-        int size = this.allIssues.size();
-        int oldsize = this.oldIssues.size();
         if (this.oldIssues.contains(issue))
             this.oldIssues.remove(issue);
-        int after = this.allIssues.size();
-        int afterold = this.oldIssues.size();
 
     }
 }
