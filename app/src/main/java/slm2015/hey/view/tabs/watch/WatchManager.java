@@ -114,12 +114,15 @@ public class WatchManager implements Observer {
         ArrayList<Issue> results = new ArrayList<>();
         results.addAll((ArrayList<Issue>) issues.clone());
         for (Issue issue : issues) {
+            boolean contains = false;
             for (Selector selector : this.selectors) {
                 String content = selector.getContent();
-                boolean conatains = issue.getSubject().contains(content) || issue.getDescription().contains(content);
-                if (selector.isFilter() && !conatains)
-                    results.remove(issue);
+                contains = selector.isFilter() && (issue.getSubject().contains(content) || issue.getDescription().contains(content));
+                if (contains)
+                    break;
             }
+            if (!contains)
+                results.remove(issue);
         }
         if (needToSelect())
             return results;
