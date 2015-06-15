@@ -3,9 +3,7 @@ package slm2015.hey.view.tabs.watch;
 import android.content.Context;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.issue.IssueLoader;
@@ -14,46 +12,46 @@ import slm2015.hey.entity.Selector;
 
 public class WatchManager implements Observer {
     private IssueLoader issueLoader;
-    private Queue<Issue> newIssues;
+    private ArrayList<Issue> newIssues;
     private ArrayList<Issue> oldIssues;
     private OnReloaded onReloaded;
     private List<OnReloaded> observers;
     private ArrayList<Issue> issuesForWatch;
     private ArrayList<Issue> modifiedIssues;
-    private ArrayList<Selector> selectorList;
+    private ArrayList<Selector> selectors;
 
     public WatchManager(Context context) {
         this.issueLoader = new IssueLoader(context);
         this.issueLoader.addObserver(this);
-        this.newIssues = new LinkedList<>();
+        this.newIssues = new ArrayList<>();
         this.oldIssues = new ArrayList<>();
         this.issuesForWatch = new ArrayList<>();
         this.modifiedIssues = new ArrayList<>();
         this.observers = new ArrayList<>();
-        this.selectorList = new ArrayList<>();
+        this.selectors = new ArrayList<>();
     }
 
     public void reload() {
         this.issueLoader.loadNewIssues();
     }
 
+    // carddeck used
     public ArrayList<Issue> getIssues() {
-//        ArrayList<Issue> issues = new ArrayList<>();
-//        issues.addAll(this.oldIssues);
-//        issues.addAll(this.newIssues);
-        return this.oldIssues;
+        return selectorList(this.oldIssues);
     }
 
-    public Queue<Issue> getNewIssues() {
-        return newIssues;
+    // carddeck used
+    public ArrayList<Issue> getNewIssues() {
+        return selectorList(this.newIssues);
     }
 
+    // history used
     public ArrayList<Issue> getHistory() {
         ArrayList<Issue> issues = new ArrayList<>();
-        issues.addAll(this.oldIssues);
+        issues.addAll(getIssues());
         issues.addAll(this.modifiedIssues);
-        issues.addAll(this.newIssues);
-        return issues;
+        issues.addAll(getNewIssues());
+        return selectorList(issues);
     }
 
     public ArrayList<Issue> getModifiedIssues() {
@@ -73,7 +71,7 @@ public class WatchManager implements Observer {
 
     private void cloneToSelf() {
         while (this.issueLoader.getNewIssues().size() > 0)
-            this.newIssues.offer(this.issueLoader.getNewIssues().poll());
+            this.newIssues.add(this.newIssues.size(), this.issueLoader.getNewIssues().poll());
         ArrayList<Issue> temp = this.issueLoader.getIssues();
         this.oldIssues.addAll((ArrayList) temp.clone());
     }
@@ -100,11 +98,44 @@ public class WatchManager implements Observer {
 
     //poll from new Issues to issues
     public void pushToIssues() {
-        Issue issue = this.newIssues.poll();
+        Issue issue = pollNewIssues();
         this.oldIssues.add(issue);
     }
 
     public void addSelector(Selector selector) {
-        this.selectorList.add(selector);
+        this.selectors.add(selector);
+    }
+
+    private ArrayList<Issue> selectorList(ArrayList<Issue> issues) {
+        ArrayList<Issue> results = new ArrayList<>();
+        for (Issue issue : issues) {
+            for (Selector selector : this.selectors) {
+                String content = selector.getContent();
+                boolean conatains = issue.getSubject().contains(content) || issue.getDescription().contains(content);
+                if (selector.isFilter() && conatains)
+                    results.add(issue);
+            }
+        }
+        if (needToSelect())
+            return results;
+        return issues;
+    }
+
+    public boolean needToSelect() {
+        for (Selector selector : this.selectors)
+            if (selector.isFilter())
+                return true;
+        return false;
+    }
+
+    public Issue pollNewIssues() {
+        Issue issue = this.newIssues.get(0);
+        this.newIssues.remove(0);
+        return issue;
+    }
+
+    public void removeIssue(Issue issue) {
+        if (this.oldIssues.contains(issue))
+            this.oldIssues.remove(issue);
     }
 }

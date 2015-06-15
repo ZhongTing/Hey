@@ -13,7 +13,7 @@ import slm2015.hey.view.tabs.watch.WatchManager;
 public class CardDeck {
     public static final int CARD_MAX_AMOUNT = 10;
 
-//    private IssueLoader issueLoader;
+    //    private IssueLoader issueLoader;
     private Activity activity;
     private ArrayList<Card> cardQueue = new ArrayList<>();
     private Queue<Card> deprecateQueue = new LinkedList<>();
@@ -62,7 +62,8 @@ public class CardDeck {
 
     private void checkDeckAmount() {
         if (this.cardQueue.size() < CARD_MAX_AMOUNT) {
-            for (int i = 0; i < this.watchManager.getNewIssues().size(); i++) {
+            int size = this.watchManager.getIssues().size() + this.watchManager.getNewIssues().size();
+            for (int i = 0; i < size && this.cardQueue.size() < CARD_MAX_AMOUNT; i++) {
                 this.cardQueue.add(new Card(this.activity));
             }
         }
@@ -89,10 +90,10 @@ public class CardDeck {
         this.deprecateQueue.poll();
         ArrayList<Issue> issues = this.watchManager.getIssues();
         if (issues.size() > 0) {
-            Issue issue = issues.get(issues.size()-1);
+            Issue issue = issues.get(issues.size() - 1);
             issue.setLike(like);
             this.watchManager.getModifiedIssues().add(0, issue);
-            issues.remove(issues.size() - 1);
+            this.watchManager.removeIssue(issue);
         }
         if (index >= 0 && index < issues.size() && issues.get(index) != null) {
             Issue issue = issues.get(index);

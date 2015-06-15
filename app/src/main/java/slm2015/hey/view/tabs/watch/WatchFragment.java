@@ -119,7 +119,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         while (this.watchManager.getNewIssues().size() > MAX_CARD_ANIMATION)
             this.watchManager.pushToIssues();
         if (this.watchManager.getNewIssues().size() > 0) {
-            Issue issue = this.watchManager.getNewIssues().poll();
+            Issue issue = this.watchManager.pollNewIssues();
             this.watchManager.getIssues().add(issue);
             final Card card = findCard(issue);
             if (card.getParent() != null)
@@ -482,8 +482,10 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
     @Override
     public void notifyReloaded() {
-        if (this.watchManager.getNewIssues().size() > 0) {
+//        if (this.watchManager.needToSelect() || this.watchManager.getNewIssues().size() > 0)
             this.deck.reloadDeck();
+        resetCardDeckView();
+        if (this.watchManager.getNewIssues().size() > 0) {
             showLoadedCard(true);
         } else {
             setAllEvent(true);

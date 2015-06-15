@@ -27,6 +27,7 @@ import slm2015.hey.view.tabs.post.PostFragment;
 import slm2015.hey.view.tabs.watch.WatchFragment;
 
 public class MainActivity extends FragmentActivity {
+    private final int WATCH_FRAGMENT = 0;
     private final int ADD_SELECTOR = 1;
     private List<TabPagerFragment> fragments;
     private ImageButton slidingMenuButton;
@@ -39,12 +40,6 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.mSlidingMenu = new SimpleSideDrawer(this);
-        this.mSlidingMenu.setLeftBehindContentView(R.layout.sliding_menu);
-
-        initialAddSelectorButton();
-        initialSlidingListView();
-
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         initialSlidingMenuButton();
@@ -54,6 +49,19 @@ public class MainActivity extends FragmentActivity {
         this.fragments = new ArrayList<>();
         this.fragments.add(WatchFragment.newInstance(pager));
         this.fragments.add(PostFragment.newInstance(pager));
+
+        this.mSlidingMenu = new SimpleSideDrawer(this);
+        this.mSlidingMenu.setLeftBehindContentView(R.layout.sliding_menu);
+        this.mSlidingMenu.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                }
+            }
+        });
+        initialAddSelectorButton();
+        initialSlidingListView();
+
 
         pager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragments));
         tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -111,7 +119,6 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void AddSelector(Selector selector) {
-        final int WATCH_FRAGMENT = 0;
         WatchFragment fragment = (WatchFragment) this.fragments.get(WATCH_FRAGMENT);
         this.selectorAdapter.addSelector(selector);
         fragment.getWatchManager().addSelector(selector);
