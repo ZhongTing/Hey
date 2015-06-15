@@ -49,7 +49,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private boolean allEvent = true, isRefresh = false, onMove = false;
 
     private WatchManager watchManager;
-    private WatchListViewFragment watchListViewFragment;
+    private WatchHistoryFragment watchListViewFragment;
 
     static public WatchFragment newInstance(ViewPager pager) {
         WatchFragment fragment = new WatchFragment();
@@ -471,7 +471,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         FragmentManager fragmentManager = getChildFragmentManager();
         android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (this.watchListViewFragment == null)
-            this.watchListViewFragment = WatchListViewFragment.newInstance(fragmentManager, this.pager, this.watchManager);
+            this.watchListViewFragment = WatchHistoryFragment.newInstance(fragmentManager, this.pager, this.watchManager);
         else
             this.watchListViewFragment.onRefresh();
         transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom);

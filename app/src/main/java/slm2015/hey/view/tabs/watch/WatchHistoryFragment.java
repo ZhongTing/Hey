@@ -1,31 +1,34 @@
 package slm2015.hey.view.tabs.watch;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ImageButton;
 import android.widget.ListView;
+
+import java.lang.reflect.Field;
 
 import slm2015.hey.R;
 import slm2015.hey.view.tabs.TabPagerFragment;
 
-public class WatchListViewFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded {
+public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded {
 
     private View changeViewButton;
     private FragmentManager fragmentManager;
     private ListView issueListView;
-    private IssueAdapter adapter;
+    private HistoryIssueAdapter adapter;
     private SwipeRefreshLayout laySwipe;
     private ViewPager pager;
     private WatchManager watchManager;
 
-    static public WatchListViewFragment newInstance(FragmentManager fragmentManager, ViewPager pager, WatchManager watchManager) {
-        WatchListViewFragment fragment = new WatchListViewFragment();
+    static public WatchHistoryFragment newInstance(FragmentManager fragmentManager, ViewPager pager, WatchManager watchManager) {
+        WatchHistoryFragment fragment = new WatchHistoryFragment();
         fragment.setFragmentManager(fragmentManager);
         fragment.setPager(pager);
         fragment.setWatchManager(watchManager);
@@ -40,10 +43,10 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
     }
 
     private void init(View view) {
-        this.adapter = new IssueAdapter(this.watchManager.getHistory());
+        this.adapter = new HistoryIssueAdapter(this.watchManager.getHistory());
         initialChangeViewButton(view);
         initialLaySwipe(view);
-        initailListView(view);
+        initialListView(view);
     }
 
     private void initialLaySwipe(View view) {
@@ -51,7 +54,7 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
         laySwipe.setOnRefreshListener(this);
     }
 
-    private void initailListView(View view) {
+    private void initialListView(View view) {
         this.issueListView = (ListView) view.findViewById(R.id.issue_listview);
         this.issueListView.setAdapter(this.adapter);
 
@@ -120,7 +123,7 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         this.pager.requestDisallowInterceptTouchEvent(true);
         boolean enable = false;
-        if(issueListView != null && issueListView.getChildCount() > 0){
+        if (issueListView != null && issueListView.getChildCount() > 0) {
             boolean firstItemVisible = issueListView.getFirstVisiblePosition() == 0;
             boolean topOfFirstItemVisible = issueListView.getChildAt(0).getTop() == 0;
             enable = firstItemVisible && topOfFirstItemVisible;
@@ -133,5 +136,35 @@ public class WatchListViewFragment extends TabPagerFragment implements SwipeRefr
         this.laySwipe.setRefreshing(false);
         this.adapter.setIssueList(this.watchManager.getHistory());
         this.adapter.notifyDataSetChanged();
+    }
+
+    //fix bug
+    //java.IllegalStateException error, No Activity, only when navigating to Fragment for the SECOND time
+    //http://stackoverflow.com/questions/14929907/causing-a-java-illegalstateexception-error-no-activity-only-when-navigating-to
+    private static final Field sChildFragmentManagerField;
+    private static final String LOG_TAG = "WatchHistoryFragment";
+
+    static {
+        Field f = null;
+        try {
+            f = Fragment.class.getDeclaredField("mChildFragmentManager");
+            f.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            Log.e(LOG_TAG, "Error getting mChildFragmentManager field", e);
+        }
+        sChildFragmentManagerField = f;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        if (sChildFragmentManagerField != null) {
+            try {
+                sChildFragmentManagerField.set(this, null);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Error setting mChildFragmentManager field", e);
+            }
+        }
     }
 }
