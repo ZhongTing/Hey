@@ -15,7 +15,6 @@ import slm2015.hey.entity.Issue;
 
 public class HistoryIssueAdapter extends BaseAdapter {
     private List<Issue> issueList;
-    private IssueHolder issueHolder;
 
     public HistoryIssueAdapter(List<Issue> issueList) {
         setIssueList(issueList);
@@ -42,12 +41,16 @@ public class HistoryIssueAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        IssueHolder holder = null;
+        IssueHolder holder;
         final int upsideDownPosition = getCount() - position - 1;
         LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-//        if (convertView == null) {
-        convertView = inflater.inflate(R.layout.issue_adapter_layout, null);
-        holder = new IssueHolder();
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.issue_adapter_layout, null);
+            holder = new IssueHolder();
+            convertView.setTag(holder);
+        } else {
+            holder = (IssueHolder) convertView.getTag();
+        }
         holder.front = (ViewGroup) convertView.findViewById(R.id.front);
         holder.subject = (TextView) convertView.findViewById(R.id.subject);
         holder.description = (TextView) convertView.findViewById(R.id.description);
@@ -55,10 +58,6 @@ public class HistoryIssueAdapter extends BaseAdapter {
         holder.like = (ImageView) convertView.findViewById(R.id.like);
         holder.locationImg = (ImageView) convertView.findViewById(R.id.location);
         holder.time = (TextView) convertView.findViewById(R.id.timestamptextview);
-        convertView.setTag(holder);
-//        } else {
-//            holder = (IssueHolder) convertView.getTag();
-//        }
 
         if (upsideDownPosition < this.issueList.size()) {
             Issue issue = this.issueList.get(upsideDownPosition);
@@ -77,13 +76,6 @@ public class HistoryIssueAdapter extends BaseAdapter {
             holder.subject.setText(issue.getSubject());
             holder.description.setText(issue.getDescription());
             holder.time.setText(issue.getTimestamp());
-
-
-        } else {
-            holder.subject.setText("");
-            holder.description.setText("");
-            holder.place.setText("");
-            holder.time.setText("");
         }
         final IssueHolder issueHolder = holder;
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
