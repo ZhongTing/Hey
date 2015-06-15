@@ -14,6 +14,7 @@ public class WatchManager implements Observer {
     private IssueLoader issueLoader;
     private ArrayList<Issue> newIssues;
     private ArrayList<Issue> oldIssues;
+    private ArrayList<Issue> allIssues;
     private OnReloaded onReloaded;
     private List<OnReloaded> observers;
     private ArrayList<Issue> issuesForWatch;
@@ -29,6 +30,7 @@ public class WatchManager implements Observer {
         this.modifiedIssues = new ArrayList<>();
         this.observers = new ArrayList<>();
         this.selectors = new ArrayList<>();
+        this.allIssues = new ArrayList<>();
     }
 
     public void reload() {
@@ -47,11 +49,11 @@ public class WatchManager implements Observer {
 
     // history used
     public ArrayList<Issue> getHistory() {
-        ArrayList<Issue> issues = new ArrayList<>();
-        issues.addAll(getIssues());
-        issues.addAll(this.modifiedIssues);
-        issues.addAll(getNewIssues());
-        return selectorList(issues);
+//        ArrayList<Issue> issues = new ArrayList<>();
+//        issues.addAll(getIssues());
+//        issues.addAll(this.modifiedIssues);
+//        issues.addAll(getNewIssues());
+        return selectorList(this.allIssues);
     }
 
     public ArrayList<Issue> getModifiedIssues() {
@@ -74,6 +76,8 @@ public class WatchManager implements Observer {
             this.newIssues.add(this.newIssues.size(), this.issueLoader.getNewIssues().poll());
         ArrayList<Issue> temp = this.issueLoader.getIssues();
         this.oldIssues.addAll((ArrayList) temp.clone());
+        //code below are new architecture test by kevinho
+        this.allIssues.addAll((ArrayList<Issue>) this.newIssues.clone());
     }
 
     public void setOnReloaded(OnReloaded onReloaded) {
@@ -108,12 +112,13 @@ public class WatchManager implements Observer {
 
     private ArrayList<Issue> selectorList(ArrayList<Issue> issues) {
         ArrayList<Issue> results = new ArrayList<>();
+        results.addAll((ArrayList<Issue>) issues.clone());
         for (Issue issue : issues) {
             for (Selector selector : this.selectors) {
                 String content = selector.getContent();
                 boolean conatains = issue.getSubject().contains(content) || issue.getDescription().contains(content);
-                if (selector.isFilter() && conatains)
-                    results.add(issue);
+                if (selector.isFilter() && !conatains)
+                    results.remove(issue);
             }
         }
         if (needToSelect())
@@ -135,7 +140,12 @@ public class WatchManager implements Observer {
     }
 
     public void removeIssue(Issue issue) {
+        int size = this.allIssues.size();
+        int oldsize = this.oldIssues.size();
         if (this.oldIssues.contains(issue))
             this.oldIssues.remove(issue);
+        int after = this.allIssues.size();
+        int afterold = this.oldIssues.size();
+
     }
 }
