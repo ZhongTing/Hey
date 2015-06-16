@@ -15,8 +15,14 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import junit.framework.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import slm2015.hey.R;
 import slm2015.hey.core.Observer;
@@ -38,8 +44,9 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private ViewPager pager;
     private ImageButton likeButton, dislikeButton, refreshButton, changeViewButton;
     private RelativeLayout cardFrame;
-    //    private List<Card> cardDeck = new ArrayList<>();
-//    private IssueLoader issueLoader;
+
+    private SwipeFlingAdapterView flingAdapterContainer;
+
     private CardDeck deck;
 
     private int xCord, yCord, movedXCord, movedYCord, pressX, pressY, card_iniX, card_iniY;
@@ -65,8 +72,66 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.watch_deck_layout, container, false);
-        this.init(view);
+        this.new_init(view);
+        // this.init(view);
+
         return view;
+    }
+
+    private void new_init(View view) {
+        List<Issue> list = new ArrayList<>();
+        final CardIssueAdapter adapter = new CardIssueAdapter(getActivity(), R.layout.card, list);
+        for (int i = 0; i < 10; i++) {
+            Issue issue = new Issue();
+            issue.setDescription("Hello" + Integer.toString(i));
+            list.add(issue);
+        }
+
+        this.flingAdapterContainer = (SwipeFlingAdapterView) view.findViewById(R.id.card_frame);
+        this.flingAdapterContainer.setAdapter(adapter);
+
+        this.flingAdapterContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
+            @Override
+            public void removeFirstObjectInAdapter() {
+                // this is the simplest way to delete an object from the Adapter (/AdapterView)
+                Log.d("LIST", "removed object!");
+                adapter.removeFirst();
+            }
+
+            @Override
+            public void onLeftCardExit(Object dataObject) {
+                //Do something on the left!
+                //You also have access to the original object.
+                //If you want to use it just cast it (String) dataObject
+                Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onRightCardExit(Object dataObject) {
+                Toast.makeText(getActivity(), "Right!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdapterAboutToEmpty(int itemsInAdapter) {
+                // Ask for more data here
+                adapter.notifyDataSetChanged();
+                Log.d("LIST", "notified");
+            }
+
+            @Override
+            public void onScroll(float v) {
+                pager.requestDisallowInterceptTouchEvent(true);
+                Log.d("Scroll", Float.toString(v));
+            }
+        });
+
+        // Optionally add an OnItemClickListener
+        this.flingAdapterContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int itemPosition, Object dataObject) {
+                Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setViewPager(ViewPager pager) {
@@ -483,7 +548,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     @Override
     public void notifyReloaded() {
 //        if (this.watchManager.needToSelect() || this.watchManager.getNewIssues().size() > 0)
-            this.deck.reloadDeck();
+        this.deck.reloadDeck();
         resetCardDeckView();
         if (this.watchManager.getNewIssues().size() > 0) {
             showLoadedCard(true);
