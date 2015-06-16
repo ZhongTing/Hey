@@ -1,7 +1,6 @@
 package slm2015.hey.view.tabs.watch;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -14,48 +13,34 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
-import junit.framework.Assert;
-
 import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.issue.IssueLoader;
-import slm2015.hey.entity.CardDeck;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.view.component.Card;
 import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.util.UiUtility;
 
-public class WatchFragment extends TabPagerFragment implements Observer, View.OnClickListener, WatchManager.OnReloaded {
+public class WatchFragment extends TabPagerFragment implements Observer, WatchManager.OnReloaded {
     public static final String SELF_TAG = "watch_fragment";
-    private final int REFRESH_ANIMATION_DURATION = 200;
-    private final int MAX_CARD_ANIMATION = 5;
-
-    private ViewPager pager;
-    private ImageButton likeButton, dislikeButton, refreshButton, changeViewButton;
-    private RelativeLayout cardFrame;
-    private FrameLayout animationCardFrame;
-
-    private SwipeFlingAdapterView flingAdapterContainer;
-
-    private CardDeck deck;
-
-    private int windowWidth;
-    private int screenCenter;
-    private boolean allEvent = true, isRefresh = false, onMove = false;
+    private static final int REFRESH_ANIMATION_DURATION = 200;
+    private static final int MAX_CARD_ANIMATION = 5;
 
     private WatchManager watchManager;
-    private WatchHistoryFragment watchListViewFragment;
-
 
     CardIssueAdapter cardIssueAdapter;
     private IssueLoader issueLoader;
-
+    private ViewPager pager;
+    private SwipeFlingAdapterView flingAdapterContainer;
+    private FrameLayout animationCardFrame;
+    private ImageButton likeButton, dislikeButton, refreshButton, changeViewButton;
     private float initCardX, initCardY;
+
+    private WatchHistoryFragment watchListViewFragment;
 
     static public WatchFragment newInstance(ViewPager pager) {
         WatchFragment fragment = new WatchFragment();
@@ -183,27 +168,6 @@ public class WatchFragment extends TabPagerFragment implements Observer, View.On
         }
     };
 
-    private void resetCardDeckView() {
-        for (int i = 5; i < 5 + CardDeck.CARD_MAX_AMOUNT; i++) {
-            if (deck.getCardQueue().size() > i - 5) {
-                Card addCard = deck.getCardQueue().get(i - 5);
-                if (addCard.getParent() != null)
-                    ((ViewGroup) addCard.getParent()).removeView(addCard);
-                WatchFragment.this.cardFrame.addView(addCard, i);
-            }
-        }
-    }
-
-    private Card findCard(Issue issue) {
-        for (int i = 0; i < this.deck.getCardQueue().size(); i++) {
-            Card card = this.deck.getCardQueue().get(i);
-            if (card.getIssue() == issue)
-                return card;
-        }
-        Assert.assertFalse(true);
-        return null;
-    }
-
     private void initialBaseCard() {
         Issue issue = new Issue();
         issue.setDescription("檔案讀取中...");
@@ -232,7 +196,6 @@ public class WatchFragment extends TabPagerFragment implements Observer, View.On
                     }
                 });
             }
-            this.cardFrame.addView(card);
         }
     }
 
@@ -243,7 +206,6 @@ public class WatchFragment extends TabPagerFragment implements Observer, View.On
             @Override
             public void onClick(View v) {
                 setAllButtonEnable(false);
-                refresh();
             }
         });
     }
@@ -261,17 +223,22 @@ public class WatchFragment extends TabPagerFragment implements Observer, View.On
 
     private void initialLikeButton(View view) {
         this.likeButton = (ImageButton) view.findViewById(R.id.likeButton);
-        this.likeButton.setOnClickListener(this);
+        this.likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WatchFragment.this.flingAdapterContainer.getTopCardListener().selectRight();
+            }
+        });
     }
 
     private void initialDislikeButton(View view) {
         this.dislikeButton = (ImageButton) view.findViewById(R.id.dislikeButton);
-        this.dislikeButton.setOnClickListener(this);
-    }
-
-    private void setAllEvent(boolean b) {
-        this.allEvent = b;
-        setAllButtonEnable(b);
+        this.dislikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WatchFragment.this.flingAdapterContainer.getTopCardListener().selectLeft();
+            }
+        });
     }
 
     private void setAllButtonEnable(boolean b) {
@@ -281,33 +248,16 @@ public class WatchFragment extends TabPagerFragment implements Observer, View.On
         this.changeViewButton.setEnabled(b);
     }
 
-    private void refresh() {
-        this.watchManager.reload();
-    }
-
     @Override
     public void FragmentSelected() {
         UiUtility.closeKeyBoard(this.getActivity());
-    }
-
-    public WatchManager getWatchManager() {
-        return watchManager;
-    }
-
-    private long mLastClickTime = 0;
-
-    @Override
-    public void onClick(View view) {
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 100)
-            return;
-        mLastClickTime = SystemClock.elapsedRealtime();
     }
 
     private void changeToListView() {
         FragmentManager fragmentManager = getChildFragmentManager();
         android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (this.watchListViewFragment == null)
-            this.watchListViewFragment = WatchHistoryFragment.newInstance(fragmentManager, this.pager, this.watchManager);
+            this.watchListViewFragment = WatchHistoryFragment.newInstance(fragmentManager, this.pager, new WatchManager(getActivity()));
         else
             this.watchListViewFragment.onRefresh();
         transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom);
@@ -318,13 +268,10 @@ public class WatchFragment extends TabPagerFragment implements Observer, View.On
 
     @Override
     public void notifyReloaded() {
-        this.deck.reloadDeck();
-        resetCardDeckView();
-        if (this.watchManager.getNewIssues().size() > 0) {
-//            showLoadedCard(true);
-        } else {
-            setAllEvent(true);
-            isRefresh = false;
-        }
+
+    }
+
+    public WatchManager getWatchManager() {
+        return watchManager;
     }
 }
