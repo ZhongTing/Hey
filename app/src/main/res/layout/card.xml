@@ -1,94 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/frame"
-    android:padding="3dp"
+    android:layout_marginTop="50dp"
+    android:layout_gravity="center_horizontal"
     android:background="#2f6699">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal"
-        android:text="北科怪鳥"
-        android:textSize="50dp"
-        android:background="@color/camera_green" />
-
-    <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_height="240dp"
-        android:layout_gravity="center"
+    <LinearLayout
+        android:id="@+id/frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="5dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingBottom="8dp"
-        android:background="@drawable/card_background">
-
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:background="@color/preview_yellow"
-            android:src="@drawable/odd_bird"
-            android:alpha="1" />
+        android:padding="3dp">
 
         <TextView
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="一動也不動的站著"
-            android:textSize="30dp"
-            android:background="#ffffff"
-            android:alpha="0.5"
-            android:gravity="center_vertical"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="40dp"
-            />
+            android:id="@+id/title"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/camera_green"
+            android:gravity="center"
+            android:text="北科怪鳥"
+            android:textSize="50dp" />
 
-        <TextView
-            android:id="@+id/timestampTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:alpha="0.5"
-            android:layout_alignParentBottom="true"
-            android:text="一天前"
-            />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:background="#ffffff"
-            android:alpha="0.5"
-            android:gravity="right"
-            android:paddingRight="10dp">
-
-            <TextView
-                android:id="@+id/location"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="在生態池附近"
-                android:textSize="20dp"
-                android:paddingRight="10dp"
-                android:paddingEnd="10dp"
-                android:gravity= "center"/>
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_height="240dp"
+            android:layout_gravity="center"
+            android:background="@drawable/card_background"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="5dp">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/lock"
-                android:id="@+id/incognito"
-                android:layout_gravity="center"
-                android:visibility="invisible"
-                />
-        </LinearLayout>
-    </RelativeLayout>
-</LinearLayout>
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="1"
+                android:background="@color/preview_yellow"
+                android:scaleType="centerCrop"
+                android:src="@drawable/odd_bird" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="40dp"
+                android:alpha="0.5"
+                android:background="#ffffff"
+                android:gravity="center_vertical"
+                android:text="一動也不動的站著"
+                android:textSize="30dp" />
+
+            <TextView
+                android:id="@+id/timestampTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:alpha="0.5"
+                android:background="#ffffff"
+                android:text="一天前" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:alpha="0.5"
+                android:background="#ffffff"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingEnd="10dp"
+                    android:paddingRight="10dp"
+                    android:text="在生態池附近"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:id="@+id/incognito"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/lock"
+                    android:visibility="invisible" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>
