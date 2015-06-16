@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -29,7 +30,7 @@ import slm2015.hey.view.component.Card;
 import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.util.UiUtility;
 
-public class WatchFragment extends TabPagerFragment implements Animation.AnimationListener, Observer, View.OnClickListener, WatchManager.OnReloaded {
+public class WatchFragment extends TabPagerFragment implements Observer, View.OnClickListener, WatchManager.OnReloaded {
     public static final String SELF_TAG = "watch_fragment";
     private final int REFRESH_ANIMATION_DURATION = 200;
     private final int MAX_CARD_ANIMATION = 5;
@@ -37,12 +38,12 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private ViewPager pager;
     private ImageButton likeButton, dislikeButton, refreshButton, changeViewButton;
     private RelativeLayout cardFrame;
+    private FrameLayout animationCardFrame;
 
     private SwipeFlingAdapterView flingAdapterContainer;
 
     private CardDeck deck;
 
-    private float initCardX, initCardY;
     private int windowWidth;
     private int screenCenter;
     private boolean allEvent = true, isRefresh = false, onMove = false;
@@ -54,10 +55,16 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     CardIssueAdapter cardIssueAdapter;
     private IssueLoader issueLoader;
 
+    private float initCardX, initCardY;
+
     static public WatchFragment newInstance(ViewPager pager) {
         WatchFragment fragment = new WatchFragment();
         fragment.setViewPager(pager);
         return fragment;
+    }
+
+    private void setViewPager(ViewPager pager) {
+        this.pager = pager;
     }
 
     @Override
@@ -68,6 +75,14 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.watch_deck_layout, container, false);
+
+        FrameLayout initCard = (FrameLayout) view.findViewById(R.id.init_card);
+        this.initCardX = initCard.getX();
+        this.initCardY = initCard.getY();
+
+        this.animationCardFrame = (FrameLayout) view.findViewById(R.id.animation_card_frame);
+        this.animationCardFrame.removeAllViews();
+
         this.initialize(view);
 
         this.issueLoader.loadNewIssues();
@@ -76,6 +91,13 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     }
 
     private void initialize(View view) {
+        initialDislikeButton(view);
+        initialLikeButton(view);
+        initialRefreshButton(view);
+        initialChangeViewButton(view);
+
+//        initialBaseCard();
+
         this.issueLoader = new IssueLoader(getActivity());
         this.issueLoader.addObserver(this);
         cardIssueAdapter = new CardIssueAdapter(getActivity(), R.layout.card, this.issueLoader.getIssues());
@@ -87,7 +109,47 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
     @Override
     public void onLoaderChanged() {
-        cardIssueAdapter.notifyDataSetChanged();
+        this.cardIssueAdapter.notifyDataSetChanged();
+
+        playCardLoadAnimation(MAX_CARD_ANIMATION);
+    }
+
+    public void playCardLoadAnimation(final int count) {
+        if (count == -1) {
+            this.animationCardFrame.removeAllViews();
+
+        } else if (this.cardIssueAdapter.getCount() - 1 > count) {
+            View card = this.cardIssueAdapter.getView(count, null, this.animationCardFrame);
+            card.setX(this.initCardX);
+            card.setY(this.initCardY);
+            this.animationCardFrame.addView(card);
+
+            Animation animation = new TranslateAnimation(0, 0, -1000, 0);
+            animation.setDuration(REFRESH_ANIMATION_DURATION);
+            animation.setRepeatCount(0);
+            card.bringToFront();
+            card.setAnimation(animation);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    WatchFragment.this.playCardLoadAnimation(count - 1);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            card.startAnimation(animation);
+
+        } else {
+            this.playCardLoadAnimation(count - 1);
+        }
     }
 
     SwipeFlingAdapterView.onFlingListener onFlingListener = new SwipeFlingAdapterView.onFlingListener() {
@@ -109,7 +171,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
         @Override
         public void onAdapterAboutToEmpty(int itemsInAdapter) {
-            // Ask for more data here
             cardIssueAdapter.notifyDataSetChanged();
             Log.d("LIST", "notified");
         }
@@ -122,38 +183,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         }
     };
 
-    private void setViewPager(ViewPager pager) {
-        this.pager = pager;
-    }
-
-    private void init(View view) {
-        this.watchManager = new WatchManager(this.getActivity());
-        this.watchManager.addObserver(this);
-        this.watchManager.setOnReloaded(this);
-
-        this.cardFrame = (RelativeLayout) view.findViewById(R.id.card_frame);
-
-        initialDislikeButton(view);
-        initialLikeButton(view);
-        initialRefreshButton(view);
-        initialChangeViewButton(view);
-
-        this.windowWidth = this.getActivity().getWindowManager().getDefaultDisplay().getWidth();
-        this.screenCenter = this.windowWidth / 2;
-
-        initialBaseCard();
-
-        this.deck = new CardDeck(this.watchManager, this.getActivity());
-        this.deck.setOnDataSetChanged(new CardDeck.OnDataSetChanged() {
-            @Override
-            public void notifyCardDeckChanged() {
-                if (!WatchFragment.this.onMove)
-                    resetCardDeckView();
-            }
-        });
-        refresh();
-    }
-
     private void resetCardDeckView() {
         for (int i = 5; i < 5 + CardDeck.CARD_MAX_AMOUNT; i++) {
             if (deck.getCardQueue().size() > i - 5) {
@@ -165,22 +194,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         }
     }
 
-    private void showLoadedCard(boolean resetI) {
-        while (this.watchManager.getNewIssues().size() > MAX_CARD_ANIMATION)
-            this.watchManager.pushToIssues();
-        if (this.watchManager.getNewIssues().size() > 0) {
-            Issue issue = this.watchManager.pollNewIssues();
-            this.watchManager.getIssues().add(issue);
-            final Card card = findCard(issue);
-            if (card.getParent() != null)
-                ((ViewGroup) card.getParent()).removeView(card);
-            this.cardFrame.addView(card);
-            refreshAnimation(card);
-        } else {
-            this.setAllButtonEnable(true);
-        }
-    }
-
     private Card findCard(Issue issue) {
         for (int i = 0; i < this.deck.getCardQueue().size(); i++) {
             Card card = this.deck.getCardQueue().get(i);
@@ -189,17 +202,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         }
         Assert.assertFalse(true);
         return null;
-    }
-
-    public void refreshAnimation(Card card) {
-        final int iniY = -1000;
-        Animation animation = new TranslateAnimation(initCardX, initCardX, iniY, initCardY);
-        animation.setDuration(REFRESH_ANIMATION_DURATION);
-        animation.setRepeatCount(0);
-        card.bringToFront();
-        card.setAnimation(animation);
-        animation.setAnimationListener(this);
-        card.startAnimation(animation);
     }
 
     private void initialBaseCard() {
@@ -288,27 +290,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         UiUtility.closeKeyBoard(this.getActivity());
     }
 
-    @Override
-    public void onAnimationStart(Animation animation) {
-        setAllEvent(false);
-        isRefresh = true;
-    }
-
-    @Override
-    public void onAnimationEnd(Animation animation) {
-        if (this.watchManager.getNewIssues().size() > 0) {
-            showLoadedCard(false);
-        } else {
-            setAllEvent(true);
-            isRefresh = false;
-        }
-    }
-
-    @Override
-    public void onAnimationRepeat(Animation animation) {
-
-    }
-
     public WatchManager getWatchManager() {
         return watchManager;
     }
@@ -340,7 +321,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         this.deck.reloadDeck();
         resetCardDeckView();
         if (this.watchManager.getNewIssues().size() > 0) {
-            showLoadedCard(true);
+//            showLoadedCard(true);
         } else {
             setAllEvent(true);
             isRefresh = false;
