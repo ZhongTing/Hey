@@ -74,14 +74,14 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.watch_deck_layout, container, false);
-        this.new_init(view);
+        this.initialize(view);
 
         this.issueLoader.loadNewIssues();
 
         return view;
     }
 
-    private void new_init(View view) {
+    private void initialize(View view) {
         this.issueLoader = new IssueLoader(getActivity());
         this.issueLoader.addObserver(this);
         cardIssueAdapter = new CardIssueAdapter(getActivity(), R.layout.card, this.issueLoader.getIssues());
@@ -127,6 +127,7 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         @Override
         public void onScroll(float v) {
             pager.requestDisallowInterceptTouchEvent(true);
+            cardIssueAdapter.setFirstCardState(v);
             Log.d("Scroll", Float.toString(v));
         }
     };
