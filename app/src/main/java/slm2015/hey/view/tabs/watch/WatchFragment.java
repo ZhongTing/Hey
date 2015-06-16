@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -30,14 +29,10 @@ import slm2015.hey.view.component.Card;
 import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.util.UiUtility;
 
-public class WatchFragment extends TabPagerFragment implements Animation.AnimationListener, View.OnTouchListener, Observer, View.OnClickListener, WatchManager.OnReloaded {
+public class WatchFragment extends TabPagerFragment implements Animation.AnimationListener, Observer, View.OnClickListener, WatchManager.OnReloaded {
     public static final String SELF_TAG = "watch_fragment";
-    private final int SWIPE_WIDTH_DP = 100;
-    private final int MOVE_ANIMATION_DURATION = 700;
-    private final int RETURN_ANIMATION_DURATION = 300;
     private final int REFRESH_ANIMATION_DURATION = 200;
     private final int MAX_CARD_ANIMATION = 5;
-    private final boolean BY_GESTURE = true;
 
     private ViewPager pager;
     private ImageButton likeButton, dislikeButton, refreshButton, changeViewButton;
@@ -47,7 +42,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
     private CardDeck deck;
 
-    private int xCord, yCord, movedXCord, movedYCord, pressX, pressY, card_iniX, card_iniY;
     private float initCardX, initCardY;
     private int windowWidth;
     private int screenCenter;
@@ -99,16 +93,12 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     SwipeFlingAdapterView.onFlingListener onFlingListener = new SwipeFlingAdapterView.onFlingListener() {
         @Override
         public void removeFirstObjectInAdapter() {
-            // this is the simplest way to delete an object from the Adapter (/AdapterView)
             Log.d("LIST", "removed object!");
             cardIssueAdapter.removeFirst();
         }
 
         @Override
         public void onLeftCardExit(Object dataObject) {
-            //Do something on the left!
-            //You also have access to the original object.
-            //If you want to use it just cast it (String) dataObject
             Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
         }
 
@@ -140,8 +130,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         this.watchManager = new WatchManager(this.getActivity());
         this.watchManager.addObserver(this);
         this.watchManager.setOnReloaded(this);
-//        this.issueLoader = this.watchManager.getIssueLoader();
-//        this.issueLoader.addObserver(this);
 
         this.cardFrame = (RelativeLayout) view.findViewById(R.id.card_frame);
 
@@ -169,7 +157,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private void resetCardDeckView() {
         for (int i = 5; i < 5 + CardDeck.CARD_MAX_AMOUNT; i++) {
             if (deck.getCardQueue().size() > i - 5) {
-//                        WatchFragment.this.cardFrame.removeViewAt(i);
                 Card addCard = deck.getCardQueue().get(i - 5);
                 if (addCard.getParent() != null)
                     ((ViewGroup) addCard.getParent()).removeView(addCard);
@@ -194,7 +181,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         }
     }
 
-    //in addition to load the correct card in deck, need to use issue to find the correct card
     private Card findCard(Issue issue) {
         for (int i = 0; i < this.deck.getCardQueue().size(); i++) {
             Card card = this.deck.getCardQueue().get(i);
@@ -266,9 +252,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         this.changeViewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (onChangeViewListener != null) {
-//                    onChangeViewListener.notifyViewChanged();
-//                }
                 changeToListView();
             }
         });
@@ -279,55 +262,9 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         this.likeButton.setOnClickListener(this);
     }
 
-    private synchronized void swipeLikeCard(boolean like, boolean isGesture) {
-        if (deck.getLastCard() != null && !isGesture)
-            deck.setIniCardXY(deck.getLastCard().getX(), deck.getLastCard().getY());
-        Card card = deck.pop();
-        if (deck.getCardQueue().size() > 0)
-            deck.getCardQueue().get(deck.getCardQueue().size() - 1).setOnTouchListener(WatchFragment.this);
-        playMoveAnimation(card, like);
-    }
-
     private void initialDislikeButton(View view) {
         this.dislikeButton = (ImageButton) view.findViewById(R.id.dislikeButton);
         this.dislikeButton.setOnClickListener(this);
-    }
-
-    private void playMoveAnimation(final Card card, final boolean like) {
-        final int posX = like ? 500 : -500;
-        float card_x = card.getRotationX();
-        float card_y = card.getRotationY();
-
-        Animation animation = new TranslateAnimation(card_x, posX, card_y, card_y);
-        animation.setDuration(MOVE_ANIMATION_DURATION);
-        animation.setRepeatCount(0);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-//                setAllEvent(false);
-//                allEvent = false;
-                card.setOnTouchListener(null);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                removeCard(card, like);
-                Log.d("animation end", "animation end");
-//                setAllEvent(true);
-                if (like) {
-                    //todo save like card
-                } else {
-                    //todo save dislike card
-                }
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        card.setAnimation(animation);
-        card.startAnimation(animation);
     }
 
     private void setAllEvent(boolean b) {
@@ -343,7 +280,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     }
 
     private void refresh() {
-//        this.issueLoader.loadNewIssues();
         this.watchManager.reload();
     }
 
@@ -365,8 +301,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         } else {
             setAllEvent(true);
             isRefresh = false;
-            if (this.deck.getCardQueue().size() > 0)
-                this.deck.getCardQueue().get(this.deck.getCardQueue().size() - 1).setOnTouchListener(this);
         }
     }
 
@@ -375,146 +309,17 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
     }
 
-    private void removeCard(Card card, boolean like) {
-//         this.cardFrame.removeView(card);
-//        this.cardDeck.remove(card);
-//        if (this.cardDeck.size() > 0)
-//            this.cardDeck.get(this.cardDeck.size() - 1).setOnTouchListener(this);
-        ((ViewGroup) card.getParent()).removeView(card);
-        this.deck.operation(card, like);
-//        if (deck.getCardQueue().size() > 0)
-//            deck.getCardQueue().get(deck.getCardQueue().size() - 1).setOnTouchListener(WatchFragment.this);
-    }
-
     public WatchManager getWatchManager() {
         return watchManager;
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        pager.requestDisallowInterceptTouchEvent(true);
-        if (this.deck.getCardQueue().size() <= 0 || this.isRefresh)
-            return false;
-//        int index = this.deck.getCardQueue().size() - 1;
-//        Card card = this.deck.getCardQueue().get(index);
-        Card card = (Card) v;
-        xCord = (int) card.getX();
-        yCord = (int) card.getY();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                setAllButtonEnable(false);
-                if (this.allEvent) {
-                    card_iniX = (int) card.getX();
-                    card_iniY = (int) card.getY();
-                    deck.setIniCardXY(card_iniX, card_iniY);
-                }
-                pressX = (int) event.getX();
-                pressY = (int) event.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                int tempX = (int) event.getX() - pressX;
-                int tempY = (int) event.getY() - pressY;
-                int touchX = (int) event.getX();
-                WatchFragment.this.onMove = true;
-                movedXCord = xCord + tempX;
-                movedYCord = yCord + tempY;
-                card.setX(movedXCord);
-                card.setY(movedYCord);
-
-                Button imageLike = card.getImageLike();
-                Button imagePass = card.getImagePass();
-
-                card.setRotation((float) ((card.getX() + card.getWidth() / 2) - screenCenter) / 10);
-
-                if (movedXCord >= screenCenter) {
-                    Log.d("touchX", String.valueOf(touchX));
-                    if ((card.getX() + card.getWidth() / 2) > (screenCenter + (screenCenter / 2))) {
-                        imageLike.setAlpha(1);
-                    } else {
-                        imageLike.setAlpha(0);
-                    }
-                    imagePass.setAlpha(0);
-                } else {
-                    // rotate
-                    if ((card.getX() + card.getWidth() / 2) < (screenCenter / 2)) {
-                        imagePass.setAlpha(1);
-                    } else {
-                        imagePass.setAlpha(0);
-                    }
-
-                    imageLike.setAlpha(0);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                WatchFragment.this.onMove = false;
-                resetCardDeckView();
-                if (Math.abs(movedXCord - card_iniX) > UiUtility.dpiToPixel(SWIPE_WIDTH_DP, getResources())) {
-                    if (movedXCord - card_iniX >= 0) {
-                        final boolean LIKE = true;
-                        swipeLikeCard(LIKE, BY_GESTURE);
-                    } else {
-                        final boolean DISLIKE = false;
-                        swipeLikeCard(DISLIKE, BY_GESTURE);
-                    }
-                    setAllButtonEnable(true);
-                } else {
-                    playReturnAnimation(card, card_iniX, card_iniY);
-                }
-                break;
-            default:
-                break;
-        }
-        return true;
-    }
-
-    private void playReturnAnimation(final Card card, final int iniX, final int iniY) {
-        float card_x = card.getRotationX();
-        float card_y = card.getRotationY();
-        float deltaX = card.getX() - iniX;
-        float deltaY = card.getY() - iniY;
-        Animation animation = new TranslateAnimation(card_x, -deltaX, card_y, -deltaY);
-        animation.setDuration(RETURN_ANIMATION_DURATION);
-        animation.setRepeatCount(0);
-        animation.setFillEnabled(true);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                setAllEvent(false);
-                card.setRotation(0);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                card.setX(iniX);
-                card.setY(iniY);
-                setAllEvent(true);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        card.setAnimation(animation);
-        card.startAnimation(animation);
     }
 
     private long mLastClickTime = 0;
 
     @Override
-    public void onClick(View v) {
-        final boolean LIKE = true;
-
+    public void onClick(View view) {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 100)
             return;
         mLastClickTime = SystemClock.elapsedRealtime();
-        if (WatchFragment.this.deck.getCardQueue().size() > 0) {
-            if (v == this.likeButton) {
-                swipeLikeCard(LIKE, !BY_GESTURE);
-            } else if (v == this.dislikeButton) {
-                swipeLikeCard(!LIKE, !BY_GESTURE);
-            }
-        }
     }
 
     private void changeToListView() {
@@ -532,7 +337,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
 
     @Override
     public void notifyReloaded() {
-//        if (this.watchManager.needToSelect() || this.watchManager.getNewIssues().size() > 0)
         this.deck.reloadDeck();
         resetCardDeckView();
         if (this.watchManager.getNewIssues().size() > 0) {
@@ -540,8 +344,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         } else {
             setAllEvent(true);
             isRefresh = false;
-            if (this.deck.getCardQueue().size() > 0)
-                this.deck.getCardQueue().get(this.deck.getCardQueue().size() - 1).setOnTouchListener(this);
         }
     }
 }
