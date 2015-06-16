@@ -21,11 +21,9 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import junit.framework.Assert;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import slm2015.hey.R;
 import slm2015.hey.core.Observer;
+import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.entity.CardDeck;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.view.component.Card;
@@ -58,6 +56,10 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     private WatchManager watchManager;
     private WatchHistoryFragment watchListViewFragment;
 
+
+    CardIssueAdapter cardIssueAdapter;
+    private IssueLoader issueLoader;
+
     static public WatchFragment newInstance(ViewPager pager) {
         WatchFragment fragment = new WatchFragment();
         fragment.setViewPager(pager);
@@ -73,66 +75,61 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.watch_deck_layout, container, false);
         this.new_init(view);
-        // this.init(view);
+
+        this.issueLoader.loadNewIssues();
 
         return view;
     }
 
     private void new_init(View view) {
-        List<Issue> list = new ArrayList<>();
-        final CardIssueAdapter adapter = new CardIssueAdapter(getActivity(), R.layout.card, list);
-        for (int i = 0; i < 10; i++) {
-            Issue issue = new Issue();
-            issue.setDescription("Hello" + Integer.toString(i));
-            list.add(issue);
-        }
+        this.issueLoader = new IssueLoader(getActivity());
+        this.issueLoader.addObserver(this);
+        cardIssueAdapter = new CardIssueAdapter(getActivity(), R.layout.card, this.issueLoader.getIssues());
 
         this.flingAdapterContainer = (SwipeFlingAdapterView) view.findViewById(R.id.card_frame);
-        this.flingAdapterContainer.setAdapter(adapter);
-
-        this.flingAdapterContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
-            @Override
-            public void removeFirstObjectInAdapter() {
-                // this is the simplest way to delete an object from the Adapter (/AdapterView)
-                Log.d("LIST", "removed object!");
-                adapter.removeFirst();
-            }
-
-            @Override
-            public void onLeftCardExit(Object dataObject) {
-                //Do something on the left!
-                //You also have access to the original object.
-                //If you want to use it just cast it (String) dataObject
-                Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onRightCardExit(Object dataObject) {
-                Toast.makeText(getActivity(), "Right!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAdapterAboutToEmpty(int itemsInAdapter) {
-                // Ask for more data here
-                adapter.notifyDataSetChanged();
-                Log.d("LIST", "notified");
-            }
-
-            @Override
-            public void onScroll(float v) {
-                pager.requestDisallowInterceptTouchEvent(true);
-                Log.d("Scroll", Float.toString(v));
-            }
-        });
-
-        // Optionally add an OnItemClickListener
-        this.flingAdapterContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int itemPosition, Object dataObject) {
-                Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        this.flingAdapterContainer.setAdapter(cardIssueAdapter);
+        this.flingAdapterContainer.setFlingListener(onFlingListener);
     }
+
+    @Override
+    public void onLoaderChanged() {
+        cardIssueAdapter.notifyDataSetChanged();
+    }
+
+    SwipeFlingAdapterView.onFlingListener onFlingListener = new SwipeFlingAdapterView.onFlingListener() {
+        @Override
+        public void removeFirstObjectInAdapter() {
+            // this is the simplest way to delete an object from the Adapter (/AdapterView)
+            Log.d("LIST", "removed object!");
+            cardIssueAdapter.removeFirst();
+        }
+
+        @Override
+        public void onLeftCardExit(Object dataObject) {
+            //Do something on the left!
+            //You also have access to the original object.
+            //If you want to use it just cast it (String) dataObject
+            Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onRightCardExit(Object dataObject) {
+            Toast.makeText(getActivity(), "Right!", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onAdapterAboutToEmpty(int itemsInAdapter) {
+            // Ask for more data here
+            cardIssueAdapter.notifyDataSetChanged();
+            Log.d("LIST", "notified");
+        }
+
+        @Override
+        public void onScroll(float v) {
+            pager.requestDisallowInterceptTouchEvent(true);
+            Log.d("Scroll", Float.toString(v));
+        }
+    };
 
     private void setViewPager(ViewPager pager) {
         this.pager = pager;
@@ -499,19 +496,6 @@ public class WatchFragment extends TabPagerFragment implements Animation.Animati
         });
         card.setAnimation(animation);
         card.startAnimation(animation);
-    }
-
-    @Override
-    public void onLoaderChanged() {
-//        if (this.watchManager.getNewIssues().size() > 0) {
-//            this.deck.reloadDeck();
-//            showLoadedCard(true);
-//        } else {
-//            setAllEvent(true);
-//            isRefresh = false;
-//            if (this.deck.getCardQueue().size() > 0)
-//                this.deck.getCardQueue().get(this.deck.getCardQueue().size() - 1).setOnTouchListener(this);
-//        }
     }
 
     private long mLastClickTime = 0;
