@@ -39,6 +39,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     private FrameLayout animationCardFrame;
     private ImageButton likeButton, dislikeButton, refreshButton, changeViewButton;
     private float initCardX, initCardY;
+    private int lastIssueCount;
 
     private WatchHistoryFragment watchListViewFragment;
 
@@ -74,8 +75,9 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         return view;
     }
 
-    private void loadNewIssue(){
+    private void loadNewIssue() {
         setAllButtonEnable(false);
+        this.lastIssueCount = this.issueLoader.getIssues().size();
         this.issueLoader.loadNewIssues();
     }
 
@@ -99,15 +101,14 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     @Override
     public void onLoaderChanged() {
         this.cardIssueAdapter.notifyDataSetChanged();
-        playCardLoadAnimation(MAX_CARD_ANIMATION);
+
+        int newLoadedIssueCount = this.issueLoader.getIssues().size() - this.lastIssueCount;
+        this.lastIssueCount = this.issueLoader.getIssues().size();
+        playCardLoadAnimation((newLoadedIssueCount > MAX_CARD_ANIMATION ? MAX_CARD_ANIMATION : newLoadedIssueCount) - 1);
     }
 
     public void playCardLoadAnimation(final int count) {
-        if (count == -1) {
-            this.animationCardFrame.removeAllViews();
-            setAllButtonEnable(true);
-
-        } else if (this.cardIssueAdapter.getCount() - 1 > count) {
+        if (count >= 0 && this.cardIssueAdapter.getCount() - 1 >= count) {
             View card = this.cardIssueAdapter.getView(count, null, this.animationCardFrame);
             card.setX(this.initCardX);
             card.setY(this.initCardY);
@@ -136,8 +137,13 @@ public class WatchFragment extends TabPagerFragment implements Observer {
             });
             card.startAnimation(animation);
 
-        } else {
+        } else if (count >= 0) {
             this.playCardLoadAnimation(count - 1);
+
+        } else {
+            this.animationCardFrame.removeAllViews();
+            setAllButtonEnable(true);
+
         }
     }
 
