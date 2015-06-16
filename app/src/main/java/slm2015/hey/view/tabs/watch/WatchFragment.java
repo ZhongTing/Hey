@@ -25,7 +25,7 @@ import slm2015.hey.view.component.Card;
 import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.util.UiUtility;
 
-public class WatchFragment extends TabPagerFragment implements Observer, WatchManager.OnReloaded {
+public class WatchFragment extends TabPagerFragment implements Observer {
     public static final String SELF_TAG = "watch_fragment";
     private static final int REFRESH_ANIMATION_DURATION = 200;
     private static final int MAX_CARD_ANIMATION = 5;
@@ -69,10 +69,14 @@ public class WatchFragment extends TabPagerFragment implements Observer, WatchMa
         this.animationCardFrame.removeAllViews();
 
         this.initialize(view);
-
-        this.issueLoader.loadNewIssues();
+        this.loadNewIssue();
 
         return view;
+    }
+
+    private void loadNewIssue(){
+        setAllButtonEnable(false);
+        this.issueLoader.loadNewIssues();
     }
 
     private void initialize(View view) {
@@ -95,13 +99,13 @@ public class WatchFragment extends TabPagerFragment implements Observer, WatchMa
     @Override
     public void onLoaderChanged() {
         this.cardIssueAdapter.notifyDataSetChanged();
-
         playCardLoadAnimation(MAX_CARD_ANIMATION);
     }
 
     public void playCardLoadAnimation(final int count) {
         if (count == -1) {
             this.animationCardFrame.removeAllViews();
+            setAllButtonEnable(true);
 
         } else if (this.cardIssueAdapter.getCount() - 1 > count) {
             View card = this.cardIssueAdapter.getView(count, null, this.animationCardFrame);
@@ -205,7 +209,7 @@ public class WatchFragment extends TabPagerFragment implements Observer, WatchMa
         this.refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setAllButtonEnable(false);
+                WatchFragment.this.loadNewIssue();
             }
         });
     }
@@ -264,11 +268,6 @@ public class WatchFragment extends TabPagerFragment implements Observer, WatchMa
         transaction.replace(R.id.test, this.watchListViewFragment);
         transaction.addToBackStack(WatchFragment.SELF_TAG);
         transaction.commit();
-    }
-
-    @Override
-    public void notifyReloaded() {
-
     }
 
     public WatchManager getWatchManager() {
