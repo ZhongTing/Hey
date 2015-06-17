@@ -6,6 +6,12 @@
     android:layout_height="fill_parent"
     android:background="@color/beige">
 
+    <FrameLayout
+        android:id="@+id/bottom_card_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    </FrameLayout>
+
     <com.lorentzos.flingswipe.SwipeFlingAdapterView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_frame"

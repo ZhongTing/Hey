@@ -21,7 +21,7 @@ import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.entity.Issue;
-import slm2015.hey.view.component.Card;
+import slm2015.hey.view.component.IssueCard;
 import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.util.UiUtility;
 
@@ -37,6 +37,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     private ViewPager pager;
     private SwipeFlingAdapterView flingAdapterContainer;
     private FrameLayout animationCardFrame;
+    private FrameLayout bottomCardFrame;
     private ImageButton likeButton, dislikeButton, refreshButton, changeViewButton;
     private float initCardX, initCardY;
     private int lastIssueCount;
@@ -61,6 +62,8 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.watch_deck_layout, container, false);
+
+        this.bottomCardFrame = (FrameLayout) view.findViewById(R.id.bottom_card_frame);
 
         FrameLayout initCard = (FrameLayout) view.findViewById(R.id.init_card);
         this.initCardX = initCard.getX();
@@ -87,8 +90,10 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         initialRefreshButton(view);
         initialChangeViewButton(view);
 
-//        initialBaseCard();
+        initFlingAdapterContainer(view);
+    }
 
+    private void initFlingAdapterContainer(View view){
         this.issueLoader = new IssueLoader(getActivity());
         this.issueLoader.addObserver(this);
         cardIssueAdapter = new CardIssueAdapter(getActivity(), R.layout.card, this.issueLoader.getIssues());
@@ -96,6 +101,13 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         this.flingAdapterContainer = (SwipeFlingAdapterView) view.findViewById(R.id.card_frame);
         this.flingAdapterContainer.setAdapter(cardIssueAdapter);
         this.flingAdapterContainer.setFlingListener(onFlingListener);
+        this.flingAdapterContainer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                pager.requestDisallowInterceptTouchEvent(true);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -183,29 +195,17 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         issue.setDescription("檔案讀取中...");
 
         for (int i = 0; i < 5; i++) {
-            Card card = new Card(this.getActivity());
-            card.assignIssue(issue);
-            card.initDefaultMargin();
-
-            if (i == 0)
-                card.setRotation(-1);
-            else if (i == 1)
-                card.setRotation(-5);
-            else if (i == 2)
-                card.setRotation(3);
-            else if (i == 3)
-                card.setRotation(7);
-            else {
-                initCardY = card.getY();
-                initCardX = card.getX();
-                card.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        pager.requestDisallowInterceptTouchEvent(true);
-                        return true;
-                    }
-                });
-            }
+            IssueCard card = new IssueCard(this.getActivity(), this.bottomCardFrame, issue);
+            View view = card.getView();
+            view.setRotation(7);
+            view.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    pager.requestDisallowInterceptTouchEvent(true);
+                    return true;
+                }
+            });
+            this.bottomCardFrame.addView(view);
         }
     }
 
