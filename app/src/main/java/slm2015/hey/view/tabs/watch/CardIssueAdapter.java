@@ -16,7 +16,7 @@ import slm2015.hey.entity.Selector;
 import slm2015.hey.view.component.IssueCard;
 
 public class CardIssueAdapter extends ArrayAdapter<Issue> {
-    static final float threshold = 0.5f;
+    private static final float[] rotationList = new float[]{4f, 1f, -3f, 1f};
 
     private Context context;
     private List<Issue> list;
@@ -47,6 +47,7 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
         if (convertView == null) {
             IssueCard card = new IssueCard(this.context, parent, viewPager, issue);
             convertView = card.getView();
+            convertView.setRotation(rotationList[(this.getCount() - position - 1) % rotationList.length]);
         }
 
         ImageView likeImageView = (ImageView) convertView.findViewById(R.id.like_image_view);
