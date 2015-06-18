@@ -13,7 +13,6 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -79,7 +78,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     }
 
     private void loadNewIssue() {
-        setAllButtonEnable(false);
+        this.setAllButtonEnable(false);
         this.lastIssueCount = this.issueLoader.getIssues().size();
         this.issueLoader.loadNewIssues();
     }
@@ -93,7 +92,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         initFlingAdapterContainer(view);
     }
 
-    private void initFlingAdapterContainer(View view){
+    private void initFlingAdapterContainer(View view) {
         this.issueLoader = new IssueLoader(getActivity());
         this.issueLoader.addObserver(this);
         cardIssueAdapter = new CardIssueAdapter(getActivity(), R.layout.card, this.pager, this.issueLoader.getIssues());
@@ -102,10 +101,11 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         this.flingAdapterContainer.setAdapter(cardIssueAdapter);
         this.flingAdapterContainer.setFlingListener(onFlingListener);
     }
-
+    
     @Override
     public void onLoaderChanged() {
         this.cardIssueAdapter.notifyDataSetChanged();
+        this.flingAdapterContainer.clearTopView();
 
         int newLoadedIssueCount = this.issueLoader.getIssues().size() - this.lastIssueCount;
         this.lastIssueCount = this.issueLoader.getIssues().size();
@@ -161,12 +161,12 @@ public class WatchFragment extends TabPagerFragment implements Observer {
 
         @Override
         public void onLeftCardExit(Object dataObject) {
-            Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onRightCardExit(Object dataObject) {
-            Toast.makeText(getActivity(), "Right!", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(), "Right!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -206,7 +206,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         this.refreshButton.bringToFront();
         this.refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 WatchFragment.this.loadNewIssue();
             }
         });
