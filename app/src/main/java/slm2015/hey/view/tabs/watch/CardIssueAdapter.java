@@ -72,7 +72,9 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
 
     public void removeFirst() {
         if (this.filteList.size() > 0) {
-            this.filteList.remove(this.getCount() - 1);
+            Issue issue = this.filteList.get(this.getCount() - 1);
+            this.filteList.remove(issue);
+            this.list.remove(issue);
             this.notifyDataSetChanged();
         }
     }

@@ -126,6 +126,13 @@ public class HistoryIssueAdapter extends BaseAdapter {
         return true;
     }
 
+    public void setList() {
+//        this.list = list;
+        this.filterList.clear();
+        this.filterList.addAll(this.issueList);
+        notifyDataSetChanged();
+    }
+
     private void gestureListItem(final View rowView, boolean like) {
 //        final int deltaX = UiUtility.dpiToPixel(50, Resources.getSystem());
 //        final float fromXDelta = like ? 0 : deltaX;

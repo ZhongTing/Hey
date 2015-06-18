@@ -204,8 +204,10 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     @Override
     public void onLoaderChanged() {
         this.laySwipe.setRefreshing(false);
-        this.adapter.setIssueList(this.issueLoader.getHistoryIssues());
-        this.adapter.notifyDataSetChanged();
+
+        this.adapter.setList();
+        this.adapter.setFilter(this.selectors);
+//        this.adapter.setIssueList(this.issueLoader.getHistoryIssues());
     }
 
     public void onFilterChange() {

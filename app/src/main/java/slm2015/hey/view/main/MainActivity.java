@@ -138,6 +138,7 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
 
     private void AddSelector(Selector selector) {
         WatchFragment fragment = (WatchFragment) this.fragments.get(WATCH_FRAGMENT);
+        fragment.addSelector(selector);
         this.selectorAdapter.addSelector(selector);
     }
 
