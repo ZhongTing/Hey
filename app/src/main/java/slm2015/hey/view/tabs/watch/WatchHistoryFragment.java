@@ -25,7 +25,7 @@ import slm2015.hey.view.tabs.TabPagerFragment;
 public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded, Observer {
 
     private View changeViewButton;
-    private View optionButton ;
+    private View optionButton;
     private FragmentManager fragmentManager;
     private ListView issueListView;
     private HistoryIssueAdapter adapter;
@@ -58,7 +58,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     }
 
     private void initialLaySwipe(View view) {
-        this.laySwipe = (SwipeRefreshLayout) view.findViewById(R.id.layswipe);
+        this.laySwipe = (SwipeRefreshLayout) view.findViewById(R.id.layout_swipe);
         laySwipe.setOnRefreshListener(this);
     }
 
@@ -87,13 +87,14 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
         });
     }
 
-    private  void initialOptionButton(View view){
-        this.optionButton = view.findViewById(R.id.optionButton) ;
-        optionButton.setOnClickListener(new View.OnClickListener() {
+    private void initialOptionButton(View view) {
+        this.optionButton = view.findViewById(R.id.optionButton);
+        View filterBar = view.findViewById(R.id.filter_bar);
+        filterBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Creating the instance of PopupMenu
-                PopupMenu popup = new PopupMenu(  getActivity(), optionButton);
+                PopupMenu popup = new PopupMenu(getActivity(), optionButton);
                 //Inflating the Popup using xml file
                 popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
                 // Force icons to show
@@ -103,7 +104,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
                     Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
                     fMenuHelper.setAccessible(true);
                     menuHelper = fMenuHelper.get(popup);
-                    argTypes = new Class[] { boolean.class };
+                    argTypes = new Class[]{boolean.class};
                     menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
 
                 } catch (Exception e) {

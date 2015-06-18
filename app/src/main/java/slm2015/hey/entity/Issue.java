@@ -131,4 +131,8 @@ public class Issue {
         this.place = "";
         this.subject = "";
     }
+
+    public boolean hasImage() {
+        return this.getImage() != null || this.getPhotoURL() != null;
+    }
 }

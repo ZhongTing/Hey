@@ -31,7 +31,7 @@ public class IssueCard {
         this.issue = issue;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        int layoutId = this.hasImage() ? R.layout.card : R.layout.card_no_pic;
+        int layoutId = this.issue.hasImage() ? R.layout.card : R.layout.card_no_pic;
         this.cardView = (FrameLayout) inflater.inflate(layoutId, parent, false);
         this.cardView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -75,9 +75,5 @@ public class IssueCard {
 
     public View getView() {
         return this.cardView;
-    }
-
-    private boolean hasImage() {
-        return !(this.issue.getImage() == null || this.issue.getPhotoURL() == null);
     }
 }

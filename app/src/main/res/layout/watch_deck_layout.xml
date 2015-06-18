@@ -17,7 +17,7 @@
         android:id="@+id/card_frame"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        app:max_visible="4"
+        app:max_visible="10"
         app:min_adapter_stack="6"
         app:rotation_degrees="16" />
 
