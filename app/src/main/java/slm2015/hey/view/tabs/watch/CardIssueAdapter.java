@@ -5,9 +5,11 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 
 import java.util.List;
 
+import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.view.component.IssueCard;
 
@@ -21,6 +23,7 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     private ViewPager viewPager = null;
 
     private int newLoadCardCount = 0;
+    private CardState firstCardState = CardState.NONE;
 
     public CardIssueAdapter(Context context, int resource, ViewPager viewPager, List<Issue> list) {
         super(context, resource, list);
@@ -33,13 +36,29 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     public View getView(int position, View convertView, ViewGroup parent) {
         Issue issue = this.list.get(this.getCount() - position - 1);
 
-        if (convertView == null)
-            convertView = (new IssueCard(this.context, parent, viewPager, issue)).getView();
+        if (convertView == null) {
+            IssueCard card = new IssueCard(this.context, parent, viewPager, issue);
+            convertView = card.getView();
+        }
 
-        if (position < newLoadCardCount)
-            convertView.setVisibility(View.INVISIBLE);
-        else
-            convertView.setVisibility(View.VISIBLE);
+        ImageView likeImageView = (ImageView) convertView.findViewById(R.id.like_image_view);
+        ImageView sosoImageView = (ImageView) convertView.findViewById(R.id.soso_image_view);
+        likeImageView.setVisibility(View.INVISIBLE);
+        sosoImageView.setVisibility(View.INVISIBLE);
+        if (position == 0) {
+            switch (firstCardState) {
+                case LIKE:
+                    likeImageView.setVisibility(View.VISIBLE);
+                    break;
+                case SOSO:
+                    sosoImageView.setVisibility(View.VISIBLE);
+                    break;
+                case NONE:
+                    break;
+            }
+        }
+
+        convertView.setVisibility(position < newLoadCardCount ? View.INVISIBLE : View.VISIBLE);
 
         return convertView;
     }
@@ -49,16 +68,8 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
         this.notifyDataSetChanged();
     }
 
-    public void setFirstCardState(float f) {
-        String test;
-        if (topCard != null) {
-            if (f > threshold)
-                test = "Good";
-            else if (f < -threshold)
-                test = "SoSo";
-            else
-                test = "!!!!";
-        }
+    public void setFirstCardState(CardState firstCardState) {
+        this.firstCardState = firstCardState;
     }
 
     public void removeFirst() {
@@ -66,5 +77,11 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
             this.list.remove(this.getCount() - 1);
             this.notifyDataSetChanged();
         }
+    }
+
+    public enum CardState {
+        LIKE,
+        SOSO,
+        NONE
     }
 }

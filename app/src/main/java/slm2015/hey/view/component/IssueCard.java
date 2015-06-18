@@ -17,12 +17,13 @@ import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
 
 public class IssueCard {
-    private final TextView subjectTextView;
-    private final TextView descriptionTextView;
-    private final TextView positionTextView;
-    private final ImageView incognitoImageView;
-    private final TextView timestampTextView;
-    private final ImageView imageView;
+    private TextView subjectTextView;
+    private TextView descriptionTextView;
+    private TextView positionTextView;
+    private ImageView incognitoImageView;
+    private TextView timestampTextView;
+    private ImageView imageView;
+    private ImageView likeImageView, sosoImageView;
 
     private Issue issue;
     private FrameLayout cardView;
@@ -48,6 +49,9 @@ public class IssueCard {
         this.timestampTextView = (TextView) this.cardView.findViewById(R.id.timestampTextView);
         this.imageView = (ImageView) this.cardView.findViewById(R.id.image);
 
+        this.likeImageView = (ImageView) this.cardView.findViewById(R.id.like_image_view);
+        this.sosoImageView = (ImageView) this.cardView.findViewById(R.id.soso_image_view);
+
         this.init();
     }
 
@@ -67,10 +71,14 @@ public class IssueCard {
         this.descriptionTextView.postInvalidate();
 
         this.positionTextView.setText(this.issue.getPlace());
+        this.positionTextView.setText(this.issue.getId().toString());
         this.positionTextView.postInvalidate();
 
         this.timestampTextView.setText(this.issue.getTimestamp());
         this.timestampTextView.postInvalidate();
+
+        this.likeImageView.setVisibility(View.INVISIBLE);
+        this.sosoImageView.setVisibility(View.INVISIBLE);
     }
 
     public View getView() {

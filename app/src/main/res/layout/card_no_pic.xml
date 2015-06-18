@@ -6,92 +6,118 @@
     android:layout_marginTop="70dp"
     android:background="#2f6699">
 
-    <LinearLayout
-        android:id="@+id/frame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="3dp">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="300dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/camera_green"
-            android:gravity="center"
-            android:text="北科怪鳥"
-            android:textSize="50dp" />
-
-        <RelativeLayout
-            android:layout_width="300dp"
-            android:layout_height="240dp"
-            android:layout_gravity="center"
-            android:background="@drawable/card_background"
+        <LinearLayout
+            android:id="@+id/frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="5dp">
-
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:alpha="1"
-                android:background="@color/preview_yellow" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:orientation="vertical"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:gravity="center"
-                        android:text="一動也不動的站著"
-                        android:textSize="30dp" />
-
-                    <TextView
-                        android:id="@+id/location"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:text="在生態池附近"
-                        android:textSize="30dp" />
-                </LinearLayout>
-
-            </RelativeLayout>
+            android:padding="3dp">
 
             <TextView
-                android:id="@+id/timestampTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:text="一天前" />
+                android:id="@+id/title"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/camera_green"
+                android:gravity="center"
+                android:text="北科怪鳥"
+                android:textSize="50dp" />
 
-            <ImageView
-                android:id="@+id/incognito"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_margin="10dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/lock"
-                android:visibility="invisible" />
-        </RelativeLayout>
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_width="300dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center"
+                android:background="@drawable/card_background"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="5dp">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="1"
+                    android:background="@color/preview_yellow" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:gravity="center"
+                            android:text="一動也不動的站著"
+                            android:textSize="30dp" />
+
+                        <TextView
+                            android:id="@+id/location"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="在生態池附近"
+                            android:textSize="30dp" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/timestampTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="一天前" />
+
+                <ImageView
+                    android:id="@+id/incognito"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="10dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/lock"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/like_image_view"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/frame"
+            android:layout_alignStart="@+id/frame"
+            android:layout_margin="20dp"
+            android:rotation="-30"
+            android:src="@drawable/like" />
+
+        <ImageView
+            android:id="@+id/soso_image_view"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/frame"
+            android:layout_alignRight="@id/frame"
+            android:layout_margin="20dp"
+            android:rotation="30"
+            android:src="@drawable/soso" />
+
+    </RelativeLayout>
 </FrameLayout>

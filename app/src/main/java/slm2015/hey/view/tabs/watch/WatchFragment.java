@@ -22,6 +22,7 @@ import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.view.component.IssueCard;
 import slm2015.hey.view.tabs.TabPagerFragment;
+import slm2015.hey.view.tabs.watch.CardIssueAdapter.CardState;
 import slm2015.hey.view.util.UiUtility;
 
 public class WatchFragment extends TabPagerFragment implements Observer {
@@ -170,11 +171,13 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         @Override
         public void onLeftCardExit(Object dataObject) {
             // Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
+            cardIssueAdapter.setFirstCardState(CardState.NONE);
         }
 
         @Override
         public void onRightCardExit(Object dataObject) {
             // Toast.makeText(getActivity(), "Right!", Toast.LENGTH_SHORT).show();
+            cardIssueAdapter.setFirstCardState(CardState.NONE);
         }
 
         @Override
@@ -186,7 +189,14 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         @Override
         public void onScroll(float v) {
             pager.requestDisallowInterceptTouchEvent(true);
-            cardIssueAdapter.setFirstCardState(v);
+
+            if (flingAdapterContainer.getTopCardListener().movedBeyondLeftBorder())
+                cardIssueAdapter.setFirstCardState(CardState.SOSO);
+            else if (flingAdapterContainer.getTopCardListener().movedBeyondRightBorder())
+                cardIssueAdapter.setFirstCardState(CardState.LIKE);
+            else
+                cardIssueAdapter.setFirstCardState(CardState.NONE);
+            flingAdapterContainer.requestLayout();
         }
     };
 
