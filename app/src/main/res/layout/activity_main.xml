@@ -26,6 +26,7 @@
         android:background="@color/transparent"
         android:src="@drawable/sliding_menu_button" />
 
+
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"

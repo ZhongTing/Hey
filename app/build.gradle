@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 21
@@ -26,11 +27,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile files('libs/simple-side-drawer2.jar')
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile('org.apache.httpcomponents:httpmime:4.3.5') {
         exclude module: "httpclient"
     }
-    compile 'com.lorentzos.swipecards:library:1.0.8@aar'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    compile "com.google.android.gms:play-services:7.5.+"
 }

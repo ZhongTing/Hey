@@ -8,13 +8,16 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
+import slm2015.hey.entity.Selector;
 
 public class HistoryIssueAdapter extends BaseAdapter {
     private List<Issue> issueList;
+    private List<Issue> filterList = new ArrayList<>();
 
     public HistoryIssueAdapter(List<Issue> issueList) {
         setIssueList(issueList);
@@ -22,16 +25,18 @@ public class HistoryIssueAdapter extends BaseAdapter {
 
     public void setIssueList(List<Issue> issueList) {
         this.issueList = issueList;
+        this.filterList.addAll(issueList);
     }
 
     @Override
     public int getCount() {
-        return this.issueList.size();
+        return this.filterList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return this.issueList.get(position);
+        final int upsideDownPosition = getCount() - position - 1;
+        return this.filterList.get(upsideDownPosition);
     }
 
     @Override
@@ -59,8 +64,8 @@ public class HistoryIssueAdapter extends BaseAdapter {
         holder.locationImg = (ImageView) convertView.findViewById(R.id.location);
         holder.time = (TextView) convertView.findViewById(R.id.timestamptextview);
 
-        if (upsideDownPosition < this.issueList.size()) {
-            Issue issue = this.issueList.get(upsideDownPosition);
+        if (upsideDownPosition < this.filterList.size()) {
+            Issue issue = this.filterList.get(upsideDownPosition);
 
             if (issue.getPlace().equals("")) {
                 holder.locationImg.setVisibility(View.GONE);
@@ -82,15 +87,50 @@ public class HistoryIssueAdapter extends BaseAdapter {
             @Override
             public boolean onLongClick(View v) {
                 IssueHolder i = issueHolder;
-                boolean isLike = !issueList.get(upsideDownPosition).isLike();
+                boolean isLike = !filterList.get(upsideDownPosition).isLike();
                 gestureListItem(i.getFront(), isLike);
-                issueList.get(upsideDownPosition).setLike(isLike);
+                filterList.get(upsideDownPosition).setLike(isLike);
                 float alpha = isLike ? 1f : 0.2f;
                 i.like.setAlpha(alpha);
                 return true;
             }
         });
         return convertView;
+    }
+
+    public void setFilter(ArrayList<Selector> selectors) {
+        this.filterList.clear();
+        if (!noFilter(selectors)) {
+            for (Issue issue : this.issueList) {
+                boolean contains = false;
+                for (Selector selector : selectors) {
+                    String content = selector.getContent();
+                    contains = selector.isFilter() && (issue.getSubject().contains(content) || issue.getDescription().contains(content));
+                    if (contains) {
+                        this.filterList.add(issue);
+                        break;
+                    }
+                }
+            }
+        } else {
+            this.filterList.addAll(this.issueList);
+        }
+        notifyDataSetChanged();
+    }
+
+    private boolean noFilter(ArrayList<Selector> selectors) {
+        for (Selector selector : selectors) {
+            if (selector.isFilter())
+                return false;
+        }
+        return true;
+    }
+
+    public void setList() {
+//        this.list = list;
+        this.filterList.clear();
+        this.filterList.addAll(this.issueList);
+        notifyDataSetChanged();
     }
 
     private void gestureListItem(final View rowView, boolean like) {

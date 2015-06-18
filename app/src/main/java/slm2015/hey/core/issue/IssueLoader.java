@@ -14,6 +14,7 @@ public class IssueLoader extends BaseLoader {
     private IssueHandler issueHandler;
     private Integer lastIssueId = null;
     private ArrayList<Issue> issues = new ArrayList<>();
+    private ArrayList<Issue> historyIssues = new ArrayList<>();
     private Queue<Issue> newIssues = new LinkedList<>();
 
     public IssueLoader(Context context) {
@@ -28,6 +29,8 @@ public class IssueLoader extends BaseLoader {
                     Issue lastIssue = issues.get(issues.size() - 1);
                     IssueLoader.this.lastIssueId = lastIssue.getId();
                     IssueLoader.this.newIssues.addAll(issues);
+                    IssueLoader.this.historyIssues.addAll(issues);
+                    IssueLoader.this.issues.addAll(issues);
                 }
 
                 notifyLoaderChanged();
@@ -39,11 +42,15 @@ public class IssueLoader extends BaseLoader {
         return this.issues;
     }
 
+    public ArrayList<Issue> getHistoryIssues() {
+        return this.historyIssues;
+    }
+
     public Queue<Issue> getNewIssues() {
         return newIssues;
     }
 
-    public void clearIssues(){
+    public void clearIssues() {
         this.newIssues.clear();
         this.issues.clear();
     }

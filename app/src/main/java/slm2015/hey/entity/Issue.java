@@ -11,11 +11,11 @@ public class Issue {
     private String subject = "";
     private String description = "";
     private String place = "";
-    private Bitmap image;
+    private Bitmap image = null;
     private boolean like;
     private Date timestamp;
     private boolean incognito;
-    private String photoURL;
+    private String photoURL = null;
 
     public Issue() {
     }
@@ -130,5 +130,9 @@ public class Issue {
         this.description = "";
         this.place = "";
         this.subject = "";
+    }
+
+    public boolean hasImage() {
+        return this.getImage() != null || this.getPhotoURL() != null;
     }
 }
