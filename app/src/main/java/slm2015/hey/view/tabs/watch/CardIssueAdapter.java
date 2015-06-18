@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ArrayAdapter;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     public View getView(int position, View convertView, ViewGroup parent) {
         Issue issue = this.list.get(this.getCount() - position - 1);
 
-        if(convertView == null)
+        if (convertView == null)
             convertView = (new IssueCard(this.context, parent, viewPager, issue)).getView();
         if (position == 0) {
             topCard = convertView;
