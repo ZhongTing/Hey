@@ -43,14 +43,14 @@ public class IssueLoader extends BaseLoader {
     }
 
     public ArrayList<Issue> getHistoryIssues() {
-        return historyIssues;
+        return this.historyIssues;
     }
 
     public Queue<Issue> getNewIssues() {
         return newIssues;
     }
 
-    public void clearIssues(){
+    public void clearIssues() {
         this.newIssues.clear();
         this.issues.clear();
     }

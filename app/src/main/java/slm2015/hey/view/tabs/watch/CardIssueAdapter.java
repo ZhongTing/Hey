@@ -7,10 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
+import slm2015.hey.entity.Selector;
 import slm2015.hey.view.component.IssueCard;
 
 public class CardIssueAdapter extends ArrayAdapter<Issue> {
@@ -18,8 +20,8 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
 
     private Context context;
     private List<Issue> list;
+    private List<Issue> filteList = new ArrayList<>();
 
-    private View topCard = null;
     private ViewPager viewPager = null;
 
     private int newLoadCardCount = 0;
@@ -29,12 +31,18 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
         super(context, resource, list);
         this.context = context;
         this.list = list;
+        this.filteList.addAll(list);
         this.viewPager = viewPager;
     }
 
     @Override
+    public int getCount() {
+        return this.filteList.size();
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Issue issue = this.list.get(this.getCount() - position - 1);
+        Issue issue = this.filteList.get(this.getCount() - position - 1);
 
         if (convertView == null) {
             IssueCard card = new IssueCard(this.context, parent, viewPager, issue);
@@ -73,10 +81,46 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     }
 
     public void removeFirst() {
-        if (this.list.size() > 0) {
-            this.list.remove(this.getCount() - 1);
+        if (this.filteList.size() > 0) {
+            Issue issue = this.filteList.get(this.getCount() - 1);
+            this.filteList.remove(issue);
+            this.list.remove(issue);
             this.notifyDataSetChanged();
         }
+    }
+
+    public void setFilter(ArrayList<Selector> selectors) {
+        this.filteList.clear();
+        if (!noFilter(selectors)) {
+            for (Issue issue : this.list) {
+                boolean contains = false;
+                for (Selector selector : selectors) {
+                    String content = selector.getContent();
+                    contains = selector.isFilter() && (issue.getSubject().contains(content) || issue.getDescription().contains(content));
+                    if (contains) {
+                        this.filteList.add(issue);
+                        break;
+                    }
+                }
+            }
+        } else
+            this.filteList.addAll(this.list);
+        notifyDataSetChanged();
+    }
+
+    private boolean noFilter(ArrayList<Selector> selectors) {
+        for (Selector selector : selectors) {
+            if (selector.isFilter())
+                return false;
+        }
+        return true;
+    }
+
+    public void setList() {
+//        this.list = list;
+        this.filteList.clear();
+        this.filteList.addAll(this.list);
+        notifyDataSetChanged();
     }
 
     public enum CardState {
