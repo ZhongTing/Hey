@@ -71,7 +71,6 @@ public class IssueCard {
         this.descriptionTextView.postInvalidate();
 
         this.positionTextView.setText(this.issue.getPlace());
-        this.positionTextView.setText(this.issue.getId().toString());
         this.positionTextView.postInvalidate();
 
         this.timestampTextView.setText(this.issue.getTimestamp());
