@@ -8,7 +8,7 @@
 
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/layswipe"
+        android:id="@+id/layout_swipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,34 +17,51 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/filter_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:id="@+id/optionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/option" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="瀏覽模式" />
+                </LinearLayout>
+            </LinearLayout>
 
             <ListView
                 android:id="@+id/issue_listview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/refreshButton"
+                android:layout_below="@id/filter_bar"
                 android:background="@color/light_orange"
                 android:descendantFocusability="beforeDescendants"
                 android:divider="@color/beige"
                 android:dividerHeight="5dp" />
 
             <ImageView
-                android:id="@+id/optionButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginBottom="66dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/option" />
 
-
-            <ImageView
                 android:id="@+id/changeViewButton"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginBottom="10dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
                 android:src="@drawable/change_to_card_deck_button" />
 
         </RelativeLayout>
