@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.navdrawer.SimpleSideDrawer;
@@ -25,6 +26,7 @@ import slm2015.hey.view.selector.SelectorAdapter;
 import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.tabs.post.PostFragment;
 import slm2015.hey.view.tabs.watch.WatchFragment;
+import slm2015.hey.view.util.UiUtility;
 
 public class MainActivity extends FragmentActivity {
     private final int WATCH_FRAGMENT = 0;
@@ -91,6 +93,9 @@ public class MainActivity extends FragmentActivity {
                 startActivityForResult(intent, ADD_SELECTOR);
             }
         });
+        RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams) this.addSelectorButton.getLayoutParams());
+        params.setMargins(0, 0, 0, UiUtility.getNavBarHeight(getBaseContext()));
+        this.addSelectorButton.setLayoutParams(params);
     }
 
     private void initialSlidingMenuButton() {
