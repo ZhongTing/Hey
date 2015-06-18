@@ -6,6 +6,7 @@
     android:background="@color/beige"
     android:gravity="center_horizontal">
 
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/layswipe"
         android:layout_width="match_parent"
@@ -16,6 +17,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
             <ListView
                 android:id="@+id/issue_listview"
                 android:layout_width="match_parent"
@@ -25,6 +27,16 @@
                 android:descendantFocusability="beforeDescendants"
                 android:divider="@color/beige"
                 android:dividerHeight="5dp" />
+
+            <ImageView
+                android:id="@+id/optionButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="66dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/option" />
+
 
             <ImageView
                 android:id="@+id/changeViewButton"

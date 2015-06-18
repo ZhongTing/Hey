@@ -7,10 +7,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import java.lang.reflect.Field;
 
@@ -20,6 +24,7 @@ import slm2015.hey.view.tabs.TabPagerFragment;
 public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded {
 
     private View changeViewButton;
+    private View optionButton ;
     private FragmentManager fragmentManager;
     private ListView issueListView;
     private HistoryIssueAdapter adapter;
@@ -47,6 +52,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
         initialChangeViewButton(view);
         initialLaySwipe(view);
         initialListView(view);
+        initialOptionButton(view);
     }
 
     private void initialLaySwipe(View view) {
@@ -77,6 +83,50 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
                 changeToListView();
             }
         });
+    }
+
+    private  void initialOptionButton(View view){
+        this.optionButton = view.findViewById(R.id.optionButton) ;
+        optionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Creating the instance of PopupMenu
+                PopupMenu popup = new PopupMenu(  getActivity(), optionButton);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+                // Force icons to show
+                Object menuHelper;
+                Class[] argTypes;
+                try {
+                    Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
+                    fMenuHelper.setAccessible(true);
+                    menuHelper = fMenuHelper.get(popup);
+                    argTypes = new Class[] { boolean.class };
+                    menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
+
+                } catch (Exception e) {
+                    Log.w("pop", "error forcing menu icons to show", e);
+                    popup.show();
+                    return;
+                }
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        Toast.makeText(
+                                getActivity().getApplicationContext(),
+                                "You Clicked : " + item.getTitle(),
+                                Toast.LENGTH_SHORT
+                        ).show();
+                        return true;
+                    }
+                });
+
+                popup.show(); //showing popup menu
+            }
+        }); //closing the setOnClickListener method
+
     }
 
     public void setFragmentManager(FragmentManager fragmentManager) {
