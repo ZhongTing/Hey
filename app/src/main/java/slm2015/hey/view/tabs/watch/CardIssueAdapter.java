@@ -104,10 +104,10 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
         return true;
     }
 
-    public void setList(List<Issue> list) {
-        this.list = list;
+    public void setList() {
+//        this.list = list;
         this.filteList.clear();
-        this.filteList.addAll(list);
+        this.filteList.addAll(this.list);
         notifyDataSetChanged();
     }
 }

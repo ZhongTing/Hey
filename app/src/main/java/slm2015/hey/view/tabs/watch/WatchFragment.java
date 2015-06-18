@@ -109,7 +109,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
 
     @Override
     public void onLoaderChanged() {
-        this.cardIssueAdapter.setList(this.issueLoader.getIssues());
+        this.cardIssueAdapter.setList();
         this.cardIssueAdapter.setFilter(this.selectors);
 //        this.cardIssueAdapter.notifyDataSetChanged();
 
