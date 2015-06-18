@@ -148,12 +148,16 @@ public class WatchFragment extends TabPagerFragment implements Observer {
             this.playCardLoadAnimation(count - 1);
 
         } else {
-            this.animationCardFrame.removeAllViews();
-            this.cardIssueAdapter.setNewLoadCardCount(0);
-            this.flingAdapterContainer.clearTopView();
-            this.refreshButton.setClickable(true);
+            this.onPlayCardLoadAnimationFinished();
 
         }
+    }
+
+    private void onPlayCardLoadAnimationFinished() {
+        this.animationCardFrame.removeAllViews();
+        this.cardIssueAdapter.setNewLoadCardCount(0);
+        this.flingAdapterContainer.clearTopView();
+        this.refreshButton.setClickable(true);
     }
 
     SwipeFlingAdapterView.onFlingListener onFlingListener = new SwipeFlingAdapterView.onFlingListener() {
