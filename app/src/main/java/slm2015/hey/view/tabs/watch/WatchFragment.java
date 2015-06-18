@@ -78,7 +78,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     }
 
     private void loadNewIssue() {
-        this.setAllButtonEnable(false);
+        this.refreshButton.setClickable(false);
         this.lastIssueCount = this.issueLoader.getIssues().size();
         this.issueLoader.loadNewIssues();
     }
@@ -101,7 +101,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         this.flingAdapterContainer.setAdapter(cardIssueAdapter);
         this.flingAdapterContainer.setFlingListener(onFlingListener);
     }
-    
+
     @Override
     public void onLoaderChanged() {
         this.cardIssueAdapter.notifyDataSetChanged();
@@ -109,6 +109,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
 
         int newLoadedIssueCount = this.issueLoader.getIssues().size() - this.lastIssueCount;
         this.lastIssueCount = this.issueLoader.getIssues().size();
+        this.cardIssueAdapter.setNewLoadCardCount(newLoadedIssueCount);
         playCardLoadAnimation((newLoadedIssueCount > MAX_CARD_ANIMATION ? MAX_CARD_ANIMATION : newLoadedIssueCount) - 1);
     }
 
@@ -117,6 +118,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
             View card = this.cardIssueAdapter.getView(count, null, this.animationCardFrame);
             card.setX(this.initCardX);
             card.setY(this.initCardY);
+            card.setVisibility(View.VISIBLE);
             this.animationCardFrame.addView(card);
 
             Animation animation = new TranslateAnimation(0, 0, -1000, 0);
@@ -147,7 +149,9 @@ public class WatchFragment extends TabPagerFragment implements Observer {
 
         } else {
             this.animationCardFrame.removeAllViews();
-            setAllButtonEnable(true);
+            this.cardIssueAdapter.setNewLoadCardCount(0);
+            this.flingAdapterContainer.clearTopView();
+            this.refreshButton.setClickable(true);
 
         }
     }
@@ -241,13 +245,6 @@ public class WatchFragment extends TabPagerFragment implements Observer {
                 WatchFragment.this.flingAdapterContainer.getTopCardListener().selectLeft();
             }
         });
-    }
-
-    private void setAllButtonEnable(boolean b) {
-        this.likeButton.setEnabled(b);
-        this.dislikeButton.setEnabled(b);
-        this.refreshButton.setEnabled(b);
-        this.changeViewButton.setEnabled(b);
     }
 
     @Override
