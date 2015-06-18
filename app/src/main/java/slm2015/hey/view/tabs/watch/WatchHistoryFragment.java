@@ -16,10 +16,12 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.issue.IssueLoader;
+import slm2015.hey.entity.Selector;
 import slm2015.hey.view.tabs.TabPagerFragment;
 
 public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded, Observer {
@@ -33,12 +35,14 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     private ViewPager pager;
 //    private WatchManager watchManager;
     private IssueLoader issueLoader;
+    private ArrayList<Selector> selectors;
 
-    static public WatchHistoryFragment newInstance(FragmentManager fragmentManager, ViewPager pager, IssueLoader issueLoader) {
+    static public WatchHistoryFragment newInstance(FragmentManager fragmentManager, ViewPager pager, IssueLoader issueLoader, ArrayList<Selector> selectors) {
         WatchHistoryFragment fragment = new WatchHistoryFragment();
         fragment.setFragmentManager(fragmentManager);
         fragment.setPager(pager);
         fragment.setIssueLoader(issueLoader);
+        fragment.setSelectors(selectors);
         return fragment;
     }
 
@@ -51,6 +55,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
 
     private void init(View view) {
         this.adapter = new HistoryIssueAdapter(this.issueLoader.getHistoryIssues());
+        onFilterChange();
         initialChangeViewButton(view);
         initialLaySwipe(view);
         initialListView(view);
@@ -145,6 +150,10 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
         this.issueLoader.addObserver(this);
     }
 
+    public void setSelectors(ArrayList<Selector> selectors) {
+        this.selectors = selectors;
+    }
+
     @Override
     public int getPageIconRedId() {
         return R.drawable.funny_watch;
@@ -195,6 +204,10 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
         this.laySwipe.setRefreshing(false);
         this.adapter.setIssueList(this.issueLoader.getHistoryIssues());
         this.adapter.notifyDataSetChanged();
+    }
+
+    public void onFilterChange() {
+        this.adapter.setFilter(this.selectors);
     }
 
     //fix bug

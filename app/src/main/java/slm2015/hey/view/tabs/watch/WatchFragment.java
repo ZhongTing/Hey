@@ -17,10 +17,13 @@ import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
+import java.util.ArrayList;
+
 import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.entity.Issue;
+import slm2015.hey.entity.Selector;
 import slm2015.hey.view.component.IssueCard;
 import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.util.UiUtility;
@@ -41,6 +44,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     private ImageButton likeButton, dislikeButton, refreshButton, changeViewButton;
     private float initCardX, initCardY;
     private int lastIssueCount;
+    private ArrayList<Selector> selectors = new ArrayList<>();
 
     private WatchHistoryFragment watchListViewFragment;
 
@@ -93,7 +97,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         initFlingAdapterContainer(view);
     }
 
-    private void initFlingAdapterContainer(View view){
+    private void initFlingAdapterContainer(View view) {
         this.issueLoader = new IssueLoader(getActivity());
         this.issueLoader.addObserver(this);
         cardIssueAdapter = new CardIssueAdapter(getActivity(), R.layout.card, this.pager, this.issueLoader.getIssues());
@@ -105,7 +109,9 @@ public class WatchFragment extends TabPagerFragment implements Observer {
 
     @Override
     public void onLoaderChanged() {
-        this.cardIssueAdapter.notifyDataSetChanged();
+        this.cardIssueAdapter.setList(this.issueLoader.getIssues());
+        this.cardIssueAdapter.setFilter(this.selectors);
+//        this.cardIssueAdapter.notifyDataSetChanged();
 
         int newLoadedIssueCount = this.issueLoader.getIssues().size() - this.lastIssueCount;
         this.lastIssueCount = this.issueLoader.getIssues().size();
@@ -258,9 +264,9 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     private void changeToListView() {
         FragmentManager fragmentManager = getChildFragmentManager();
         android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
-        if (this.watchListViewFragment == null)
-            this.watchListViewFragment = WatchHistoryFragment.newInstance(fragmentManager, this.pager, this.issueLoader);
-        else
+        if (this.watchListViewFragment == null) {
+            this.watchListViewFragment = WatchHistoryFragment.newInstance(fragmentManager, this.pager, this.issueLoader, this.selectors);
+        } else
             this.watchListViewFragment.onRefresh();
         transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom);
         transaction.replace(R.id.test, this.watchListViewFragment);
@@ -268,7 +274,19 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         transaction.commit();
     }
 
-    public WatchManager getWatchManager() {
-        return watchManager;
+    public IssueLoader getIssueLoader() {
+        return issueLoader;
+    }
+
+    public void onFilterChange() {
+//        this.issueLoader.onFilterChange();
+        this.cardIssueAdapter.setFilter(this.selectors);
+        if (this.watchListViewFragment != null)
+            this.watchListViewFragment.onFilterChange();
+//        WatchFragment.this.loadNewIssue();
+    }
+
+    public void addSelector(Selector selector) {
+        this.selectors.add(selector);
     }
 }

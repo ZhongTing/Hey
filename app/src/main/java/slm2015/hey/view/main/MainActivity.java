@@ -26,7 +26,7 @@ import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.tabs.post.PostFragment;
 import slm2015.hey.view.tabs.watch.WatchFragment;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements SelectorAdapter.OnSelectorChangeListener{
     private final int WATCH_FRAGMENT = 0;
     private final int ADD_SELECTOR = 1;
     private List<TabPagerFragment> fragments;
@@ -52,13 +52,7 @@ public class MainActivity extends FragmentActivity {
 
         this.mSlidingMenu = new SimpleSideDrawer(this);
         this.mSlidingMenu.setLeftBehindContentView(R.layout.sliding_menu);
-        this.mSlidingMenu.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                }
-            }
-        });
+
         initialAddSelectorButton();
         initialSlidingListView();
 
@@ -106,6 +100,7 @@ public class MainActivity extends FragmentActivity {
     private void initialSlidingListView() {
         ListView selectorListView = (ListView) findViewById(R.id.selectorListView);
         this.selectorAdapter = new SelectorAdapter();
+        this.selectorAdapter.setOnSelectorChangeListener(this);
         selectorListView.setAdapter(this.selectorAdapter);
     }
 
@@ -121,6 +116,12 @@ public class MainActivity extends FragmentActivity {
     private void AddSelector(Selector selector) {
         WatchFragment fragment = (WatchFragment) this.fragments.get(WATCH_FRAGMENT);
         this.selectorAdapter.addSelector(selector);
-        fragment.getWatchManager().addSelector(selector);
+        fragment.addSelector(selector);
+    }
+
+    @Override
+    public void OnFilterChange() {
+        WatchFragment fragment = (WatchFragment) this.fragments.get(WATCH_FRAGMENT);
+        fragment.onFilterChange();
     }
 }

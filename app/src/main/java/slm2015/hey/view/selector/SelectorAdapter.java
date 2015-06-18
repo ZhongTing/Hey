@@ -16,6 +16,7 @@ import slm2015.hey.entity.Selector;
 
 public class SelectorAdapter extends BaseAdapter {
     private List<Selector> selectorList = new ArrayList<Selector>();
+    private OnSelectorChangeListener onSelectorChangeListener;
 
     @Override
     public int getCount() {
@@ -62,6 +63,8 @@ public class SelectorAdapter extends BaseAdapter {
                 boolean filter = !holder.selector.isSelected();
                 holder.selector.setSelected(filter);
                 selector.setFilter(filter);
+                if(SelectorAdapter.this.onSelectorChangeListener != null)
+                    SelectorAdapter.this.onSelectorChangeListener.OnFilterChange();
             }
         });
 
@@ -81,5 +84,13 @@ public class SelectorAdapter extends BaseAdapter {
     public void addSelector(Selector selector) {
         this.selectorList.add(selector);
         notifyDataSetChanged();
+    }
+
+    public void setOnSelectorChangeListener(OnSelectorChangeListener onSelectorChangeListener) {
+        this.onSelectorChangeListener = onSelectorChangeListener;
+    }
+
+    public interface OnSelectorChangeListener {
+        void OnFilterChange();
     }
 }
