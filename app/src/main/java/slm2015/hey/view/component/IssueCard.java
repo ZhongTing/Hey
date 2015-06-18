@@ -47,17 +47,12 @@ public class IssueCard {
     }
 
     private void init() {
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if (this.issue.getImage() != null) {
             this.imageView.setImageBitmap(this.issue.getImage());
         }
         if (this.issue.getPhotoURL() != null) {
-            ImageLoader.getInstance().loadImage(this.issue.getPhotoURL(), new SimpleImageLoadingListener() {
-                @Override
-                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    imageView.setImageBitmap(loadedImage);
-                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                }
-            });
+            ImageLoader.getInstance().displayImage(this.issue.getPhotoURL(), this.imageView);
         }
 
         this.subjectTextView.setText(this.issue.getSubject());
