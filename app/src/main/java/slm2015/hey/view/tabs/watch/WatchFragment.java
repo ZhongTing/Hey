@@ -13,7 +13,6 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -79,7 +78,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     }
 
     private void loadNewIssue() {
-        setAllButtonEnable(false);
+        this.refreshButton.setClickable(false);
         this.lastIssueCount = this.issueLoader.getIssues().size();
         this.issueLoader.loadNewIssues();
     }
@@ -93,7 +92,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         initFlingAdapterContainer(view);
     }
 
-    private void initFlingAdapterContainer(View view){
+    private void initFlingAdapterContainer(View view) {
         this.issueLoader = new IssueLoader(getActivity());
         this.issueLoader.addObserver(this);
         cardIssueAdapter = new CardIssueAdapter(getActivity(), R.layout.card, this.pager, this.issueLoader.getIssues());
@@ -106,9 +105,11 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     @Override
     public void onLoaderChanged() {
         this.cardIssueAdapter.notifyDataSetChanged();
+        this.flingAdapterContainer.clearTopView();
 
         int newLoadedIssueCount = this.issueLoader.getIssues().size() - this.lastIssueCount;
         this.lastIssueCount = this.issueLoader.getIssues().size();
+        this.cardIssueAdapter.setNewLoadCardCount(newLoadedIssueCount);
         playCardLoadAnimation((newLoadedIssueCount > MAX_CARD_ANIMATION ? MAX_CARD_ANIMATION : newLoadedIssueCount) - 1);
     }
 
@@ -117,6 +118,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
             View card = this.cardIssueAdapter.getView(count, null, this.animationCardFrame);
             card.setX(this.initCardX);
             card.setY(this.initCardY);
+            card.setVisibility(View.VISIBLE);
             this.animationCardFrame.addView(card);
 
             Animation animation = new TranslateAnimation(0, 0, -1000, 0);
@@ -147,7 +149,9 @@ public class WatchFragment extends TabPagerFragment implements Observer {
 
         } else {
             this.animationCardFrame.removeAllViews();
-            setAllButtonEnable(true);
+            this.cardIssueAdapter.setNewLoadCardCount(0);
+            this.flingAdapterContainer.clearTopView();
+            this.refreshButton.setClickable(true);
 
         }
     }
@@ -161,12 +165,12 @@ public class WatchFragment extends TabPagerFragment implements Observer {
 
         @Override
         public void onLeftCardExit(Object dataObject) {
-            Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onRightCardExit(Object dataObject) {
-            Toast.makeText(getActivity(), "Right!", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(), "Right!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -206,7 +210,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         this.refreshButton.bringToFront();
         this.refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 WatchFragment.this.loadNewIssue();
             }
         });
@@ -241,13 +245,6 @@ public class WatchFragment extends TabPagerFragment implements Observer {
                 WatchFragment.this.flingAdapterContainer.getTopCardListener().selectLeft();
             }
         });
-    }
-
-    private void setAllButtonEnable(boolean b) {
-        this.likeButton.setEnabled(b);
-        this.dislikeButton.setEnabled(b);
-        this.refreshButton.setEnabled(b);
-        this.changeViewButton.setEnabled(b);
     }
 
     @Override
