@@ -259,7 +259,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         FragmentManager fragmentManager = getChildFragmentManager();
         android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (this.watchListViewFragment == null)
-            this.watchListViewFragment = WatchHistoryFragment.newInstance(fragmentManager, this.pager, new WatchManager(getActivity()));
+            this.watchListViewFragment = WatchHistoryFragment.newInstance(fragmentManager, this.pager, this.issueLoader);
         else
             this.watchListViewFragment.onRefresh();
         transaction.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_bottom);

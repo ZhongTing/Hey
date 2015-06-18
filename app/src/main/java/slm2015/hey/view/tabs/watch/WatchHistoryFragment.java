@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -19,9 +18,11 @@ import android.widget.Toast;
 import java.lang.reflect.Field;
 
 import slm2015.hey.R;
+import slm2015.hey.core.Observer;
+import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.view.tabs.TabPagerFragment;
 
-public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded {
+public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded, Observer {
 
     private View changeViewButton;
     private View optionButton ;
@@ -30,13 +31,14 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     private HistoryIssueAdapter adapter;
     private SwipeRefreshLayout laySwipe;
     private ViewPager pager;
-    private WatchManager watchManager;
+//    private WatchManager watchManager;
+    private IssueLoader issueLoader;
 
-    static public WatchHistoryFragment newInstance(FragmentManager fragmentManager, ViewPager pager, WatchManager watchManager) {
+    static public WatchHistoryFragment newInstance(FragmentManager fragmentManager, ViewPager pager, IssueLoader issueLoader) {
         WatchHistoryFragment fragment = new WatchHistoryFragment();
         fragment.setFragmentManager(fragmentManager);
         fragment.setPager(pager);
-        fragment.setWatchManager(watchManager);
+        fragment.setIssueLoader(issueLoader);
         return fragment;
     }
 
@@ -48,7 +50,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     }
 
     private void init(View view) {
-        this.adapter = new HistoryIssueAdapter(this.watchManager.getHistory());
+        this.adapter = new HistoryIssueAdapter(this.issueLoader.getHistoryIssues());
         initialChangeViewButton(view);
         initialLaySwipe(view);
         initialListView(view);
@@ -137,10 +139,9 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
         this.pager = pager;
     }
 
-    public void setWatchManager(WatchManager watchManager) {
-        this.watchManager = watchManager;
-        this.watchManager.addObserver(this);
-        this.watchManager.setOnReloaded(this);
+    public void setIssueLoader(IssueLoader issueLoader) {
+        this.issueLoader = issueLoader;
+        this.issueLoader.addObserver(this);
     }
 
     @Override
@@ -161,7 +162,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     public void onRefresh() {
         //todo implement reload like WatchFragment
         this.laySwipe.setRefreshing(true);
-        this.watchManager.reload();
+        this.issueLoader.loadNewIssues();
     }
 
     @Override
@@ -184,7 +185,14 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     @Override
     public void notifyReloaded() {
         this.laySwipe.setRefreshing(false);
-        this.adapter.setIssueList(this.watchManager.getHistory());
+        this.adapter.setIssueList(this.issueLoader.getHistoryIssues());
+        this.adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoaderChanged() {
+        this.laySwipe.setRefreshing(false);
+        this.adapter.setIssueList(this.issueLoader.getHistoryIssues());
         this.adapter.notifyDataSetChanged();
     }
 
