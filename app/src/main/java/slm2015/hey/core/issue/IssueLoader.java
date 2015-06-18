@@ -28,6 +28,7 @@ public class IssueLoader extends BaseLoader {
                     Issue lastIssue = issues.get(issues.size() - 1);
                     IssueLoader.this.lastIssueId = lastIssue.getId();
                     IssueLoader.this.newIssues.addAll(issues);
+                    IssueLoader.this.issues.addAll(issues);
                 }
 
                 notifyLoaderChanged();
