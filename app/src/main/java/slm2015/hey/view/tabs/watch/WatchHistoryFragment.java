@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -22,6 +21,7 @@ import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.entity.Selector;
+import slm2015.hey.view.component.MyListView;
 import slm2015.hey.view.tabs.TabPagerFragment;
 
 public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded, Observer {
@@ -29,7 +29,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     private View changeViewButton;
     private View optionButton;
     private FragmentManager fragmentManager;
-    private ListView issueListView;
+    private MyListView issueListView;
     private HistoryIssueAdapter adapter;
     private SwipeRefreshLayout laySwipe;
     private ViewPager pager;
@@ -68,7 +68,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     }
 
     private void initialListView(View view) {
-        this.issueListView = (ListView) view.findViewById(R.id.issue_listview);
+        this.issueListView = (MyListView) view.findViewById(R.id.issue_listview);
         this.issueListView.setAdapter(this.adapter);
 
 //        this.issueListView.setOnTouchListener(new View.OnTouchListener() {
@@ -78,6 +78,8 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
 //                return true;
 //            }
 //        })
+        View indicatorView = view.findViewById(R.id.scroll_bar_indicator);
+        this.issueListView.setIndicatorView(indicatorView);
         this.issueListView.setOnScrollListener(this);
     }
 

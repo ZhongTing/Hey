@@ -112,6 +112,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         this.cardIssueAdapter.setList();
         this.cardIssueAdapter.setFilter(this.selectors);
 //        this.cardIssueAdapter.notifyDataSetChanged();
+        this.flingAdapterContainer.clearTopView();
 
         int newLoadedIssueCount = this.issueLoader.getIssues().size() - this.lastIssueCount;
         this.lastIssueCount = this.issueLoader.getIssues().size();

@@ -35,7 +35,8 @@ public class HistoryIssueAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return this.filterList.get(position);
+        final int upsideDownPosition = getCount() - position - 1;
+        return this.filterList.get(upsideDownPosition);
     }
 
     @Override
