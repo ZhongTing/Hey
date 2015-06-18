@@ -1,8 +1,10 @@
 package slm2015.hey.view.tabs.watch;
 
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ArrayAdapter;
 
 import java.util.List;
@@ -17,11 +19,13 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     private List<Issue> list;
 
     private View topCard = null;
+    private ViewPager viewPager = null;
 
-    public CardIssueAdapter(Context context, int resource, List<Issue> list) {
+    public CardIssueAdapter(Context context, int resource, ViewPager viewPager, List<Issue> list) {
         super(context, resource, list);
         this.context = context;
         this.list = list;
+        this.viewPager = viewPager;
     }
 
     @Override
@@ -29,7 +33,7 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
         Issue issue = this.list.get(this.getCount() - position - 1);
 
         if(convertView == null)
-            convertView = (new IssueCard(this.context, parent, issue)).getView();
+            convertView = (new IssueCard(this.context, parent, viewPager, issue)).getView();
         if (position == 0) {
             topCard = convertView;
         }

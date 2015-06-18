@@ -96,18 +96,11 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     private void initFlingAdapterContainer(View view){
         this.issueLoader = new IssueLoader(getActivity());
         this.issueLoader.addObserver(this);
-        cardIssueAdapter = new CardIssueAdapter(getActivity(), R.layout.card, this.issueLoader.getIssues());
+        cardIssueAdapter = new CardIssueAdapter(getActivity(), R.layout.card, this.pager, this.issueLoader.getIssues());
 
         this.flingAdapterContainer = (SwipeFlingAdapterView) view.findViewById(R.id.card_frame);
         this.flingAdapterContainer.setAdapter(cardIssueAdapter);
         this.flingAdapterContainer.setFlingListener(onFlingListener);
-        this.flingAdapterContainer.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                pager.requestDisallowInterceptTouchEvent(true);
-                return true;
-            }
-        });
     }
 
     @Override
@@ -186,7 +179,6 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         public void onScroll(float v) {
             pager.requestDisallowInterceptTouchEvent(true);
             cardIssueAdapter.setFirstCardState(v);
-            Log.d("Scroll", Float.toString(v));
         }
     };
 
@@ -195,7 +187,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         issue.setDescription("檔案讀取中...");
 
         for (int i = 0; i < 5; i++) {
-            IssueCard card = new IssueCard(this.getActivity(), this.bottomCardFrame, issue);
+            IssueCard card = new IssueCard(this.getActivity(), this.bottomCardFrame, this.pager, issue);
             View view = card.getView();
             view.setRotation(7);
             view.setOnTouchListener(new View.OnTouchListener() {

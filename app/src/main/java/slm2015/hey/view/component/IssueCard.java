@@ -2,8 +2,9 @@ package slm2015.hey.view.component;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -11,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
@@ -25,16 +25,21 @@ public class IssueCard {
     private final ImageView imageView;
 
     private Issue issue;
-    private Context context;
     private FrameLayout cardView;
 
-    public IssueCard(Context context, ViewGroup parent, Issue issue) {
-        this.context = context;
+    public IssueCard(Context context, ViewGroup parent, final ViewPager pager, Issue issue) {
         this.issue = issue;
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         int layoutId = this.hasImage() ? R.layout.card : R.layout.card_no_pic;
         this.cardView = (FrameLayout) inflater.inflate(layoutId, parent, false);
+        this.cardView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                pager.requestDisallowInterceptTouchEvent(true);
+                return true;
+            }
+        });
 
         this.subjectTextView = (TextView) this.cardView.findViewById(R.id.title);
         this.descriptionTextView = (TextView) this.cardView.findViewById(R.id.description);
