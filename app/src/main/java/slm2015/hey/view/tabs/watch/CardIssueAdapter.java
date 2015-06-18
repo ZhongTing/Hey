@@ -23,6 +23,8 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     private View topCard = null;
     private ViewPager viewPager = null;
 
+    private int newLoadCardCount = 0;
+
     public CardIssueAdapter(Context context, int resource, ViewPager viewPager, List<Issue> list) {
         super(context, resource, list);
         this.context = context;
@@ -42,10 +44,18 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
 
         if (convertView == null)
             convertView = (new IssueCard(this.context, parent, viewPager, issue)).getView();
-        if (position == 0) {
-            topCard = convertView;
-        }
+
+        if (position < newLoadCardCount)
+            convertView.setVisibility(View.INVISIBLE);
+        else
+            convertView.setVisibility(View.VISIBLE);
+
         return convertView;
+    }
+
+    public void setNewLoadCardCount(int newLoadCardCount) {
+        this.newLoadCardCount = newLoadCardCount;
+        this.notifyDataSetChanged();
     }
 
     public void setFirstCardState(float f) {

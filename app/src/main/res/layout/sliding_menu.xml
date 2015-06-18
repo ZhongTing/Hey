@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="200dp"
     android:layout_height="match_parent">
 
     <ImageButton
         android:id="@+id/add_selector_button"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:alpha="0.8"
@@ -16,8 +16,8 @@
     <ListView
         android:id="@+id/selectorListView"
         android:layout_width="200dp"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_above="@id/add_selector_button"
-        android:background="@color/grey"></ListView>
+        android:background="@color/grey" />
 
 </RelativeLayout>
