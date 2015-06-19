@@ -30,6 +30,7 @@ public class Card extends FrameLayout {
     private Button imageLike;
     private ImageView incognitoImageView;
     private TextView timestampTextView;
+    private LinearLayout like_count_layout;
     private int tagWidth, tagHeight;
 
     private boolean incognito = false;
@@ -106,6 +107,8 @@ public class Card extends FrameLayout {
                 }
             });
         }
+        int visible = issue.isIncognito() ? VISIBLE : INVISIBLE;
+        this.incognitoImageView.setVisibility(visible);
         this.findView(this.view, issue);
         this.bindEvent();
     }

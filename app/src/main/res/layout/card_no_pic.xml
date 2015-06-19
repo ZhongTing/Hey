@@ -90,12 +90,37 @@
                     android:id="@+id/incognito"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
                     android:layout_margin="10dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/lock"
-                    android:visibility="invisible" />
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:visibility="invisible"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true">
+
+
+                    <ImageView
+                        android:id="@+id/watch_like"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="bottom"
+                        android:src="@drawable/watch_like" />
+
+                    <TextView
+                        android:id="@+id/people"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="5dp"
+                        android:text="10"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
 
@@ -107,7 +132,8 @@
             android:layout_alignStart="@+id/frame"
             android:layout_margin="20dp"
             android:rotation="-30"
-            android:src="@drawable/like" />
+            android:src="@drawable/like"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/soso_image_view"
@@ -117,7 +143,8 @@
             android:layout_alignRight="@id/frame"
             android:layout_margin="20dp"
             android:rotation="30"
-            android:src="@drawable/soso" />
+            android:src="@drawable/soso"
+            android:visibility="invisible"/>
 
     </RelativeLayout>
 </FrameLayout>

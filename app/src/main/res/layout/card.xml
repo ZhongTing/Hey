@@ -77,9 +77,21 @@
                     android:background="#ffffff"
                     android:text="一天前" />
 
+
+                <ImageView
+                    android:id="@+id/incognito"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="center"
+                    android:src="@drawable/lock"
+                    android:visibility="invisible" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
+                    android:id="@+id/place_layout"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
                     android:alpha="0.5"
@@ -97,15 +109,49 @@
                         android:paddingRight="10dp"
                         android:text="在生態池附近"
                         android:textSize="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/like_layout">
 
                     <ImageView
-                        android:id="@+id/incognito"
+                        android:id="@+id/watch_like"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/lock"
-                        android:visibility="invisible" />
+                        android:src="@drawable/watch_like" />
+
+                    <TextView
+                        android:id="@+id/people"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="10"
+                        android:textSize="14sp" />
                 </LinearLayout>
+                <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_alignParentRight="true">-->
+
+                <!--<ImageView-->
+                <!--android:id="@+id/watch_like"-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:src="@drawable/watch_like"/>-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/people"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:text="10"-->
+                <!--android:textSize="14sp"/>-->
+                <!--</LinearLayout>-->
             </RelativeLayout>
         </LinearLayout>
 
