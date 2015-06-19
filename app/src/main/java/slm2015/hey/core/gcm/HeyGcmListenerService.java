@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,9 +13,10 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
+import slm2015.hey.R;
 import slm2015.hey.view.main.MainActivity;
 
-public class HeyGcmListenerService extends com.google.android.gms.gcm.GcmListenerService {
+public class HeyGcmListenerService extends GcmListenerService {
 
     private static final String TAG = "MyGcmListenerService";
 
@@ -58,10 +60,12 @@ public class HeyGcmListenerService extends com.google.android.gms.gcm.GcmListene
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-//                .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                .setContentTitle("GCM Message")
+                .setSmallIcon(R.mipmap.logo)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo))
+                .setContentTitle(getResources().getString(R.string.app_name))
+                .setStyle(new NotificationCompat.InboxStyle())
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
@@ -70,6 +74,6 @@ public class HeyGcmListenerService extends com.google.android.gms.gcm.GcmListene
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(message.hashCode() /* ID of notification */, notificationBuilder.build());
     }
 }
