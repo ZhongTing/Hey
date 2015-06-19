@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -21,9 +20,7 @@ import java.util.ArrayList;
 import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.issue.IssueLoader;
-import slm2015.hey.entity.Issue;
 import slm2015.hey.entity.Selector;
-import slm2015.hey.view.component.IssueCard;
 import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.tabs.watch.CardIssueAdapter.CardState;
 import slm2015.hey.view.util.UiUtility;
@@ -102,7 +99,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         cardIssueAdapter = new CardIssueAdapter(getActivity(), R.layout.card, this.pager, this.issueLoader.getIssues());
 
         this.flingAdapterContainer = (SwipeFlingAdapterView) view.findViewById(R.id.card_frame);
-        this.flingAdapterContainer.setMaxVisible(6);
+        this.flingAdapterContainer.setMaxVisible(5);
         this.flingAdapterContainer.setAdapter(cardIssueAdapter);
         this.flingAdapterContainer.setFlingListener(onFlingListener);
     }
@@ -202,25 +199,6 @@ public class WatchFragment extends TabPagerFragment implements Observer {
             flingAdapterContainer.requestLayout();
         }
     };
-
-    private void initialBaseCard() {
-        Issue issue = new Issue();
-        issue.setDescription("檔案讀取中...");
-
-        for (int i = 0; i < 5; i++) {
-            IssueCard card = new IssueCard(this.getActivity(), this.bottomCardFrame, this.pager, issue);
-            View view = card.getView();
-            view.setRotation(7);
-            view.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    pager.requestDisallowInterceptTouchEvent(true);
-                    return true;
-                }
-            });
-            this.bottomCardFrame.addView(view);
-        }
-    }
 
     private void initialRefreshButton(View view) {
         this.refreshButton = (ImageButton) view.findViewById(R.id.refreshButton);

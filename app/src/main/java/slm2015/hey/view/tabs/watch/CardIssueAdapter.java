@@ -45,8 +45,9 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
         Issue issue = this.filteList.get(this.getCount() - position - 1);
 
         if (convertView == null) {
-            IssueCard card = new IssueCard(this.context, parent, viewPager, issue);
-            convertView = card.getView();
+            IssueCard card = new IssueCard(this.context);
+            card.assignIssueCard(parent, viewPager, issue);
+            convertView = card;
             convertView.setRotation(rotationList[(this.getCount() - position - 1) % rotationList.length]);
         }
 
