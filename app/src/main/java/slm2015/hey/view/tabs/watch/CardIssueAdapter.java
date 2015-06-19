@@ -5,12 +5,10 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.entity.Selector;
 import slm2015.hey.view.component.IssueCard;
@@ -43,33 +41,31 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Issue issue = this.filteList.get(this.getCount() - position - 1);
+        IssueCard card = (IssueCard) convertView;
 
-        if (convertView == null) {
-            IssueCard card = new IssueCard(this.context, parent, viewPager, issue);
-            convertView = card.getView();
-            convertView.setRotation(rotationList[(this.getCount() - position - 1) % rotationList.length]);
+        if (card == null) {
+            card = new IssueCard(this.context);
+            card.assignIssueCard(parent, viewPager, issue);
+            card.setRotation(rotationList[(this.getCount() - position - 1) % rotationList.length]);
         }
 
-        ImageView likeImageView = (ImageView) convertView.findViewById(R.id.like_image_view);
-        ImageView sosoImageView = (ImageView) convertView.findViewById(R.id.soso_image_view);
-        likeImageView.setVisibility(View.INVISIBLE);
-        sosoImageView.setVisibility(View.INVISIBLE);
         if (position == 0) {
             switch (firstCardState) {
                 case LIKE:
-                    likeImageView.setVisibility(View.VISIBLE);
+                    card.showLike();
                     break;
                 case SOSO:
-                    sosoImageView.setVisibility(View.VISIBLE);
+                    card.showSoSo();
                     break;
                 case NONE:
+                    card.hideLikeAndSoSo();
                     break;
             }
         }
 
-        convertView.setVisibility(position < newLoadCardCount ? View.INVISIBLE : View.VISIBLE);
+        card.setVisibility(position < newLoadCardCount ? View.INVISIBLE : View.VISIBLE);
 
-        return convertView;
+        return card;
     }
 
     public void setNewLoadCardCount(int newLoadCardCount) {
