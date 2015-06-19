@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.google.android.gms.common.ConnectionResult;
@@ -117,7 +118,8 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
 
     private void initialSlidingListView() {
         ListView selectorListView = (ListView) findViewById(R.id.selectorListView);
-        this.selectorAdapter = new SelectorAdapter();
+        TextView hint = (TextView) findViewById(R.id.hint);
+        this.selectorAdapter = new SelectorAdapter(hint);
         this.selectorAdapter.setOnSelectorChangeListener(this);
         selectorListView.setAdapter(this.selectorAdapter);
     }

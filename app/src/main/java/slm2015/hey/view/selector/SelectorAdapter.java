@@ -24,6 +24,11 @@ import slm2015.hey.view.util.UiUtility;
 public class SelectorAdapter extends BaseAdapter {
     private List<Selector> selectorList = new ArrayList<Selector>();
     private OnSelectorChangeListener onSelectorChangeListener;
+    private TextView hint;
+
+    public SelectorAdapter(TextView view) {
+        this.hint = view;
+    }
 
     @Override
     public int getCount() {
@@ -73,7 +78,7 @@ public class SelectorAdapter extends BaseAdapter {
                 boolean filter = !holder.selector.isSelected();
                 holder.selector.setSelected(filter);
                 selector.setFilter(filter);
-                if(SelectorAdapter.this.onSelectorChangeListener != null)
+                if (SelectorAdapter.this.onSelectorChangeListener != null)
                     SelectorAdapter.this.onSelectorChangeListener.OnFilterChange();
             }
         });
@@ -95,6 +100,8 @@ public class SelectorAdapter extends BaseAdapter {
         holder.text.setText(text);
         holder.selector.setSelected(selector.isFilter());
         holder.notify.setSelected(selector.isNotify());
+//        int visible = getCount() == 0 ? View.VISIBLE : View.INVISIBLE;
+//        this.hint.setVisibility(visible);
         return convertView;
     }
 
@@ -122,16 +129,16 @@ public class SelectorAdapter extends BaseAdapter {
 
     final int SWIPE_TO_LEFT = -50;
 
-    private void showDeleteButton(View rowView){
+    private void showDeleteButton(View rowView) {
         final int fromX = rowView.getX() == 0 ? 0 : SWIPE_TO_LEFT;
         final int toX = rowView.getX() == 0 ? SWIPE_TO_LEFT : 0;
         final int fromXDelta = UiUtility.dpiToPixel(fromX, Resources.getSystem());
         final int toXDelta = UiUtility.dpiToPixel(toX, Resources.getSystem());
-        ObjectAnimator anim = ObjectAnimator.ofFloat(rowView, "translationX", fromXDelta,toXDelta);
+        ObjectAnimator anim = ObjectAnimator.ofFloat(rowView, "translationX", fromXDelta, toXDelta);
         anim.start();
     }
 
-    public void removeItem(final ViewHolder holder, final Selector selector){
+    public void removeItem(final ViewHolder holder, final Selector selector) {
         final int fromXDelta = UiUtility.dpiToPixel(0, Resources.getSystem());
         final int toXDelta = UiUtility.dpiToPixel(-200, Resources.getSystem());
         final float fromYDelta = 0;
@@ -157,5 +164,12 @@ public class SelectorAdapter extends BaseAdapter {
             }
         });
         holder.rowview.startAnimation(animation);
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        int visible = getCount() == 0 ? View.VISIBLE : View.INVISIBLE;
+        this.hint.setVisibility(visible);
     }
 }

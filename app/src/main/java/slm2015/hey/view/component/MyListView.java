@@ -72,7 +72,7 @@ public class MyListView extends ListView implements AbsListView.OnScrollListener
         if (this.indicatorView != null) {
             this.indicatorView.setTranslationY(y);
         }
-        if (this.timeTextView != null) {
+        if (this.timeTextView != null && totalItemCount > 0) {
             Issue issue = ((Issue) this.getItemAtPosition(firstVisibleItem));
             this.timeTextView.setText(issue.getTimestamp());
         }
