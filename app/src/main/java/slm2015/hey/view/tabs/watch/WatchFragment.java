@@ -288,6 +288,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
 
     public void onFilterChange() {
 //        this.issueLoader.onFilterChange();
+        this.flingAdapterContainer.clearTopView();
         this.cardIssueAdapter.setFilter(this.selectors);
         if (this.watchListViewFragment != null)
             this.watchListViewFragment.onFilterChange();
