@@ -111,6 +111,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
 
         int newLoadedIssueCount = this.issueLoader.getIssues().size() - this.lastIssueCount;
         this.lastIssueCount = this.issueLoader.getIssues().size();
+        this.cardIssueAdapter.setNewLoadCardCount(newLoadedIssueCount);
         playCardLoadAnimation((newLoadedIssueCount > MAX_CARD_ANIMATION ? MAX_CARD_ANIMATION : newLoadedIssueCount) - 1);
     }
 
@@ -125,6 +126,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
             animation.setDuration(REFRESH_ANIMATION_DURATION);
             animation.setRepeatCount(0);
             card.bringToFront();
+            card.setVisibility(View.VISIBLE);
             card.setAnimation(animation);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
