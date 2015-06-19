@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/test"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -15,10 +14,7 @@
     <com.lorentzos.flingswipe.SwipeFlingAdapterView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/card_frame"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        app:rotation_degrees="15"
-        app:max_visible="10"
-        app:min_adapter_stack="6" />
+        android:layout_height="fill_parent" />
 
     <FrameLayout
         android:id="@+id/animation_card_frame"

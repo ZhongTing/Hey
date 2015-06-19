@@ -2,10 +2,8 @@ package slm2015.hey.view.main;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +32,7 @@ import slm2015.hey.view.tabs.post.PostFragment;
 import slm2015.hey.view.tabs.watch.WatchFragment;
 import slm2015.hey.view.util.UiUtility;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements SelectorAdapter.OnSelectorChangeListener{
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
     private final int WATCH_FRAGMENT = 0;
@@ -125,6 +123,7 @@ public class MainActivity extends FragmentActivity {
     private void initialSlidingListView() {
         ListView selectorListView = (ListView) findViewById(R.id.selectorListView);
         this.selectorAdapter = new SelectorAdapter();
+        this.selectorAdapter.setOnSelectorChangeListener(this);
         selectorListView.setAdapter(this.selectorAdapter);
     }
 
@@ -139,8 +138,14 @@ public class MainActivity extends FragmentActivity {
 
     private void AddSelector(Selector selector) {
         WatchFragment fragment = (WatchFragment) this.fragments.get(WATCH_FRAGMENT);
+        fragment.addSelector(selector);
         this.selectorAdapter.addSelector(selector);
-        fragment.getWatchManager().addSelector(selector);
+    }
+
+    @Override
+     public void OnFilterChange() {
+        WatchFragment fragment = (WatchFragment) this.fragments.get(WATCH_FRAGMENT);
+        fragment.onFilterChange();
     }
 
     /**
