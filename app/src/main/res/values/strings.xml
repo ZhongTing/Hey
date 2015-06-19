@@ -7,4 +7,8 @@
     <!--API -->
     <string name="bad_request">好像有地方出錯囉 ~ 請稍候再試!!</string>
     <string name="network_error">網路不穩!!</string>
+    <string name="confirm">確認</string>
+    <string name="success">成功</string>
+    <string name="error">有地方出錯囉</string>
+
 </resources>

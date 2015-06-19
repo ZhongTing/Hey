@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/beige"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:src="@drawable/logo"
+            android:layout_margin="20dp"/>
+
+        <EditText
+            android:id="@+id/login_code"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:cursorVisible="false"
+            android:singleLine="true"
+            android:hint="請輸入授權碼"/>
+
+        <com.dd.CircularProgressButton
+            android:id="@+id/login_button"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/white"
+            app:cpb_cornerRadius="48dp"
+            app:cpb_textComplete="@string/success"
+            app:cpb_textError="@string/error"
+            app:cpb_textIdle="@string/confirm" />
+    </LinearLayout>
+</RelativeLayout>

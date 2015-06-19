@@ -15,8 +15,6 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.navdrawer.SimpleSideDrawer;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,6 @@ import java.util.List;
 import slm2015.hey.R;
 import slm2015.hey.core.gcm.RegistrationIntentService;
 import slm2015.hey.entity.Selector;
-import slm2015.hey.util.LocalPreference;
 import slm2015.hey.view.selector.AddSelectorActivity;
 import slm2015.hey.view.selector.SelectorAdapter;
 import slm2015.hey.view.tabs.TabPagerFragment;
@@ -32,7 +29,7 @@ import slm2015.hey.view.tabs.post.PostFragment;
 import slm2015.hey.view.tabs.watch.WatchFragment;
 import slm2015.hey.view.util.UiUtility;
 
-public class MainActivity extends FragmentActivity implements SelectorAdapter.OnSelectorChangeListener{
+public class MainActivity extends FragmentActivity implements SelectorAdapter.OnSelectorChangeListener {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
     private final int WATCH_FRAGMENT = 0;
@@ -51,8 +48,6 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         initialSlidingMenuButton();
-        ImageLoader.getInstance().init(new ImageLoaderConfiguration.Builder(getBaseContext()).build());
-        LocalPreference.init(this);
 
         this.fragments = new ArrayList<>();
         this.fragments.add(WatchFragment.newInstance(pager));
@@ -143,7 +138,7 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
     }
 
     @Override
-     public void OnFilterChange() {
+    public void OnFilterChange() {
         WatchFragment fragment = (WatchFragment) this.fragments.get(WATCH_FRAGMENT);
         fragment.onFilterChange();
     }
