@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ import slm2015.hey.R;
 import slm2015.hey.core.issue.IssueHandler;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.util.LocalPreference;
-import slm2015.hey.view.component.Card;
+import slm2015.hey.view.component.IssueCard;
 import slm2015.hey.view.component.Wizard;
 
 public class PreviewFragment extends Fragment {
@@ -33,7 +34,7 @@ public class PreviewFragment extends Fragment {
     private ImageButton cameraButton;
     private ImageButton cancelButton;
     private ImageButton raiseButton;
-    private Card card;
+    private FrameLayout previewFrame;
     private Issue issue;
     private Wizard wizard;
     private OnPreviewFinishListener previewFinishListener;
@@ -59,7 +60,7 @@ public class PreviewFragment extends Fragment {
                     image = BitmapFactory.decodeStream(imageStream);
                 }
                 this.issue.setImage(image);
-                this.card.assignIssue(issue);
+                this.previewIssue(this.issue);
             } catch (Exception e) {
                 e.printStackTrace();
                 //todo handle error;
@@ -70,10 +71,16 @@ public class PreviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.post_preivew, container, false);
-        this.card = (Card) view.findViewById(R.id.preview);
-        this.card.assignIssue(this.issue);
+        this.previewFrame = (FrameLayout) view.findViewById(R.id.preview_frame);
         this.initOnCreateView(view);
         return view;
+    }
+
+    public void previewIssue(Issue issue) {
+        this.previewFrame.removeAllViews();
+        IssueCard card = new IssueCard(getActivity());
+        card.assignIssueCard(this.previewFrame, null, issue);
+        this.previewFrame.addView(card);
     }
 
     @Override
@@ -97,8 +104,8 @@ public class PreviewFragment extends Fragment {
                 if (incognitoButton.isSelected() && LocalPreference.instance().getPrivacyModeHintEnabled()) {
                     showPrivacyModeHint();
                 }
-                PreviewFragment.this.card.setIncognito(incognitoButton.isSelected());
-                PreviewFragment.this.card.getIssue().setIncognito(incognitoButton.isSelected());
+//                PreviewFragment.this.card.setIncognito(incognitoButton.isSelected());
+//                PreviewFragment.this.card.getIssue().setIncognito(incognitoButton.isSelected());
             }
         });
     }
@@ -184,11 +191,11 @@ public class PreviewFragment extends Fragment {
 
     public void reassignCard(Issue issue) {
         this.issue = issue;
-        this.card.assignIssue(issue);
+        this.previewIssue(issue);
     }
 
     public void reset() {
         this.issue.reset();
-        this.card.assignIssue(issue);
+        this.previewIssue(issue);
     }
 }
