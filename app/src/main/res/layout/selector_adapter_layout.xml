@@ -1,26 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rowview"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent">
-    <ImageButton
-        android:layout_width="41dp"
-        android:layout_height="50dp"
-        android:id="@+id/notify"
-        android:background="@color/transparent"
-        android:src="@drawable/notify_button"/>
-    <TextView
-        android:layout_width="118dp"
-        android:layout_height="50dp"
-        android:textSize="18dp"
-        android:gravity="center"
-        android:singleLine="true"
-        android:id="@+id/selector_text"/>
-    <ImageButton
-        android:layout_width="41dp"
-        android:layout_height="50dp"
-        android:id="@+id/selector"
-        android:background="@color/transparent"
-        android:src="@drawable/selector_button"/>
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:paddingTop="2dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:src="@drawable/add_selector_button"
+            android:rotation="45"
+            android:id="@+id/delete"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/foreground"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:background="@color/grey">
+
+        <ImageButton
+            android:id="@+id/notify"
+            android:layout_width="41dp"
+            android:layout_height="50dp"
+            android:background="@color/transparent"
+            android:src="@drawable/notify_button" />
+
+        <TextView
+            android:id="@+id/selector_text"
+            android:layout_width="118dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textSize="18dp" />
+
+        <ImageButton
+            android:id="@+id/selector"
+            android:layout_width="41dp"
+            android:layout_height="50dp"
+            android:background="@color/transparent"
+            android:src="@drawable/selector_button" />
+    </LinearLayout>
+
+</RelativeLayout>
