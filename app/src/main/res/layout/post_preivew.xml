@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <FrameLayout
+        android:id="@+id/preview_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="-30dp">
+
+        <include
+            android:id="@+id/init_card"
+            layout="@layout/card" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/preview_frame"
+        android:layout_marginBottom="20dp"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/incognitoButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:background="#00000000"
+            android:scaleType="centerCrop"
+            android:src="@drawable/lock_button" />
+
+        <ImageButton
+            android:id="@+id/cancelButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="5dp"
+            android:layout_toEndOf="@+id/incognitoButton"
+            android:layout_toRightOf="@id/incognitoButton"
+            android:background="#00000000"
+            android:scaleType="centerCrop"
+            android:src="@drawable/cancel_button" />
+
+        <ImageButton
+            android:id="@+id/raiseButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="5dp"
+            android:layout_toEndOf="@+id/cancelButton"
+            android:layout_toRightOf="@id/cancelButton"
+            android:background="#00000000"
+            android:scaleType="centerCrop"
+            android:src="@drawable/raise_button" />
+
+        <ImageButton
+            android:id="@+id/cameraButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="5dp"
+            android:layout_toRightOf="@id/raiseButton"
+            android:background="#00000000"
+            android:scaleType="centerCrop"
+            android:src="@drawable/camera_button" />
+    </RelativeLayout>
+</RelativeLayout>

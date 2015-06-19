@@ -57,7 +57,7 @@ public class TermAdapter extends BaseAdapter implements Filterable {
         ViewHolder holder;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_adapter_layout, null);
+            convertView = inflater.inflate(R.layout.post_term_adapter_layout, null);
             holder = new ViewHolder();
             holder.text = (TextView) convertView.findViewById(R.id.text);
             convertView.setTag(holder);

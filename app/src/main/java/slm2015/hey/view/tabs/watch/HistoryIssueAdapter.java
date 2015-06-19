@@ -50,7 +50,7 @@ public class HistoryIssueAdapter extends BaseAdapter {
         final int upsideDownPosition = getCount() - position - 1;
         LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.issue_adapter_layout, null);
+            convertView = inflater.inflate(R.layout.history_issue_adapter_layout, null);
             holder = new IssueHolder();
             convertView.setTag(holder);
         } else {

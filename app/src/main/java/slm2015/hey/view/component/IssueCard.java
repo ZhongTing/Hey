@@ -16,7 +16,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
 
-public class IssueCard {
+public class IssueCard extends FrameLayout {
     private TextView subjectTextView;
     private TextView descriptionTextView;
     private TextView positionTextView;
@@ -25,32 +25,44 @@ public class IssueCard {
     private ImageView imageView;
     private ImageView likeImageView, sosoImageView;
 
+    private Context context;
     private Issue issue;
-    private FrameLayout cardView;
 
-    public IssueCard(Context context, ViewGroup parent, final ViewPager pager, Issue issue) {
+    public IssueCard(Context context) {
+        super(context);
+        this.context = context;
+    }
+
+    public void assignIssueCard(ViewGroup parent, final ViewPager pager, Issue issue) {
         this.issue = issue;
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         int layoutId = this.issue.hasImage() ? R.layout.card : R.layout.card_no_pic;
-        this.cardView = (FrameLayout) inflater.inflate(layoutId, parent, false);
-        this.cardView.setOnTouchListener(new View.OnTouchListener() {
+        FrameLayout cardView = (FrameLayout) inflater.inflate(layoutId, parent, false);
+        FrameLayout.LayoutParams rootViewLayoutParams = (LayoutParams) cardView.getLayoutParams();
+
+        cardView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        this.addView(cardView);
+        this.setLayoutParams(rootViewLayoutParams);
+
+        this.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                pager.requestDisallowInterceptTouchEvent(true);
+                if (pager != null)
+                    pager.requestDisallowInterceptTouchEvent(true);
                 return true;
             }
         });
 
-        this.subjectTextView = (TextView) this.cardView.findViewById(R.id.title);
-        this.descriptionTextView = (TextView) this.cardView.findViewById(R.id.description);
-        this.positionTextView = (TextView) this.cardView.findViewById(R.id.location);
-        this.incognitoImageView = (ImageView) this.cardView.findViewById(R.id.incognito);
-        this.timestampTextView = (TextView) this.cardView.findViewById(R.id.timestampTextView);
-        this.imageView = (ImageView) this.cardView.findViewById(R.id.image);
+        this.subjectTextView = (TextView) this.findViewById(R.id.title);
+        this.descriptionTextView = (TextView) this.findViewById(R.id.description);
+        this.positionTextView = (TextView) this.findViewById(R.id.location);
+        this.incognitoImageView = (ImageView) this.findViewById(R.id.incognito);
+        this.timestampTextView = (TextView) this.findViewById(R.id.timestampTextView);
+        this.imageView = (ImageView) this.findViewById(R.id.image);
 
-        this.likeImageView = (ImageView) this.cardView.findViewById(R.id.like_image_view);
-        this.sosoImageView = (ImageView) this.cardView.findViewById(R.id.soso_image_view);
+        this.likeImageView = (ImageView) this.findViewById(R.id.like_image_view);
+        this.sosoImageView = (ImageView) this.findViewById(R.id.soso_image_view);
 
         this.init();
     }
@@ -76,11 +88,21 @@ public class IssueCard {
         this.timestampTextView.setText(this.issue.getTimestamp());
         this.timestampTextView.postInvalidate();
 
+        this.hideLikeAndSoSo();
+    }
+
+    public void hideLikeAndSoSo() {
         this.likeImageView.setVisibility(View.INVISIBLE);
         this.sosoImageView.setVisibility(View.INVISIBLE);
     }
 
-    public View getView() {
-        return this.cardView;
+    public void showLike() {
+        this.sosoImageView.setVisibility(View.INVISIBLE);
+        this.likeImageView.setVisibility(View.VISIBLE);
+    }
+
+    public void showSoSo() {
+        this.sosoImageView.setVisibility(View.VISIBLE);
+        this.likeImageView.setVisibility(View.INVISIBLE);
     }
 }
