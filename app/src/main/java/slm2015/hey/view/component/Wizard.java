@@ -85,6 +85,8 @@ public class Wizard extends FrameLayout {
         for (int i = 0; i < wizardAdaptor.getActualCount(); i++) {
             this.addStep(wizardAdaptor.getStepIndicateText(i));
         }
+
+        this.currentStepBound = 1;
         setCurrentStep(1);
     }
 

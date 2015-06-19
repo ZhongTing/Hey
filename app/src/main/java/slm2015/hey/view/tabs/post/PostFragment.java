@@ -75,20 +75,24 @@ public class PostFragment extends TabPagerFragment {
 
             private List<PostStepFragment> postStepFragments;
 
-            PostStepFragment getPostStepFragment(int position) {
-                if (postStepFragments == null) {
-                    postStepFragments = new ArrayList<>();
-
-                    for (TermType type : this.types) {
-                        PostStepFragment fragment = PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, type);
-                        fragment.setOnStepFinishListener(this.opStepFinishListener);
-                        postStepFragments.add(fragment);
-                    }
-
-                    previewFragment = PreviewFragment.newInstance(issue, wizard);
-                    previewFragment.setOnPreviewFinishListener(this.onPreviewFinishListener);
+            private PostStepFragment getPostStepFragment(int position) {
+                if (postStepFragments == null || previewFragment == null) {
+                    init();
                 }
                 return postStepFragments.get(position);
+            }
+
+            private void init() {
+                postStepFragments = new ArrayList<>();
+
+                for (TermType type : this.types) {
+                    PostStepFragment fragment = PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, type);
+                    fragment.setOnStepFinishListener(this.opStepFinishListener);
+                    postStepFragments.add(fragment);
+                }
+
+                previewFragment = PreviewFragment.newInstance(issue, wizard);
+                previewFragment.setOnPreviewFinishListener(this.onPreviewFinishListener);
             }
 
             @Override
@@ -110,7 +114,7 @@ public class PostFragment extends TabPagerFragment {
                 }
             }
 
-            PostStepFragment.OnStepFinishListener opStepFinishListener = new PostStepFragment.OnStepFinishListener() {
+            private PostStepFragment.OnStepFinishListener opStepFinishListener = new PostStepFragment.OnStepFinishListener() {
                 @Override
                 public void OnStepFinish(TermType type, String selectedTerm) {
                     switch (type) {
@@ -129,14 +133,16 @@ public class PostFragment extends TabPagerFragment {
                 }
             };
 
-            PreviewFragment.OnPreviewFinishListener onPreviewFinishListener = new PreviewFragment.OnPreviewFinishListener() {
+            private PreviewFragment.OnPreviewFinishListener onPreviewFinishListener = new PreviewFragment.OnPreviewFinishListener() {
                 @Override
                 public void OnPreviewFinish() {
                     PostFragment.this.pager.setCurrentItem(0, true);
 
-                    for (PostStepFragment fragment : postStepFragments) {
-                        fragment.reset();
+                    issue.reset();
+                    for (PostStepFragment postStepFragment : postStepFragments) {
+                        postStepFragment.reset();
                     }
+                    previewFragment.onResume();
 
                     initWizard();
                 }
