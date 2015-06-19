@@ -48,7 +48,8 @@ public class IssueCard extends FrameLayout {
         this.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                pager.requestDisallowInterceptTouchEvent(true);
+                if (pager != null)
+                    pager.requestDisallowInterceptTouchEvent(true);
                 return true;
             }
         });
