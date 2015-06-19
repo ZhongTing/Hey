@@ -87,7 +87,21 @@ public class IssueCard extends FrameLayout {
         this.timestampTextView.setText(this.issue.getTimestamp());
         this.timestampTextView.postInvalidate();
 
+        this.hideLikeAndSoSo();
+    }
+
+    public void hideLikeAndSoSo() {
         this.likeImageView.setVisibility(View.INVISIBLE);
         this.sosoImageView.setVisibility(View.INVISIBLE);
+    }
+
+    public void showLike() {
+        this.sosoImageView.setVisibility(View.INVISIBLE);
+        this.likeImageView.setVisibility(View.VISIBLE);
+    }
+
+    public void showSoSo() {
+        this.sosoImageView.setVisibility(View.VISIBLE);
+        this.likeImageView.setVisibility(View.INVISIBLE);
     }
 }

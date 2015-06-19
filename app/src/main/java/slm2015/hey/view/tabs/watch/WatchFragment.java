@@ -227,6 +227,8 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         this.likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                WatchFragment.this.cardIssueAdapter.setFirstCardState(CardState.LIKE);
+                WatchFragment.this.flingAdapterContainer.requestLayout();
                 WatchFragment.this.flingAdapterContainer.getTopCardListener().selectRight();
             }
         });
@@ -237,6 +239,8 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         this.dislikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                WatchFragment.this.cardIssueAdapter.setFirstCardState(CardState.SOSO);
+                WatchFragment.this.flingAdapterContainer.requestLayout();
                 WatchFragment.this.flingAdapterContainer.getTopCardListener().selectLeft();
             }
         });
