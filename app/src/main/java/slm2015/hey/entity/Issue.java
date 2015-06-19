@@ -14,7 +14,7 @@ public class Issue {
     private Bitmap image = null;
     private boolean like;
     private Date timestamp;
-    private boolean incognito;
+    private boolean incognito = false;
     private String photoURL = null;
 
     public Issue() {
@@ -130,6 +130,7 @@ public class Issue {
         this.description = "";
         this.place = "";
         this.subject = "";
+        this.incognito = false;
     }
 
     public boolean hasImage() {
