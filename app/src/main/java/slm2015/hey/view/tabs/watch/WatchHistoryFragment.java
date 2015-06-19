@@ -24,7 +24,7 @@ import slm2015.hey.entity.Selector;
 import slm2015.hey.view.component.MyListView;
 import slm2015.hey.view.tabs.TabPagerFragment;
 
-public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded, Observer {
+public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, Observer {
 
     private View changeViewButton;
     private View optionButton;
@@ -33,7 +33,6 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     private HistoryIssueAdapter adapter;
     private SwipeRefreshLayout laySwipe;
     private ViewPager pager;
-//    private WatchManager watchManager;
     private IssueLoader issueLoader;
     private ArrayList<Selector> selectors;
 
@@ -192,13 +191,6 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
             enable = firstItemVisible && topOfFirstItemVisible;
         }
         this.laySwipe.setEnabled(enable);
-    }
-
-    @Override
-    public void notifyReloaded() {
-        this.laySwipe.setRefreshing(false);
-        this.adapter.setIssueList(this.issueLoader.getHistoryIssues());
-        this.adapter.notifyDataSetChanged();
     }
 
     @Override

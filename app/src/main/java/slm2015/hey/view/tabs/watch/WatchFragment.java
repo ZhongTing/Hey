@@ -30,8 +30,6 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     private static final int REFRESH_ANIMATION_DURATION = 200;
     private static final int MAX_CARD_ANIMATION = 5;
 
-    private WatchManager watchManager;
-
     CardIssueAdapter cardIssueAdapter;
     private IssueLoader issueLoader;
     private ViewPager pager;
