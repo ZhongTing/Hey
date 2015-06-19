@@ -48,7 +48,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.watch_listview_layout, container, false);
+        View view = inflater.inflate(R.layout.watch_history, container, false);
         this.init(view);
         return view;
     }

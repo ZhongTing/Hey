@@ -69,7 +69,7 @@ public class PreviewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.raise_issue, container, false);
+        View view = inflater.inflate(R.layout.post_preivew, container, false);
         this.card = (Card) view.findViewById(R.id.preview);
         this.card.assignIssue(this.issue);
         this.initOnCreateView(view);
