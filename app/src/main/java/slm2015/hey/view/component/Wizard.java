@@ -14,7 +14,6 @@ import junit.framework.Assert;
 import java.util.Stack;
 
 import slm2015.hey.R;
-import slm2015.hey.view.tabs.post.PostStepFragment;
 
 public class Wizard extends FrameLayout {
     private ViewGroup indicatorGroup;
@@ -86,6 +85,8 @@ public class Wizard extends FrameLayout {
         for (int i = 0; i < wizardAdaptor.getActualCount(); i++) {
             this.addStep(wizardAdaptor.getStepIndicateText(i));
         }
+
+        this.currentStepBound = 1;
         setCurrentStep(1);
     }
 

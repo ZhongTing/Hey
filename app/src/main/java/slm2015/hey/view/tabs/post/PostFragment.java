@@ -72,26 +72,27 @@ public class PostFragment extends TabPagerFragment {
         WizardAdaptor wizardAdaptor = new WizardAdaptor(getFragmentManager()) {
             private String[] indicateTexts = {"主角", "描述", "地點", "預覽"};
             private TermType[] types = {TermType.SUBJECT, TermType.DESCRIPTION, TermType.PLACE};
+
             private List<PostStepFragment> postStepFragments;
 
-            PostStepFragment getPostStepFragment(int position) {
-                if (postStepFragments == null) {
-                    postStepFragments = new ArrayList<>();
-                    postStepFragments.add(PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, TermType.SUBJECT));
-                    postStepFragments.add(PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, TermType.DESCRIPTION));
-                    postStepFragments.add(PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, TermType.PLACE));
+            private PostStepFragment getPostStepFragment(int position) {
+                if (postStepFragments == null || previewFragment == null) {
+                    init();
                 }
                 return postStepFragments.get(position);
             }
 
-            //the pager will keep old reference fragment, so reset old fragment first
-            //then call initWizard to reset adapter
-            private void reset() {
-                for (PostStepFragment fragment : postStepFragments) {
-                    fragment.reset();
+            private void init() {
+                postStepFragments = new ArrayList<>();
+
+                for (TermType type : this.types) {
+                    PostStepFragment fragment = PostStepFragment.newInstance(wizard, PostFragment.this.termLoader, type);
+                    fragment.setOnStepFinishListener(this.opStepFinishListener);
+                    postStepFragments.add(fragment);
                 }
-                previewFragment.reset();
-                initWizard();
+
+                previewFragment = PreviewFragment.newInstance(issue, wizard);
+                previewFragment.setOnPreviewFinishListener(this.onPreviewFinishListener);
             }
 
             @Override
@@ -100,48 +101,52 @@ public class PostFragment extends TabPagerFragment {
             }
 
             @Override
+            public int getActualCount() {
+                return indicateTexts.length;
+            }
+
+            @Override
             public Fragment getItem(int position) {
                 if (position < types.length) {
-                    final PostStepFragment postStepFragment = getPostStepFragment(position);
-                    postStepFragment.setOnStepFinishListener(new PostStepFragment.OnStepFinishListener() {
-                        @Override
-                        public void OnStepFinish(String selectedTerm) {
-                            //todo implement recode term and prepare to render on preview
-                            switch (postStepFragment.getTermType()) {
-                                case SUBJECT:
-                                    issue.setSubject(selectedTerm);
-                                    termLoader.setCurrentSubject(selectedTerm);
-                                    break;
-                                case DESCRIPTION:
-                                    issue.setDescription(selectedTerm);
-                                    break;
-                                case PLACE:
-                                    issue.setPlace(selectedTerm);
-                                    if (previewFragment != null) {
-                                        previewFragment.reassignCard(issue);
-                                    }
-                                    break;
-                            }
-                        }
-                    });
-                    return postStepFragment;
+                    return getPostStepFragment(position);
                 } else {
-                    previewFragment = PreviewFragment.newInstance(issue, wizard);
-                    previewFragment.setOnPreviewFinishListener(new PreviewFragment.OnPreviewFinishListener() {
-                        @Override
-                        public void OnPreviewFinish() {
-                            PostFragment.this.pager.setCurrentItem(0, true);
-                            reset();
-                        }
-                    });
                     return previewFragment;
                 }
             }
 
-            @Override
-            public int getActualCount() {
-                return indicateTexts.length;
-            }
+            private PostStepFragment.OnStepFinishListener opStepFinishListener = new PostStepFragment.OnStepFinishListener() {
+                @Override
+                public void OnStepFinish(TermType type, String selectedTerm) {
+                    switch (type) {
+                        case SUBJECT:
+                            issue.setSubject(selectedTerm);
+                            termLoader.setCurrentSubject(selectedTerm);
+                            break;
+                        case DESCRIPTION:
+                            issue.setDescription(selectedTerm);
+                            break;
+                        case PLACE:
+                            issue.setPlace(selectedTerm);
+                            break;
+                    }
+                    previewFragment.refreshPreviewIssueCard();
+                }
+            };
+
+            private PreviewFragment.OnPreviewFinishListener onPreviewFinishListener = new PreviewFragment.OnPreviewFinishListener() {
+                @Override
+                public void OnPreviewFinish() {
+                    PostFragment.this.pager.setCurrentItem(0, true);
+
+                    issue.reset();
+                    for (PostStepFragment postStepFragment : postStepFragments) {
+                        postStepFragment.reset();
+                    }
+                    previewFragment.onResume();
+
+                    initWizard();
+                }
+            };
         };
         this.wizard.setAdaptor(wizardAdaptor);
     }

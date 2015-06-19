@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AbsListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -25,6 +27,8 @@ import slm2015.hey.view.component.MyListView;
 import slm2015.hey.view.tabs.TabPagerFragment;
 
 public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, Observer {
+    private final float BUTTON_ONSCROLL_ALPHA = 0.2f;
+    private final int ALPHA_DURATION = 300;
 
     private View changeViewButton;
     private View optionButton;
@@ -178,7 +182,20 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+        switch (scrollState) {
+            case SCROLL_STATE_TOUCH_SCROLL:
+                Animation alphaChange = new AlphaAnimation(1f, BUTTON_ONSCROLL_ALPHA);
+                alphaChange.setFillAfter(true);
+                alphaChange.setDuration(ALPHA_DURATION);
+                this.changeViewButton.startAnimation(alphaChange);
+                break;
+            case 0:
+                Animation alphaReset = new AlphaAnimation(BUTTON_ONSCROLL_ALPHA, 1f);
+                alphaReset.setFillAfter(true);
+                alphaReset.setDuration(ALPHA_DURATION);
+                this.changeViewButton.startAnimation(alphaReset);
+                break;
+        }
     }
 
     @Override

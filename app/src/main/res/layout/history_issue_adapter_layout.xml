@@ -26,17 +26,6 @@
                 android:textColor="@color/black"
                 android:textSize="30sp" />
 
-            <ImageView
-                android:id="@+id/like"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:rotation="20"
-                android:paddingTop="5dp"
-                android:layout_marginLeft="280dp"
-                android:src="@drawable/like"
-                android:visibility="visible"
-                android:alpha="0.2" />
-
         </RelativeLayout>
 
         <LinearLayout
@@ -107,8 +96,22 @@
                 android:textSize="14sp" />
 
         </LinearLayout>
-
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/like"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:rotation="20"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/like"
+        android:background="@color/transparent"
+        android:scaleType="centerCrop"
+        android:visibility="visible"
+        android:alpha="0.2" />
 </RelativeLayout><!--<?xml version="1.0" encoding="utf-8"?>--><!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content">-->
 
     <!--<LinearLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:background="@color/light_orange"--><!--android:paddingTop="5dp"--><!--android:paddingLeft="10dp"--><!--android:paddingBottom="5dp"--><!--android:orientation="vertical">-->

@@ -60,7 +60,7 @@ public class PreviewFragment extends Fragment {
                     image = BitmapFactory.decodeStream(imageStream);
                 }
                 this.issue.setImage(image);
-                this.previewIssue(this.issue);
+                this.refreshPreviewIssueCard();
             } catch (Exception e) {
                 e.printStackTrace();
                 //todo handle error;
@@ -76,16 +76,19 @@ public class PreviewFragment extends Fragment {
         return view;
     }
 
-    public void previewIssue(Issue issue) {
-        this.previewFrame.removeAllViews();
-        IssueCard card = new IssueCard(getActivity());
-        card.assignIssueCard(this.previewFrame, null, issue);
-        this.previewFrame.addView(card);
-    }
-
     @Override
     public void onResume() {
         super.onResume();
+        this.refreshPreviewIssueCard();
+    }
+
+    public void refreshPreviewIssueCard() {
+        if (this.previewFrame != null) {
+            this.previewFrame.removeAllViews();
+            IssueCard card = new IssueCard(getActivity());
+            card.assignIssueCard(this.previewFrame, null, this.issue);
+            this.previewFrame.addView(card);
+        }
     }
 
     private void initOnCreateView(View view) {
@@ -187,15 +190,5 @@ public class PreviewFragment extends Fragment {
 
     public interface OnPreviewFinishListener {
         void OnPreviewFinish();
-    }
-
-    public void reassignCard(Issue issue) {
-        this.issue = issue;
-        this.previewIssue(issue);
-    }
-
-    public void reset() {
-        this.issue.reset();
-        this.previewIssue(issue);
     }
 }
