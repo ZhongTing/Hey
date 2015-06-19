@@ -108,6 +108,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     public void onLoaderChanged() {
         this.cardIssueAdapter.setList();
         this.cardIssueAdapter.setFilter(this.selectors);
+        this.cardIssueAdapter.setFirstCardState(CardState.NONE);
         this.flingAdapterContainer.clearTopView();
 
         int newLoadedIssueCount = this.issueLoader.getIssues().size() - this.lastIssueCount;
