@@ -33,15 +33,15 @@ public class UiUtility {
         boolean hasMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey();
         boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
 
-        if(hasMenuKey || hasBackKey) {
+        if (!hasMenuKey || !hasBackKey) {
             //The device has a navigation bar
             Resources resources = context.getResources();
 
             int orientation = context.getResources().getConfiguration().orientation;
             int resourceId;
-            if (isTablet(context)){
+            if (isTablet(context)) {
                 resourceId = resources.getIdentifier(orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_height_landscape", "dimen", "android");
-            }  else {
+            } else {
                 resourceId = resources.getIdentifier(orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_width", "dimen", "android");
             }
 
