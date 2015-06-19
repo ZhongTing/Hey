@@ -70,7 +70,7 @@ public class PreviewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.raise_issue, container, false);
+        View view = inflater.inflate(R.layout.post_preivew, container, false);
         this.previewFrame = (FrameLayout) view.findViewById(R.id.preview_frame);
         this.initOnCreateView(view);
         return view;

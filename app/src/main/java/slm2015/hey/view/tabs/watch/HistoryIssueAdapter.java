@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,7 +51,7 @@ public class HistoryIssueAdapter extends BaseAdapter {
         final int upsideDownPosition = getCount() - position - 1;
         LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.issue_adapter_layout, null);
+            convertView = inflater.inflate(R.layout.history_issue_adapter_layout, null);
             holder = new IssueHolder();
             convertView.setTag(holder);
         } else {
@@ -60,7 +61,7 @@ public class HistoryIssueAdapter extends BaseAdapter {
         holder.subject = (TextView) convertView.findViewById(R.id.subject);
         holder.description = (TextView) convertView.findViewById(R.id.description);
         holder.place = (TextView) convertView.findViewById(R.id.position);
-        holder.like = (ImageView) convertView.findViewById(R.id.like);
+        holder.like = (ImageButton) convertView.findViewById(R.id.like);
         holder.locationImg = (ImageView) convertView.findViewById(R.id.location);
         holder.time = (TextView) convertView.findViewById(R.id.timestamptextview);
 
@@ -83,18 +84,23 @@ public class HistoryIssueAdapter extends BaseAdapter {
             holder.time.setText(issue.getTimestamp());
         }
         final IssueHolder issueHolder = holder;
-        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 IssueHolder i = issueHolder;
                 boolean isLike = !filterList.get(upsideDownPosition).isLike();
                 gestureListItem(i.getFront(), isLike);
                 filterList.get(upsideDownPosition).setLike(isLike);
                 float alpha = isLike ? 1f : 0.2f;
                 i.like.setAlpha(alpha);
-                return true;
             }
         });
+//        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                return true;
+//            }
+//        });
         return convertView;
     }
 
@@ -150,7 +156,7 @@ public class HistoryIssueAdapter extends BaseAdapter {
         TextView subject;
         TextView description;
         TextView place;
-        ImageView like;
+        ImageButton like;
         ImageView locationImg;
         TextView time;
 

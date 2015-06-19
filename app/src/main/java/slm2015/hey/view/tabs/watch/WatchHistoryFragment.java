@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AbsListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -24,7 +26,9 @@ import slm2015.hey.entity.Selector;
 import slm2015.hey.view.component.MyListView;
 import slm2015.hey.view.tabs.TabPagerFragment;
 
-public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, WatchManager.OnReloaded, Observer {
+public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, Observer {
+    private final float BUTTON_ONSCROLL_ALPHA = 0.2f;
+    private final int ALPHA_DURATION = 300;
 
     private View changeViewButton;
     private View optionButton;
@@ -33,7 +37,6 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     private HistoryIssueAdapter adapter;
     private SwipeRefreshLayout laySwipe;
     private ViewPager pager;
-//    private WatchManager watchManager;
     private IssueLoader issueLoader;
     private ArrayList<Selector> selectors;
 
@@ -48,7 +51,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.watch_listview_layout, container, false);
+        View view = inflater.inflate(R.layout.watch_history, container, false);
         this.init(view);
         return view;
     }
@@ -179,7 +182,20 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+        switch (scrollState) {
+            case SCROLL_STATE_TOUCH_SCROLL:
+                Animation alphaChange = new AlphaAnimation(1f, BUTTON_ONSCROLL_ALPHA);
+                alphaChange.setFillAfter(true);
+                alphaChange.setDuration(ALPHA_DURATION);
+                this.changeViewButton.startAnimation(alphaChange);
+                break;
+            case 0:
+                Animation alphaReset = new AlphaAnimation(BUTTON_ONSCROLL_ALPHA, 1f);
+                alphaReset.setFillAfter(true);
+                alphaReset.setDuration(ALPHA_DURATION);
+                this.changeViewButton.startAnimation(alphaReset);
+                break;
+        }
     }
 
     @Override
@@ -192,13 +208,6 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
             enable = firstItemVisible && topOfFirstItemVisible;
         }
         this.laySwipe.setEnabled(enable);
-    }
-
-    @Override
-    public void notifyReloaded() {
-        this.laySwipe.setRefreshing(false);
-        this.adapter.setIssueList(this.issueLoader.getHistoryIssues());
-        this.adapter.notifyDataSetChanged();
     }
 
     @Override

@@ -48,7 +48,7 @@ public class PostFragment extends TabPagerFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.funnypo_layout, container, false);
+        View view = inflater.inflate(R.layout.post_layout, container, false);
         this.init(view);
         return view;
     }

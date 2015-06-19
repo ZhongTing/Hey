@@ -30,8 +30,6 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     private static final int REFRESH_ANIMATION_DURATION = 200;
     private static final int MAX_CARD_ANIMATION = 5;
 
-    private WatchManager watchManager;
-
     CardIssueAdapter cardIssueAdapter;
     private IssueLoader issueLoader;
     private ViewPager pager;
@@ -62,7 +60,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.watch_deck_layout, container, false);
+        View view = inflater.inflate(R.layout.watch_deck, container, false);
 
         this.bottomCardFrame = (FrameLayout) view.findViewById(R.id.bottom_card_frame);
 
