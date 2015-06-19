@@ -64,7 +64,7 @@
         <activity
             android:name=".view.main.LoginActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

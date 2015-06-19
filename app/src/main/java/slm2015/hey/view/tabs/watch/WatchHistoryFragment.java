@@ -1,5 +1,9 @@
 package slm2015.hey.view.tabs.watch;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,8 +14,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.AbsListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -25,10 +27,12 @@ import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.entity.Selector;
 import slm2015.hey.view.component.MyListView;
 import slm2015.hey.view.tabs.TabPagerFragment;
+import slm2015.hey.view.util.UiUtility;
 
 public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener, Observer {
-    private final float BUTTON_ONSCROLL_ALPHA = 0.2f;
     private final int ALPHA_DURATION = 300;
+    private final int HIDE = 1;
+    private final int SHOW = 2;
 
     private View changeViewButton;
     private View optionButton;
@@ -39,6 +43,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     private ViewPager pager;
     private IssueLoader issueLoader;
     private ArrayList<Selector> selectors;
+    private float y = 0;
 
     static public WatchHistoryFragment newInstance(FragmentManager fragmentManager, ViewPager pager, IssueLoader issueLoader, ArrayList<Selector> selectors) {
         WatchHistoryFragment fragment = new WatchHistoryFragment();
@@ -95,6 +100,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
                 changeToListView();
             }
         });
+        this.y = changeViewButton.getY();
     }
 
     private void initialOptionButton(View view) {
@@ -184,18 +190,36 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         switch (scrollState) {
             case SCROLL_STATE_TOUCH_SCROLL:
-                Animation alphaChange = new AlphaAnimation(1f, BUTTON_ONSCROLL_ALPHA);
-                alphaChange.setFillAfter(true);
-                alphaChange.setDuration(ALPHA_DURATION);
-                this.changeViewButton.startAnimation(alphaChange);
+                hideChangeViewButton(HIDE);
                 break;
             case 0:
-                Animation alphaReset = new AlphaAnimation(BUTTON_ONSCROLL_ALPHA, 1f);
-                alphaReset.setFillAfter(true);
-                alphaReset.setDuration(ALPHA_DURATION);
-                this.changeViewButton.startAnimation(alphaReset);
+                hideChangeViewButton(SHOW);
                 break;
         }
+    }
+
+    private void hideChangeViewButton(int state) {
+        final float BUTTON_SCROLL_ALPHA = 0.2f;
+        final float BUTTON_NOT_SCROLL_ALPHA = 1f;
+        final int ini_y = UiUtility.dpiToPixel(0, Resources.getSystem());
+        final int translationY = UiUtility.dpiToPixel(70, Resources.getSystem());
+
+        AnimatorSet animationSet = new AnimatorSet();
+        ObjectAnimator anim = null;
+        Animator alphaChange = null;
+        switch (state) {
+            case SHOW:
+                alphaChange = ObjectAnimator.ofFloat(this.changeViewButton, "alpha", BUTTON_SCROLL_ALPHA, BUTTON_NOT_SCROLL_ALPHA);
+                anim = ObjectAnimator.ofFloat(this.changeViewButton, "translationY", translationY, ini_y);
+                break;
+            case HIDE:
+                alphaChange = ObjectAnimator.ofFloat(this.changeViewButton, "alpha", BUTTON_NOT_SCROLL_ALPHA, BUTTON_SCROLL_ALPHA);
+                anim = ObjectAnimator.ofFloat(this.changeViewButton, "translationY", ini_y, translationY);
+                break;
+        }
+        animationSet.playTogether(alphaChange, anim);
+        animationSet.setDuration(ALPHA_DURATION);
+        animationSet.start();
     }
 
     @Override
