@@ -14,7 +14,6 @@ import junit.framework.Assert;
 import java.util.Stack;
 
 import slm2015.hey.R;
-import slm2015.hey.view.tabs.post.PostStepFragment;
 
 public class Wizard extends FrameLayout {
     private ViewGroup indicatorGroup;

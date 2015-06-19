@@ -58,7 +58,7 @@ public class PostStepFragment extends Fragment implements Observer {
             public void OnTermSelected(String selectedTerm) {
                 searchTextView.setText("");
                 if (onStepFinishListener != null) {
-                    onStepFinishListener.OnStepFinish(selectedTerm);
+                    onStepFinishListener.OnStepFinish(PostStepFragment.this.getTermType(), selectedTerm);
                 }
                 if (wizard.getCurrentStep() == PREVIEW_STEP) {
                     UiUtility.closeKeyBoard(getActivity());
@@ -132,6 +132,6 @@ public class PostStepFragment extends Fragment implements Observer {
     }
 
     public interface OnStepFinishListener {
-        void OnStepFinish(String selectedTerm);
+        void OnStepFinish(TermType type, String selectedTerm);
     }
 }
