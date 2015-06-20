@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import slm2015.hey.api.user.LoginAPI;
 import slm2015.hey.api.user.RegisterAPI;
+import slm2015.hey.api.user.RegisterGcmAPI;
 import slm2015.hey.core.BaseAPIHandler;
 import slm2015.hey.util.LocalPreference;
 
@@ -43,6 +44,10 @@ public class UserHandler extends BaseAPIHandler {
                 listener.onRegisterCodeError();
             }
         });
+    }
+
+    public void registerGcm(String gcmToken) {
+        this.runAPI(new RegisterGcmAPI(gcmToken));
     }
 
     private void loginSuccess(JSONObject jsonObject, LoginListener listener) {
