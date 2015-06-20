@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -13,15 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.navdrawer.SimpleSideDrawer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.R;
-import slm2015.hey.core.gcm.RegistrationIntentService;
 import slm2015.hey.entity.Selector;
 import slm2015.hey.view.selector.AddSelectorActivity;
 import slm2015.hey.view.selector.SelectorAdapter;
@@ -31,7 +27,6 @@ import slm2015.hey.view.tabs.watch.WatchFragment;
 import slm2015.hey.view.util.UiUtility;
 
 public class MainActivity extends FragmentActivity implements SelectorAdapter.OnSelectorChangeListener {
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
     private final int WATCH_FRAGMENT = 0;
     private final int ADD_SELECTOR = 1;
@@ -84,12 +79,6 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
             }
         });
         tabs.setViewPager(pager);
-
-        if (checkPlayServices()) {
-            // Start IntentService to register this application with GCM.
-            Intent intent = new Intent(this, RegistrationIntentService.class);
-            startService(intent);
-        }
     }
 
     private void initialAddSelectorButton() {
@@ -145,23 +134,5 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
         fragment.onFilterChange();
     }
 
-    /**
-     * Check the device to make sure it has the Google Play Services APK. If
-     * it doesn't, display a dialog that allows users to download the APK from
-     * the Google Play Store or enable it in the device's system settings.
-     */
-    private boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
-            } else {
-                Log.i(TAG, "This device is not supported.");
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }
+
 }
