@@ -11,12 +11,15 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import slm2015.hey.R;
+import slm2015.hey.core.user.UserHandler;
 
 public class RegistrationIntentService extends IntentService {
     private static final String TAG = "HeyRegIntentService";
+    private UserHandler userHandler;
 
     public RegistrationIntentService() {
         super(TAG);
+        this.userHandler = new UserHandler(this);
     }
 
     @Override
@@ -70,5 +73,6 @@ public class RegistrationIntentService extends IntentService {
 
     private void sendRegistrationToServer(String token) {
         Log.d(TAG, token);
+        this.userHandler.registerGcm(token);
     }
 }

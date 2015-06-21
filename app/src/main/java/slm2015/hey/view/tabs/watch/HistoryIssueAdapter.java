@@ -1,6 +1,7 @@
 package slm2015.hey.view.tabs.watch;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.R;
+import slm2015.hey.core.issue.IssueHandler;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.entity.Selector;
 
 public class HistoryIssueAdapter extends BaseAdapter {
+    private IssueHandler issueHandler;
     private List<Issue> issueList;
     private List<Issue> filterList = new ArrayList<>();
 
-    public HistoryIssueAdapter(List<Issue> issueList) {
+    public HistoryIssueAdapter(Context context, List<Issue> issueList) {
+        this.issueHandler = new IssueHandler(context);
         setIssueList(issueList);
     }
 
@@ -88,9 +92,11 @@ public class HistoryIssueAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 IssueHolder i = issueHolder;
-                boolean isLike = !filterList.get(upsideDownPosition).isLike();
+                Issue issue = filterList.get(upsideDownPosition);
+                boolean isLike = !issue.isLike();
                 gestureListItem(i.getFront(), isLike);
-                filterList.get(upsideDownPosition).setLike(isLike);
+                issue.setLike(isLike);
+                syncIssueLikeToServer(issue);
                 float alpha = isLike ? 1f : 0.2f;
                 i.like.setAlpha(alpha);
             }
@@ -102,6 +108,14 @@ public class HistoryIssueAdapter extends BaseAdapter {
 //            }
 //        });
         return convertView;
+    }
+
+    private void syncIssueLikeToServer(Issue issue) {
+        if (issue.isLike()){
+            this.issueHandler.like(issue.getId());
+        } else {
+            this.issueHandler.regretLike(issue.getId());
+        }
     }
 
     public void setFilter(ArrayList<Selector> selectors) {

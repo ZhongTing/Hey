@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.api.issue.FetchIssueAPI;
+import slm2015.hey.api.issue.LikeAPI;
 import slm2015.hey.api.issue.RaiseIssueAPI;
+import slm2015.hey.api.issue.RegretLikeAPI;
 import slm2015.hey.core.BaseAPIHandler;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.util.Converter;
@@ -58,6 +60,14 @@ public class IssueHandler extends BaseAPIHandler {
                 return list;
             }
         });
+    }
+
+    public void like(int issueId) {
+        this.runAPI(new LikeAPI(issueId));
+    }
+
+    public void regretLike(int issueId) {
+        this.runAPI(new RegretLikeAPI(issueId));
     }
 
     public interface FetchIssueHandlerCallback {

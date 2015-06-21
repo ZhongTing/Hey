@@ -62,8 +62,8 @@ public class HeyGcmListenerService extends GcmListenerService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.logo)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.logo))
+                .setSmallIcon(R.mipmap.notification_small_icon)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.notification_icon))
                 .setContentTitle(getResources().getString(R.string.app_name))
                 .setStyle(new NotificationCompat.InboxStyle())
                 .setContentText(message)

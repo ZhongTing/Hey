@@ -87,6 +87,8 @@ public class PreviewFragment extends Fragment {
             this.previewFrame.removeAllViews();
             IssueCard card = new IssueCard(getActivity());
             card.assignIssueCard(this.previewFrame, null, this.issue);
+            if (this.issue.isIncognito())
+                card.showIncognito();
             this.previewFrame.addView(card);
         }
     }
@@ -103,14 +105,17 @@ public class PreviewFragment extends Fragment {
         this.incognitoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                incognitoButton.setSelected(!incognitoButton.isSelected());
-                if (incognitoButton.isSelected() && LocalPreference.instance().getPrivacyModeHintEnabled()) {
+                boolean isChosenIncognito = !PreviewFragment.this.issue.isIncognito();
+
+                incognitoButton.setSelected(isChosenIncognito);
+                if (isChosenIncognito && LocalPreference.instance().getPrivacyModeHintEnabled()) {
                     showPrivacyModeHint();
                 }
-//                PreviewFragment.this.card.setIncognito(incognitoButton.isSelected());
-//                PreviewFragment.this.card.getIssue().setIncognito(incognitoButton.isSelected());
+                PreviewFragment.this.issue.setIncognito(isChosenIncognito);
+                PreviewFragment.this.refreshPreviewIssueCard();
             }
         });
+        this.incognitoButton.setSelected(this.issue.isIncognito());
     }
 
     private void showPrivacyModeHint() {

@@ -60,6 +60,7 @@ public class IssueCard extends FrameLayout {
         this.incognitoImageView = (ImageView) this.findViewById(R.id.incognito);
         this.timestampTextView = (TextView) this.findViewById(R.id.timestampTextView);
         this.imageView = (ImageView) this.findViewById(R.id.image);
+        this.incognitoImageView = (ImageView) this.findViewById(R.id.incognito);
 
         this.likeImageView = (ImageView) this.findViewById(R.id.like_image_view);
         this.sosoImageView = (ImageView) this.findViewById(R.id.soso_image_view);
@@ -89,20 +90,31 @@ public class IssueCard extends FrameLayout {
         this.timestampTextView.postInvalidate();
 
         this.hideLikeAndSoSo();
+        this.hideIncognito();
+    }
+
+    public void showIncognito() {
+        this.setAlpha(0.7f);
+        this.incognitoImageView.setVisibility(VISIBLE);
+    }
+
+    public void hideIncognito() {
+        this.setAlpha(1.0f);
+        this.incognitoImageView.setVisibility(INVISIBLE);
     }
 
     public void hideLikeAndSoSo() {
-        this.likeImageView.setVisibility(View.INVISIBLE);
-        this.sosoImageView.setVisibility(View.INVISIBLE);
+        this.likeImageView.setVisibility(INVISIBLE);
+        this.sosoImageView.setVisibility(INVISIBLE);
     }
 
     public void showLike() {
-        this.sosoImageView.setVisibility(View.INVISIBLE);
-        this.likeImageView.setVisibility(View.VISIBLE);
+        this.sosoImageView.setVisibility(INVISIBLE);
+        this.likeImageView.setVisibility(VISIBLE);
     }
 
     public void showSoSo() {
-        this.sosoImageView.setVisibility(View.VISIBLE);
-        this.likeImageView.setVisibility(View.INVISIBLE);
+        this.sosoImageView.setVisibility(VISIBLE);
+        this.likeImageView.setVisibility(INVISIBLE);
     }
 }
