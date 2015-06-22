@@ -74,13 +74,15 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     }
 
     public void setFirstCardState(CardState firstCardState) {
-        this.firstCardState = firstCardState;
-        Issue issue = this.filteList.get(this.getCount() - 1);
-        issue.setLike(firstCardState == CardState.LIKE);
+        if (getCount() > 0) {
+            this.firstCardState = firstCardState;
+            Issue issue = this.filteList.get(this.getCount() - 1);
+            issue.setLike(firstCardState == CardState.LIKE);
+        }
     }
 
     public void removeFirst() {
-        if (this.filteList.size() > 0) {
+        if (getCount() > 0) {
             Issue issue = this.filteList.get(this.getCount() - 1);
             this.filteList.remove(issue);
             this.list.remove(issue);
