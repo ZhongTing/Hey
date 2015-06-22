@@ -94,11 +94,12 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
         this.filteList.clear();
         if (!noFilter(selectors)) {
             for (Issue issue : this.list) {
-                boolean contains = false;
+                boolean addToList = false;
                 for (Selector selector : selectors) {
                     String content = selector.getContent();
-                    contains = selector.isFilter() && (issue.getSubject().contains(content) || issue.getDescription().contains(content));
-                    if (contains) {
+                    boolean contains = (issue.getSubject().toLowerCase().contains(content.toLowerCase()) || issue.getDescription().toLowerCase().contains(content.toLowerCase()));
+                    addToList = selector.isFilter() && contains;
+                    if (addToList) {
                         this.filteList.add(issue);
                         break;
                     }

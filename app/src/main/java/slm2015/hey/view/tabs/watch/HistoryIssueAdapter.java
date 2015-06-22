@@ -113,7 +113,7 @@ public class HistoryIssueAdapter extends BaseAdapter {
     }
 
     private void syncIssueLikeToServer(Issue issue) {
-        if (issue.isLike()){
+        if (issue.isLike()) {
             this.issueHandler.like(issue.getId());
         } else {
             this.issueHandler.regretLike(issue.getId());
@@ -125,11 +125,12 @@ public class HistoryIssueAdapter extends BaseAdapter {
         this.filterList.clear();
         if (!noFilter(selectors)) {
             for (Issue issue : this.issueList) {
-                boolean contains = false;
+                boolean addToList = false;
                 for (Selector selector : selectors) {
                     String content = selector.getContent();
-                    contains = selector.isFilter() && (issue.getSubject().contains(content) || issue.getDescription().contains(content));
-                    if (contains) {
+                    boolean contains = (issue.getSubject().toLowerCase().contains(content.toLowerCase()) || issue.getDescription().toLowerCase().contains(content.toLowerCase()));
+                    addToList = selector.isFilter() && contains;
+                    if (addToList) {
                         this.filterList.add(issue);
                         break;
                     }
