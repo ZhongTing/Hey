@@ -93,4 +93,20 @@ public class AddSelectorActivity extends Activity {
         boolean backPressed = true;
         backToMainActivity(backPressed);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        backToMainActivity(true);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

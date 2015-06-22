@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import slm2015.hey.core.issue.IssueHandler;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.entity.Selector;
 import slm2015.hey.view.component.IssueCard;
@@ -19,6 +20,7 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     private Context context;
     private List<Issue> list;
     private List<Issue> filteList = new ArrayList<>();
+    private IssueHandler issueHandler;
 
     private ViewPager viewPager = null;
 
@@ -27,6 +29,7 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
 
     public CardIssueAdapter(Context context, int resource, ViewPager viewPager, List<Issue> list) {
         super(context, resource, list);
+        this.issueHandler = new IssueHandler(context);
         this.context = context;
         this.list = list;
         this.filteList.addAll(list);
@@ -78,6 +81,8 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
             this.firstCardState = firstCardState;
             Issue issue = this.filteList.get(this.getCount() - 1);
             issue.setLike(firstCardState == CardState.LIKE);
+            if (firstCardState == CardState.LIKE)
+                this.issueHandler.like(issue.getId());
         }
     }
 
