@@ -41,26 +41,16 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.initialTabs();
+        this.initialSlideMenu();
+    }
+    private void initialTabs() {
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
-        initialSlidingMenuButton();
 
         this.fragments = new ArrayList<>();
         this.fragments.add(WatchFragment.newInstance(pager));
         this.fragments.add(PostFragment.newInstance(pager));
-
-        this.mSlidingMenu = new SimpleSideDrawer(this);
-        this.mSlidingMenu.setLeftBehindContentView(R.layout.sliding_menu);
-        this.mSlidingMenu.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                }
-            }
-        });
-        initialAddSelectorButton();
-        initialSlidingListView();
-
 
         pager.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), fragments));
         tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -79,6 +69,20 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
             }
         });
         tabs.setViewPager(pager);
+    }
+    private void initialSlideMenu() {
+        this.mSlidingMenu = new SimpleSideDrawer(this);
+        this.mSlidingMenu.setLeftBehindContentView(R.layout.sliding_menu);
+        this.mSlidingMenu.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                }
+            }
+        });
+        initialAddSelectorButton();
+        initialSlidingListView();
+        initialSlidingMenuButton();
     }
 
     private void initialAddSelectorButton() {
@@ -107,7 +111,7 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
 
     private void initialSlidingListView() {
         ListView selectorListView = (ListView) findViewById(R.id.selectorListView);
-        TextView hint = (TextView) findViewById(R.id.hint);
+        TextView hint = (TextView) findViewById(R.id.no_selector_hint);
         this.selectorAdapter = new SelectorAdapter(hint);
         this.selectorAdapter.setOnSelectorChangeListener(this);
         selectorListView.setAdapter(this.selectorAdapter);

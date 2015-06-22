@@ -21,9 +21,9 @@
         android:background="@color/grey" />
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/hint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/no_selector_hint"
         android:text="請按+以新增關注"
         android:gravity="center"
         android:textColor="@color/white"/>
