@@ -28,7 +28,11 @@ public class UserHandler extends BaseAPIHandler {
                 listener.onLoginFail();
             }
 
-
+            @Override
+            public void onError() {
+                super.onError();
+                listener.onLoginFail();
+            }
         });
     }
 

@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <permission
-        android:name="com.example.gcm.permission.C2D_MESSAGE"
+        android:name="slm2015.hey.gcm.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <uses-permission android:name="slm2015.hey.gcm.permission.C2D_MESSAGE" />
 

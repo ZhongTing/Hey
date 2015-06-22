@@ -65,7 +65,7 @@ public abstract class BaseAPIHandler {
             Toast.makeText(BaseAPIHandler.this.context, R.string.bad_request, Toast.LENGTH_SHORT).show();
         }
 
-        private void onError() {
+        public void onError() {
             Toast.makeText(BaseAPIHandler.this.context, R.string.network_error, Toast.LENGTH_SHORT).show();
         }
     }
