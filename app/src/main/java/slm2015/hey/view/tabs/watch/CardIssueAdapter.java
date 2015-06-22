@@ -75,6 +75,8 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
 
     public void setFirstCardState(CardState firstCardState) {
         this.firstCardState = firstCardState;
+        Issue issue = this.filteList.get(this.getCount() - 1);
+        issue.setLike(firstCardState == CardState.LIKE);
     }
 
     public void removeFirst() {

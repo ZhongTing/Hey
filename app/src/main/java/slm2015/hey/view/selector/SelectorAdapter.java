@@ -15,14 +15,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import slm2015.hey.R;
 import slm2015.hey.entity.Selector;
 import slm2015.hey.view.util.UiUtility;
 
 public class SelectorAdapter extends BaseAdapter {
-    private List<Selector> selectorList = new ArrayList<Selector>();
+    private ArrayList<Selector> selectorList = new ArrayList<Selector>();
     private OnSelectorChangeListener onSelectorChangeListener;
     private TextView hint;
 
@@ -117,6 +116,10 @@ public class SelectorAdapter extends BaseAdapter {
     public void addSelector(Selector selector) {
         this.selectorList.add(selector);
         notifyDataSetChanged();
+    }
+
+    public ArrayList<Selector> getSelectorList() {
+        return selectorList;
     }
 
     public void setOnSelectorChangeListener(OnSelectorChangeListener onSelectorChangeListener) {

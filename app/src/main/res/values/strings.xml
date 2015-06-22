@@ -10,5 +10,10 @@
     <string name="confirm">確認</string>
     <string name="success">成功</string>
     <string name="error">有地方出錯囉</string>
-
+    <string name="none">全部</string>
+    <string name="like">喜歡</string>
+    <string name="soso">普通</string>
+    <string name="default_menu_title">瀏覽模式：全部</string>
+    <string name="menu_like">瀏覽模式：喜歡</string>
+    <string name="menu_soso">瀏覽模式：普通</string>
 </resources>

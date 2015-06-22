@@ -39,7 +39,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     private ImageButton likeButton, dislikeButton, refreshButton, changeViewButton;
     private float initCardX, initCardY;
     private int lastIssueCount;
-    private ArrayList<Selector> selectors = new ArrayList<>();
+    private ArrayList<Selector> selectors;
 
     private WatchHistoryFragment watchListViewFragment;
 
@@ -278,7 +278,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
 //        WatchFragment.this.loadNewIssue();
     }
 
-    public void addSelector(Selector selector) {
-        this.selectors.add(selector);
+    public void setSelectors(ArrayList<Selector> selectors) {
+        this.selectors = selectors;
     }
 }

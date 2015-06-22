@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.Field;
@@ -105,6 +106,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
 
     private void initialOptionButton(View view) {
         this.optionButton = view.findViewById(R.id.optionButton);
+        final TextView title = (TextView) view.findViewById(R.id.title);
         View filterBar = view.findViewById(R.id.filter_bar);
         filterBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,10 +134,19 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-
+                        if (item.getTitle() == getActivity().getString(R.string.none)) {
+                            WatchHistoryFragment.this.adapter.setCardState(CardIssueAdapter.CardState.NONE);
+                            title.setText(getActivity().getString(R.string.default_menu_title));
+                        } else if (item.getTitle() == getActivity().getString(R.string.like)) {
+                            WatchHistoryFragment.this.adapter.setCardState(CardIssueAdapter.CardState.LIKE);
+                            title.setText(getActivity().getString(R.string.menu_like));
+                        } else if (item.getTitle() == getActivity().getString(R.string.soso)) {
+                            WatchHistoryFragment.this.adapter.setCardState(CardIssueAdapter.CardState.SOSO);
+                            title.setText(getActivity().getString(R.string.menu_soso));
+                        }
                         Toast.makeText(
                                 getActivity().getApplicationContext(),
-                                "You Clicked : " + item.getTitle(),
+                                "瀏覽模式 : " + item.getTitle(),
                                 Toast.LENGTH_SHORT
                         ).show();
                         return true;

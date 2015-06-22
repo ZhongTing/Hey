@@ -111,6 +111,9 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
         this.selectorAdapter = new SelectorAdapter(hint);
         this.selectorAdapter.setOnSelectorChangeListener(this);
         selectorListView.setAdapter(this.selectorAdapter);
+
+        WatchFragment fragment = (WatchFragment) this.fragments.get(WATCH_FRAGMENT);
+        fragment.setSelectors(this.selectorAdapter.getSelectorList());
     }
 
     @Override
@@ -123,8 +126,6 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
     }
 
     private void AddSelector(Selector selector) {
-        WatchFragment fragment = (WatchFragment) this.fragments.get(WATCH_FRAGMENT);
-        fragment.addSelector(selector);
         this.selectorAdapter.addSelector(selector);
     }
 

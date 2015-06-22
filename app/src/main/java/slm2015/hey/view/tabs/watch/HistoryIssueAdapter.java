@@ -22,6 +22,8 @@ public class HistoryIssueAdapter extends BaseAdapter {
     private IssueHandler issueHandler;
     private List<Issue> issueList;
     private List<Issue> filterList = new ArrayList<>();
+    private ArrayList<Selector> selectors;
+    private CardIssueAdapter.CardState cardState = CardIssueAdapter.CardState.NONE;
 
     public HistoryIssueAdapter(Context context, List<Issue> issueList) {
         this.issueHandler = new IssueHandler(context);
@@ -119,6 +121,7 @@ public class HistoryIssueAdapter extends BaseAdapter {
     }
 
     public void setFilter(ArrayList<Selector> selectors) {
+        this.selectors = selectors;
         this.filterList.clear();
         if (!noFilter(selectors)) {
             for (Issue issue : this.issueList) {
@@ -135,7 +138,26 @@ public class HistoryIssueAdapter extends BaseAdapter {
         } else {
             this.filterList.addAll(this.issueList);
         }
+        ArrayList<Issue> removeIssues = new ArrayList<>();
+        for (Issue issue : filterList) {
+            switch (this.cardState) {
+                case LIKE:
+                    if (!issue.isLike())
+                        removeIssues.add(issue);
+                    break;
+                case SOSO:
+                    if (issue.isLike())
+                        removeIssues.add(issue);
+                    break;
+            }
+        }
+        this.filterList.removeAll(removeIssues);
         notifyDataSetChanged();
+    }
+
+    public void setCardState(CardIssueAdapter.CardState cardState) {
+        this.cardState = cardState;
+        setFilter(this.selectors);
     }
 
     private boolean noFilter(ArrayList<Selector> selectors) {
