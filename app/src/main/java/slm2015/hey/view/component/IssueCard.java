@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -24,6 +25,7 @@ public class IssueCard extends FrameLayout {
     private TextView timestampTextView;
     private ImageView imageView;
     private ImageView likeImageView, sosoImageView;
+    private LinearLayout likeLayout;
 
     private Context context;
     private Issue issue;
@@ -61,6 +63,7 @@ public class IssueCard extends FrameLayout {
         this.timestampTextView = (TextView) this.findViewById(R.id.timestampTextView);
         this.imageView = (ImageView) this.findViewById(R.id.image);
         this.incognitoImageView = (ImageView) this.findViewById(R.id.incognito);
+        this.likeLayout = (LinearLayout) this.findViewById(R.id.like_layout);
 
         this.likeImageView = (ImageView) this.findViewById(R.id.like_image_view);
         this.sosoImageView = (ImageView) this.findViewById(R.id.soso_image_view);
@@ -91,6 +94,10 @@ public class IssueCard extends FrameLayout {
 
         this.hideLikeAndSoSo();
         this.hideIncognito();
+    }
+
+    public void hideLikeCount() {
+        this.likeLayout.setVisibility(INVISIBLE);
     }
 
     public void showIncognito() {

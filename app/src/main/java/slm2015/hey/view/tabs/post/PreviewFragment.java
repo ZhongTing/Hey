@@ -87,6 +87,7 @@ public class PreviewFragment extends Fragment {
             this.previewFrame.removeAllViews();
             IssueCard card = new IssueCard(getActivity());
             card.assignIssueCard(this.previewFrame, null, this.issue);
+            card.hideLikeCount();
             if (this.issue.isIncognito())
                 card.showIncognito();
             this.previewFrame.addView(card);
