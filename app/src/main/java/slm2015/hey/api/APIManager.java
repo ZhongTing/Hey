@@ -1,19 +1,11 @@
 package slm2015.hey.api;
 
-import org.json.JSONObject;
+import slm2015.hey.util.LocalPreference;
 
 public class APIManager {
     // static
     public static final String HEY_SERVER_BASE_URL = "http://140.124.181.195:8000";
     private static APIManager ourInstance = null;
-
-    // private
-    private String accessToken = "";
-    private JSONObject temp = null;
-
-    private APIManager() {
-        this.accessToken = "test";
-    }
 
     public static APIManager getInstance() {
         if (ourInstance == null)
@@ -26,15 +18,7 @@ public class APIManager {
         thread.start();
     }
 
-    public JSONObject getTemp() {
-        return this.temp;
-    }
-
-    public void setTemp(JSONObject temp) {
-        this.temp = temp;
-    }
-
     public String getAccessToken() {
-        return this.accessToken;
+        return LocalPreference.instance().getUserToken();
     }
 }
