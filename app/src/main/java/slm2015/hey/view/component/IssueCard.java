@@ -69,11 +69,11 @@ public class IssueCard extends FrameLayout {
     }
 
     private void init() {
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if (this.issue.getImage() != null) {
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             this.imageView.setImageBitmap(this.issue.getImage());
         }
-        if (this.issue.getPhotoURL() != null) {
+        if (this.issue.getPhotoURL() != null && this.imageView != null) {
             ImageLoader.getInstance().displayImage(this.issue.getPhotoURL(), this.imageView);
         }
 
