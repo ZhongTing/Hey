@@ -99,14 +99,4 @@ public class AddSelectorActivity extends Activity {
         super.onPause();
         backToMainActivity(true);
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }
