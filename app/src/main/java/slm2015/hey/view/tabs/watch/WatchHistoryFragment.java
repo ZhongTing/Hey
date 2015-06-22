@@ -64,7 +64,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
 
     private void init(View view) {
         this.adapter = new HistoryIssueAdapter(getActivity(), this.issueLoader.getHistoryIssues());
-        onFilterChange();
+        onSelectorChange();
         initialChangeViewButton(view);
         initialLaySwipe(view);
         initialListView(view);
@@ -254,7 +254,7 @@ public class WatchHistoryFragment extends TabPagerFragment implements SwipeRefre
 //        this.adapter.setIssueList(this.issueLoader.getHistoryIssues());
     }
 
-    public void onFilterChange() {
+    public void onSelectorChange() {
         this.adapter.setFilter(this.selectors);
     }
 

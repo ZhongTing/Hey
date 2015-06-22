@@ -130,9 +130,9 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
     }
 
     @Override
-    public void OnFilterChange() {
+    public void OnSelectorChange() {
         WatchFragment fragment = (WatchFragment) this.fragments.get(WATCH_FRAGMENT);
-        fragment.onFilterChange();
+        fragment.onSelectorChange();
     }
 
 

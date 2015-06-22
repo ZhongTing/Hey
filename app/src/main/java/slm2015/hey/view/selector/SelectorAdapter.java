@@ -78,7 +78,7 @@ public class SelectorAdapter extends BaseAdapter {
                 holder.selector.setSelected(filter);
                 selector.setFilter(filter);
                 if (SelectorAdapter.this.onSelectorChangeListener != null)
-                    SelectorAdapter.this.onSelectorChangeListener.OnFilterChange();
+                    SelectorAdapter.this.onSelectorChangeListener.OnSelectorChange();
             }
         });
         holder.delete.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +127,7 @@ public class SelectorAdapter extends BaseAdapter {
     }
 
     public interface OnSelectorChangeListener {
-        void OnFilterChange();
+        void OnSelectorChange();
     }
 
     final int SWIPE_TO_LEFT = -50;
@@ -159,6 +159,8 @@ public class SelectorAdapter extends BaseAdapter {
             public void onAnimationEnd(Animation animation) {
                 SelectorAdapter.this.selectorList.remove(selector);
                 notifyDataSetChanged();
+                if (onSelectorChangeListener != null)
+                    onSelectorChangeListener.OnSelectorChange();
             }
 
             @Override
