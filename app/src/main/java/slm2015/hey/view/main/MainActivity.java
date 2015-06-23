@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.R;
+import slm2015.hey.core.selector.SelectorHandler;
 import slm2015.hey.entity.Selector;
 import slm2015.hey.view.selector.AddSelectorActivity;
 import slm2015.hey.view.selector.SelectorAdapter;
@@ -37,12 +38,13 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
     private ImageButton addSelectorButton;
     private SimpleSideDrawer mSlidingMenu;
     private SelectorAdapter selectorAdapter;
+    private SelectorHandler selectorHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        this.selectorHandler = new SelectorHandler(this);
         this.initialTabs();
         this.initialSlideMenu();
     }
@@ -116,9 +118,16 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
     private void initialSlidingListView() {
         ListView selectorListView = (ListView) findViewById(R.id.selectorListView);
         TextView hint = (TextView) findViewById(R.id.no_selector_hint);
-        this.selectorAdapter = new SelectorAdapter(hint);
+        this.selectorAdapter = new SelectorAdapter(this, hint);
         this.selectorAdapter.setOnSelectorChangeListener(this);
         selectorListView.setAdapter(this.selectorAdapter);
+        this.selectorHandler.listSelector(new SelectorHandler.ListSelectorCallBack() {
+            @Override
+            public void onReceiveFilterList(List<Selector> selectorList) {
+                for (Selector selector : selectorList)
+                    MainActivity.this.selectorAdapter.addSelector(selector);
+            }
+        });
 
         WatchFragment fragment = (WatchFragment) this.fragments.get(WATCH_FRAGMENT);
         fragment.setSelectors(this.selectorAdapter.getSelectorList());

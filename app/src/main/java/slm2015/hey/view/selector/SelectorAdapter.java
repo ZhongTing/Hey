@@ -2,6 +2,7 @@ package slm2015.hey.view.selector;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import slm2015.hey.R;
+import slm2015.hey.core.selector.SelectorHandler;
 import slm2015.hey.entity.Selector;
 import slm2015.hey.view.util.UiUtility;
 
@@ -24,9 +26,11 @@ public class SelectorAdapter extends BaseAdapter {
     private ArrayList<Selector> selectorList = new ArrayList<Selector>();
     private OnSelectorChangeListener onSelectorChangeListener;
     private TextView hint;
+    private SelectorHandler selectorHandler;
 
-    public SelectorAdapter(TextView view) {
+    public SelectorAdapter(Context context, TextView view) {
         this.hint = view;
+        this.selectorHandler = new SelectorHandler(context);
     }
 
     @Override
@@ -66,9 +70,24 @@ public class SelectorAdapter extends BaseAdapter {
         holder.notify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean notify = !holder.notify.isSelected();
-                holder.notify.setSelected(notify);
-                selector.setNotify(notify);
+                final boolean notify = !holder.notify.isSelected();
+                if (notify) {
+                    SelectorAdapter.this.selectorHandler.enableNotification(selector.getId(), new SelectorHandler.EnableNotificationCallBack() {
+                        @Override
+                        public void onEnableSuccess() {
+                            holder.notify.setSelected(notify);
+                            selector.setNotify(notify);
+                        }
+                    });
+                } else {
+                    SelectorAdapter.this.selectorHandler.disableNotification(selector.getId(), new SelectorHandler.DisableNotificationCallBack() {
+                        @Override
+                        public void onDisableSuccess() {
+                            holder.notify.setSelected(notify);
+                            selector.setNotify(notify);
+                        }
+                    });
+                }
             }
         });
         holder.selector.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +164,7 @@ public class SelectorAdapter extends BaseAdapter {
         final int fromXDelta = UiUtility.dpiToPixel(0, Resources.getSystem());
         final int toXDelta = UiUtility.dpiToPixel(-200, Resources.getSystem());
         final float fromYDelta = 0;
-        Animation animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, fromYDelta);
+        final Animation animation = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, fromYDelta);
         animation.setDuration(500);
         animation.setRepeatCount(0);
 //        animation.setFillAfter(true);
@@ -168,7 +187,12 @@ public class SelectorAdapter extends BaseAdapter {
 
             }
         });
-        holder.rowview.startAnimation(animation);
+        this.selectorHandler.removeSelector(selector.getId(), new SelectorHandler.RemoveSelectorCallBack() {
+            @Override
+            public void onRemoeveSuccess() {
+                holder.rowview.startAnimation(animation);
+            }
+        });
     }
 
     @Override
