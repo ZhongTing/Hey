@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import slm2015.hey.api.issue.AddSelectorAPI;
 import slm2015.hey.api.issue.FetchIssueAPI;
 import slm2015.hey.api.issue.FetchLikeIssueAPI;
 import slm2015.hey.api.issue.LikeAPI;
@@ -65,7 +66,7 @@ public class IssueHandler extends BaseAPIHandler {
         });
     }
 
-    public void fetchLike(final FetchIssueLikeHandlerCallback callback){
+    public void fetchLike(final FetchIssueLikeHandlerCallback callback) {
         this.runAPI(new FetchLikeIssueAPI(), new Callback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
@@ -73,7 +74,7 @@ public class IssueHandler extends BaseAPIHandler {
                 callback.onReceiveLikeIssues(getLikeIssueId(issueJSONArray));
             }
 
-            private List<Integer> getLikeIssueId(JSONArray array) throws JSONException{
+            private List<Integer> getLikeIssueId(JSONArray array) throws JSONException {
                 List<Integer> list = new ArrayList<Integer>();
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject jsonObject = array.getJSONObject(i);
@@ -97,6 +98,15 @@ public class IssueHandler extends BaseAPIHandler {
         this.runAPI(new RegretLikeAPI(issueId));
     }
 
+    public void addSelector(final String selector, final AddSelectorCallBack callBack) {
+        this.runAPI(new AddSelectorAPI(selector), new Callback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                callBack.onReceiveSelectorId(jsonObject.getInt("id"));
+            }
+        });
+    }
+
     public interface FetchIssueHandlerCallback {
         void onReceiveIssues(List<Issue> issues);
     }
@@ -107,5 +117,9 @@ public class IssueHandler extends BaseAPIHandler {
 
     public interface RaiseIssueHandlerCallback {
         void onRaisedIssue();
+    }
+
+    public interface AddSelectorCallBack {
+        void onReceiveSelectorId(int id);
     }
 }

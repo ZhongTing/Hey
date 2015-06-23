@@ -4,6 +4,7 @@ public class Selector {
     private boolean notify = false;
     private boolean filter = false;
     private String content = "";
+    private int id;
 
     public Selector(String content) {
         setContent(content);
@@ -31,5 +32,13 @@ public class Selector {
 
     public void setNotify(boolean notify) {
         this.notify = notify;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }

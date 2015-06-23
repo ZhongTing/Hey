@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.astuetz.PagerSlidingTabStrip;
 import com.navdrawer.SimpleSideDrawer;
 
+import junit.framework.Assert;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
         this.initialTabs();
         this.initialSlideMenu();
     }
+
     private void initialTabs() {
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
@@ -70,6 +73,7 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
         });
         tabs.setViewPager(pager);
     }
+
     private void initialSlideMenu() {
         this.mSlidingMenu = new SimpleSideDrawer(this);
         this.mSlidingMenu.setLeftBehindContentView(R.layout.sliding_menu);
@@ -124,8 +128,12 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_SELECTOR) {
-            if (resultCode == Activity.RESULT_OK)
-                AddSelector(new Selector(data.getStringExtra("selector")));
+            if (resultCode == Activity.RESULT_OK) {
+                Selector selector = new Selector(data.getStringExtra("selector"));
+                selector.setId(data.getIntExtra("id", -1));
+                Assert.assertFalse(selector.getId() == -1);
+                AddSelector(selector);
+            }
         }
     }
 
