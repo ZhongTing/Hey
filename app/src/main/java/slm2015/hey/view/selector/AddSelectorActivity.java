@@ -11,31 +11,38 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import slm2015.hey.R;
+import slm2015.hey.core.issue.IssueHandler;
 import slm2015.hey.view.util.UiUtility;
 
 public class AddSelectorActivity extends Activity {
-    private ImageButton confirm;
+    private ImageButton confirmButton;
     private EditText add_selector_edittext;
     private ImageButton back;
+    private IssueHandler issueHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_selector_activity);
-
+        this.issueHandler = new IssueHandler(this);
         initialConfirmButton();
         initialAddSelectorEditText();
         initialBackButton();
     }
 
     private void initialConfirmButton() {
-        this.confirm = (ImageButton) findViewById(R.id.confirm);
-        this.confirm.setEnabled(false);
-        this.confirm.setOnClickListener(new View.OnClickListener() {
+        this.confirmButton = (ImageButton) findViewById(R.id.confirm);
+        this.confirmButton.setEnabled(false);
+        this.confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean confirm = false;
-                backToMainActivity(confirm);
+                final boolean confirm = false;
+                AddSelectorActivity.this.issueHandler.addSelector(add_selector_edittext.getText().toString(), new IssueHandler.AddSelectorCallBack() {
+                    @Override
+                    public void onReceiveSelectorId(int id) {
+                        backToMainActivity(confirm, id);
+                    }
+                });
             }
         });
     }
@@ -52,9 +59,9 @@ public class AddSelectorActivity extends Activity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String input = add_selector_edittext.getText().toString();
                 if (input == null || input.equals((String) ""))
-                    confirm.setEnabled(false);
+                    confirmButton.setEnabled(false);
                 else
-                    confirm.setEnabled(true);
+                    confirmButton.setEnabled(true);
             }
 
             @Override
@@ -76,13 +83,14 @@ public class AddSelectorActivity extends Activity {
         });
     }
 
-    private void backToMainActivity(boolean backPressed) {
+    private void backToMainActivity(boolean backPressed, int id) {
         Intent intent = new Intent();
         String addSelector = this.add_selector_edittext.getText().toString();
         if (backPressed || addSelector.isEmpty())
             setResult(Activity.RESULT_CANCELED);
         else {
             intent.putExtra("selector", addSelector);
+            intent.putExtra("id", id);
             setResult(Activity.RESULT_OK, intent);
         }
         finish();
@@ -91,12 +99,14 @@ public class AddSelectorActivity extends Activity {
     @Override
     public void onBackPressed() {
         boolean backPressed = true;
-        backToMainActivity(backPressed);
+        // -1 is not important
+        backToMainActivity(backPressed, -1);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        backToMainActivity(true);
+        // -1 is not important
+        backToMainActivity(true, -1);
     }
 }
