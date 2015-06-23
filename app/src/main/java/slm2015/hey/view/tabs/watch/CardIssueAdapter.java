@@ -80,7 +80,10 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
         if (getCount() > 0) {
             this.firstCardState = firstCardState;
             Issue issue = this.filteList.get(this.getCount() - 1);
-            issue.setLike(firstCardState == CardState.LIKE);
+            if (firstCardState == CardState.LIKE)
+                issue.setLike(true);
+            else if (firstCardState == CardState.SOSO)
+                issue.setLike(false);
             if (firstCardState == CardState.LIKE)
                 this.issueHandler.like(issue.getId());
         }

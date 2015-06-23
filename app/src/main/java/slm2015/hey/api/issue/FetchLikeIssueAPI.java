@@ -9,6 +9,6 @@ public class FetchLikeIssueAPI extends GetBase{
 
         this.setHeader("Authorization", APIManager.getInstance().getAccessToken());
 
-        this.TAG = "FetchIssueAPI";
+        this.TAG = "FetchLikeIssueAPI";
     }
 }

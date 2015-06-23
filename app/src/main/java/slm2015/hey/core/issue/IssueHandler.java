@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.api.issue.FetchIssueAPI;
+import slm2015.hey.api.issue.FetchLikeIssueAPI;
 import slm2015.hey.api.issue.LikeAPI;
 import slm2015.hey.api.issue.RaiseIssueAPI;
 import slm2015.hey.api.issue.RegretLikeAPI;
@@ -64,6 +65,25 @@ public class IssueHandler extends BaseAPIHandler {
         });
     }
 
+    public void fetchLike(final FetchIssueLikeHandlerCallback callback){
+        this.runAPI(new FetchLikeIssueAPI(), new Callback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                JSONArray issueJSONArray = jsonObject.getJSONArray("issues");
+                callback.onReceiveLikeIssues(getLikeIssueId(issueJSONArray));
+            }
+
+            private List<Integer> getLikeIssueId(JSONArray array) throws JSONException{
+                List<Integer> list = new ArrayList<Integer>();
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject jsonObject = array.getJSONObject(i);
+                    list.add(jsonObject.getInt("id"));
+                }
+                return list;
+            }
+        });
+    }
+
     public void like(int issueId) {
         this.runAPI(new LikeAPI(issueId), new Callback() {
             @Override
@@ -79,6 +99,10 @@ public class IssueHandler extends BaseAPIHandler {
 
     public interface FetchIssueHandlerCallback {
         void onReceiveIssues(List<Issue> issues);
+    }
+
+    public interface FetchIssueLikeHandlerCallback {
+        void onReceiveLikeIssues(List<Integer> likeIssuesId);
     }
 
     public interface RaiseIssueHandlerCallback {

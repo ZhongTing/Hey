@@ -36,6 +36,12 @@ public class IssueLoader extends BaseLoader {
                 notifyLoaderChanged();
             }
         });
+//        this.issueHandler.fetchLike(new IssueHandler.FetchIssueLikeHandlerCallback() {
+//            @Override
+//            public void onReceiveLikeIssues(List<Integer> likeIssuesId) {
+//                boolean test = false;
+//            }
+//        });
     }
 
     public ArrayList<Issue> getIssues() {
