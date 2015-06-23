@@ -26,6 +26,7 @@ public class IssueCard extends FrameLayout {
     private ImageView imageView;
     private ImageView likeImageView, sosoImageView;
     private LinearLayout likeLayout;
+    private TextView likeCountTextView;
 
     private Context context;
     private Issue issue;
@@ -64,7 +65,7 @@ public class IssueCard extends FrameLayout {
         this.imageView = (ImageView) this.findViewById(R.id.image);
         this.incognitoImageView = (ImageView) this.findViewById(R.id.incognito);
         this.likeLayout = (LinearLayout) this.findViewById(R.id.like_layout);
-
+        this.likeCountTextView = (TextView) this.findViewById(R.id.like_count);
         this.likeImageView = (ImageView) this.findViewById(R.id.like_image_view);
         this.sosoImageView = (ImageView) this.findViewById(R.id.soso_image_view);
 
@@ -91,6 +92,9 @@ public class IssueCard extends FrameLayout {
 
         this.timestampTextView.setText(this.issue.getTimestamp());
         this.timestampTextView.postInvalidate();
+
+        this.likeCountTextView.setText(String.valueOf(this.issue.getLikeCount()));
+        this.likeCountTextView.postInvalidate();
 
         this.hideLikeAndSoSo();
         this.hideIncognito();

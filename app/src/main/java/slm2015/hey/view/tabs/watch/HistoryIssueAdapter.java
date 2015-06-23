@@ -70,6 +70,7 @@ public class HistoryIssueAdapter extends BaseAdapter {
         holder.like = (ImageButton) convertView.findViewById(R.id.like);
         holder.locationImg = (ImageView) convertView.findViewById(R.id.location);
         holder.time = (TextView) convertView.findViewById(R.id.timestamptextview);
+        holder.likeCount = (TextView) convertView.findViewById(R.id.like_count);
 
         if (upsideDownPosition < this.filterList.size()) {
             Issue issue = this.filterList.get(upsideDownPosition);
@@ -88,6 +89,7 @@ public class HistoryIssueAdapter extends BaseAdapter {
             holder.subject.setText(issue.getSubject());
             holder.description.setText(issue.getDescription());
             holder.time.setText(issue.getTimestamp());
+            holder.likeCount.setText(String.valueOf(issue.getLikeCount()));
         }
         final IssueHolder issueHolder = holder;
         holder.like.setOnClickListener(new View.OnClickListener() {
@@ -196,6 +198,7 @@ public class HistoryIssueAdapter extends BaseAdapter {
         ImageButton like;
         ImageView locationImg;
         TextView time;
+        TextView likeCount;
 
         public ViewGroup getFront() {
             return this.front;

@@ -16,6 +16,7 @@ public class Issue {
     private Date timestamp;
     private boolean incognito = false;
     private String photoURL = null;
+    private int likeCount = 0;
 
     public Issue() {
     }
@@ -135,5 +136,13 @@ public class Issue {
 
     public boolean hasImage() {
         return this.getImage() != null || this.getPhotoURL() != null;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
     }
 }

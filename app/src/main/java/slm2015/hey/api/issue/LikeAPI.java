@@ -9,7 +9,7 @@ public class LikeAPI extends PostBase {
 
         this.setHeader("Authorization", APIManager.getInstance().getAccessToken());
 
-        this.setParam("issueId", issueId + "");
+        this.setParam("issueId", String.valueOf(issueId));
 
         this.TAG = "LikeAPI";
     }

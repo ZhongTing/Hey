@@ -48,6 +48,8 @@ public class IssueHandler extends BaseAPIHandler {
                     issue.setSubject(jsonObject.getString("subject"));
                     issue.setDescription(jsonObject.getString("description"));
                     issue.setTimestamp(Converter.convertToDate(jsonObject.getString("timestamp")));
+                    if (jsonObject.has("like"))
+                        issue.setLikeCount(jsonObject.getInt("like"));
                     if (jsonObject.has("place"))
                         issue.setPlace(jsonObject.getString("place"));
 
@@ -63,7 +65,12 @@ public class IssueHandler extends BaseAPIHandler {
     }
 
     public void like(int issueId) {
-        this.runAPI(new LikeAPI(issueId));
+        this.runAPI(new LikeAPI(issueId), new Callback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                JSONArray issueJSONArray = jsonObject.getJSONArray("like_issue");
+            }
+        });
     }
 
     public void regretLike(int issueId) {
