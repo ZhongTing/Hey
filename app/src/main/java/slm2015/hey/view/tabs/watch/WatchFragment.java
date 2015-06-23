@@ -178,6 +178,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         @Override
         public void onRightCardExit(Object dataObject) {
             // Toast.makeText(getActivity(), "Right!", Toast.LENGTH_SHORT).show();
+            issueLoader.likeIssue(cardIssueAdapter.getFilterListFirstIssue());
             cardIssueAdapter.setFirstCardState(CardState.NONE);
         }
 

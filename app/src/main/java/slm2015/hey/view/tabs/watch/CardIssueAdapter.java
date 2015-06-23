@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import slm2015.hey.core.issue.IssueHandler;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.entity.Selector;
 import slm2015.hey.view.component.IssueCard;
@@ -19,8 +18,7 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
 
     private Context context;
     private List<Issue> list;
-    private List<Issue> filteList = new ArrayList<>();
-    private IssueHandler issueHandler;
+    private List<Issue> filterList = new ArrayList<>();
 
     private ViewPager viewPager = null;
 
@@ -29,21 +27,20 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
 
     public CardIssueAdapter(Context context, int resource, ViewPager viewPager, List<Issue> list) {
         super(context, resource, list);
-        this.issueHandler = new IssueHandler(context);
         this.context = context;
         this.list = list;
-        this.filteList.addAll(list);
+        this.filterList.addAll(list);
         this.viewPager = viewPager;
     }
 
     @Override
     public int getCount() {
-        return this.filteList.size();
+        return this.filterList.size();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Issue issue = this.filteList.get(this.getCount() - position - 1);
+        Issue issue = this.filterList.get(this.getCount() - position - 1);
         IssueCard card = (IssueCard) convertView;
 
         if (card == null) {
@@ -79,27 +76,29 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     public void setFirstCardState(CardState firstCardState) {
         if (getCount() > 0) {
             this.firstCardState = firstCardState;
-            Issue issue = this.filteList.get(this.getCount() - 1);
+            Issue issue = this.getFilterListFirstIssue();
             if (firstCardState == CardState.LIKE)
                 issue.setLike(true);
             else if (firstCardState == CardState.SOSO)
                 issue.setLike(false);
-            if (firstCardState == CardState.LIKE)
-                this.issueHandler.like(issue.getId());
         }
+    }
+
+    public Issue getFilterListFirstIssue(){
+        return this.filterList.get(this.getCount() - 1);
     }
 
     public void removeFirst() {
         if (getCount() > 0) {
-            Issue issue = this.filteList.get(this.getCount() - 1);
-            this.filteList.remove(issue);
+            Issue issue = this.getFilterListFirstIssue();
+            this.filterList.remove(issue);
             this.list.remove(issue);
             this.notifyDataSetChanged();
         }
     }
 
     public void setFilter(ArrayList<Selector> selectors) {
-        this.filteList.clear();
+        this.filterList.clear();
         if (!noFilter(selectors)) {
             for (Issue issue : this.list) {
                 boolean addToList = false;
@@ -108,13 +107,13 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
                     boolean contains = (issue.getSubject().toLowerCase().contains(content.toLowerCase()) || issue.getDescription().toLowerCase().contains(content.toLowerCase()));
                     addToList = selector.isFilter() && contains;
                     if (addToList) {
-                        this.filteList.add(issue);
+                        this.filterList.add(issue);
                         break;
                     }
                 }
             }
         } else
-            this.filteList.addAll(this.list);
+            this.filterList.addAll(this.list);
         notifyDataSetChanged();
     }
 
@@ -128,8 +127,8 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
 
     public void setList() {
 //        this.list = list;
-        this.filteList.clear();
-        this.filteList.addAll(this.list);
+        this.filterList.clear();
+        this.filterList.addAll(this.list);
         notifyDataSetChanged();
     }
 
