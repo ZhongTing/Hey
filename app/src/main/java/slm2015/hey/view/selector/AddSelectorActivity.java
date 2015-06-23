@@ -11,20 +11,20 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import slm2015.hey.R;
-import slm2015.hey.core.issue.IssueHandler;
+import slm2015.hey.core.selector.SelectorHandler;
 import slm2015.hey.view.util.UiUtility;
 
 public class AddSelectorActivity extends Activity {
     private ImageButton confirmButton;
     private EditText add_selector_edittext;
     private ImageButton back;
-    private IssueHandler issueHandler;
+    private SelectorHandler selectorHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_selector_activity);
-        this.issueHandler = new IssueHandler(this);
+        this.selectorHandler = new SelectorHandler(this);
         initialConfirmButton();
         initialAddSelectorEditText();
         initialBackButton();
@@ -37,7 +37,7 @@ public class AddSelectorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 final boolean confirm = false;
-                AddSelectorActivity.this.issueHandler.addSelector(add_selector_edittext.getText().toString(), new IssueHandler.AddSelectorCallBack() {
+                AddSelectorActivity.this.selectorHandler.addSelector(add_selector_edittext.getText().toString(), new SelectorHandler.AddSelectorCallBack() {
                     @Override
                     public void onReceiveSelectorId(int id) {
                         backToMainActivity(confirm, id);

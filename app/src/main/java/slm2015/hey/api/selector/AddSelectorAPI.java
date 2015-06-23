@@ -1,4 +1,4 @@
-package slm2015.hey.api.issue;
+package slm2015.hey.api.selector;
 
 import slm2015.hey.api.APIManager;
 import slm2015.hey.api.PostBase;
