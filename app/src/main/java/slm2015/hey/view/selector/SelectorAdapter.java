@@ -70,9 +70,24 @@ public class SelectorAdapter extends BaseAdapter {
         holder.notify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean notify = !holder.notify.isSelected();
-                holder.notify.setSelected(notify);
-                selector.setNotify(notify);
+                final boolean notify = !holder.notify.isSelected();
+                if (notify) {
+                    SelectorAdapter.this.selectorHandler.enableNotification(selector.getId(), new SelectorHandler.EnableNotificationCallBack() {
+                        @Override
+                        public void onEnableSuccess() {
+                            holder.notify.setSelected(notify);
+                            selector.setNotify(notify);
+                        }
+                    });
+                } else {
+                    SelectorAdapter.this.selectorHandler.disableNotification(selector.getId(), new SelectorHandler.DisableNotificationCallBack() {
+                        @Override
+                        public void onDisableSuccess() {
+                            holder.notify.setSelected(notify);
+                            selector.setNotify(notify);
+                        }
+                    });
+                }
             }
         });
         holder.selector.setOnClickListener(new View.OnClickListener() {

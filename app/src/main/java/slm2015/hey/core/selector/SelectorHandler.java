@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.api.selector.AddSelectorAPI;
+import slm2015.hey.api.selector.EnableNotificationAPI;
 import slm2015.hey.api.selector.ListSelectorAPI;
 import slm2015.hey.api.selector.RemoveSelectorAPI;
 import slm2015.hey.core.BaseAPIHandler;
@@ -57,6 +58,32 @@ public class SelectorHandler extends BaseAPIHandler {
                 callBack.onRemoeveSuccess();
             }
         });
+    }
+
+    public void enableNotification(int selectorId, final EnableNotificationCallBack callBack){
+        this.runAPI(new EnableNotificationAPI(selectorId), new Callback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                callBack.onEnableSuccess();
+            }
+        });
+    }
+
+    public void disableNotification(int selectorId, final DisableNotificationCallBack callBack){
+        this.runAPI(new EnableNotificationAPI(selectorId), new Callback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                callBack.onDisableSuccess();
+            }
+        });
+    }
+
+    public interface EnableNotificationCallBack {
+        void onEnableSuccess();
+    }
+
+    public interface DisableNotificationCallBack {
+        void onDisableSuccess();
     }
 
     public interface RemoveSelectorCallBack {
