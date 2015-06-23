@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:gpb="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,13 +10,13 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="@dimen/header_height"
-        app:pstsUnderlineColor="@color/wizard_step_current"
-        app:pstsUnderlineHeight="0dp"
-        app:pstsIndicatorHeight="4dp"
-        app:pstsIndicatorColor="@color/sky_blue"
-        app:pstsTabPaddingLeftRight="5dp"
+        android:background="@color/grey"
         app:pstsDividerColor="@android:color/transparent"
-        android:background="@color/grey" />
+        app:pstsIndicatorColor="@color/sky_blue"
+        app:pstsIndicatorHeight="4dp"
+        app:pstsTabPaddingLeftRight="5dp"
+        app:pstsUnderlineColor="@color/wizard_step_current"
+        app:pstsUnderlineHeight="0dp" />
 
 
     <ImageButton
@@ -33,5 +34,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tabs"
         tools:context=".MainActivity" />
+
+    <com.jpardogo.android.googleprogressbar.library.GoogleProgressBar
+        android:id="@+id/google_progress"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        gpb:type="folding_circles" />
+
 
 </RelativeLayout>

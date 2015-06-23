@@ -27,6 +27,7 @@ import slm2015.hey.entity.Issue;
 import slm2015.hey.util.LocalPreference;
 import slm2015.hey.view.component.IssueCard;
 import slm2015.hey.view.component.Wizard;
+import slm2015.hey.view.util.UiUtility;
 
 public class PreviewFragment extends Fragment {
     private static final int PICK_IMAGE = 0;
@@ -144,7 +145,7 @@ public class PreviewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 IssueHandler issueHandler = new IssueHandler(PreviewFragment.this.getActivity());
-
+                UiUtility.showLoading(getActivity());
                 issueHandler.raise(PreviewFragment.this.issue, PreviewFragment.this.issue.isIncognito(), new IssueHandler.RaiseIssueHandlerCallback() {
                     @Override
                     public void onRaisedIssue() {

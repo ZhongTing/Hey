@@ -37,6 +37,7 @@ public class AddSelectorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 final boolean confirm = false;
+                UiUtility.showLoading(AddSelectorActivity.this);
                 AddSelectorActivity.this.issueHandler.addSelector(add_selector_edittext.getText().toString(), new IssueHandler.AddSelectorCallBack() {
                     @Override
                     public void onReceiveSelectorId(int id) {

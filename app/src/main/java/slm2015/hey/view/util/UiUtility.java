@@ -11,6 +11,10 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.inputmethod.InputMethodManager;
 
+import com.jpardogo.android.googleprogressbar.library.GoogleProgressBar;
+
+import slm2015.hey.R;
+
 public class UiUtility {
 
     public static int dpiToPixel(int dp, Resources resources) {
@@ -57,5 +61,22 @@ public class UiUtility {
         return (c.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+    
+    public static void showLoading(Activity activity) {
+        View progressBar = activity.findViewById(R.id.google_progress);
+        if (progressBar!=null) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void stopLoading(Context context) {
+        Activity activity = (context instanceof Activity ? (Activity)context : null);
+        if (activity!= null) {
+            View progressBar =  activity.findViewById(R.id.google_progress);
+            if (progressBar!=null) {
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 }
