@@ -118,7 +118,7 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
     private void initialSlidingListView() {
         ListView selectorListView = (ListView) findViewById(R.id.selectorListView);
         TextView hint = (TextView) findViewById(R.id.no_selector_hint);
-        this.selectorAdapter = new SelectorAdapter(hint);
+        this.selectorAdapter = new SelectorAdapter(this, hint);
         this.selectorAdapter.setOnSelectorChangeListener(this);
         selectorListView.setAdapter(this.selectorAdapter);
         this.selectorHandler.listSelector(new SelectorHandler.ListSelectorCallBack() {

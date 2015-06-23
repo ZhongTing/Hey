@@ -11,6 +11,7 @@ import java.util.List;
 
 import slm2015.hey.api.selector.AddSelectorAPI;
 import slm2015.hey.api.selector.ListSelectorAPI;
+import slm2015.hey.api.selector.RemoveSelectorAPI;
 import slm2015.hey.core.BaseAPIHandler;
 import slm2015.hey.entity.Selector;
 
@@ -47,6 +48,19 @@ public class SelectorHandler extends BaseAPIHandler {
                 return list;
             }
         });
+    }
+
+    public void removeSelector(int selectorId, final RemoveSelectorCallBack callBack){
+        this.runAPI(new RemoveSelectorAPI(selectorId), new Callback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                callBack.onRemoeveSuccess();
+            }
+        });
+    }
+
+    public interface RemoveSelectorCallBack {
+        void onRemoeveSuccess();
     }
 
     public interface AddSelectorCallBack {
