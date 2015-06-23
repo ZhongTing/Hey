@@ -44,6 +44,10 @@ public class IssueLoader extends BaseLoader {
 //        });
     }
 
+    public void likeIssue(Issue issue){
+        this.issueHandler.like(issue.getId());
+    }
+
     public ArrayList<Issue> getIssues() {
         return this.issues;
     }
