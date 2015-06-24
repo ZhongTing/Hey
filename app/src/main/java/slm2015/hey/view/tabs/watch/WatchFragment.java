@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -40,6 +41,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     private float initCardX, initCardY;
     private int lastIssueCount;
     private ArrayList<Selector> selectors;
+    private TextView latestText, popularText;
 
     private WatchHistoryFragment watchListViewFragment;
 
@@ -89,6 +91,32 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         initialChangeViewButton(view);
 
         initFlingAdapterContainer(view);
+        initialLatest_text(view);
+        initialPopularText(view);
+    }
+
+    private void initialLatest_text(View view){
+        this.latestText = (TextView) view.findViewById(R.id.latest_text);
+        this.latestText.setSelected(true);
+        this.latestText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WatchFragment.this.latestText.setSelected(true);
+                WatchFragment.this.popularText.setSelected(false);
+            }
+        });
+    }
+
+    private void initialPopularText(View view){
+        this.popularText = (TextView) view.findViewById(R.id.popular_text);
+        this.popularText.setSelected(false);
+        this.popularText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WatchFragment.this.latestText.setSelected(false);
+                WatchFragment.this.popularText.setSelected(true);
+            }
+        });
     }
 
     private void initFlingAdapterContainer(View view) {
