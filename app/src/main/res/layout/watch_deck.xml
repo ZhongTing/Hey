@@ -55,7 +55,6 @@
                 android:gravity="center"
                 android:background="@drawable/popular_button_selector"
                 android:layout_gravity="center"
-                android:enabled="false"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </LinearLayout>
