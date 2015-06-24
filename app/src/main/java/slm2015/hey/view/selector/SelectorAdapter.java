@@ -64,6 +64,7 @@ public class SelectorAdapter extends BaseAdapter {
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
+            holder.foreground.setX(0);
         }
 
         final Selector selector = this.selectorList.get(position);
