@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -22,6 +23,7 @@ import java.util.List;
 import slm2015.hey.R;
 import slm2015.hey.core.selector.SelectorHandler;
 import slm2015.hey.entity.Selector;
+import slm2015.hey.util.LocalPreference;
 import slm2015.hey.view.selector.AddSelectorActivity;
 import slm2015.hey.view.selector.SelectorAdapter;
 import slm2015.hey.view.tabs.TabPagerFragment;
@@ -39,6 +41,7 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
     private SimpleSideDrawer mSlidingMenu;
     private SelectorAdapter selectorAdapter;
     private SelectorHandler selectorHandler;
+    private WatchFragment watchFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,18 @@ public class MainActivity extends FragmentActivity implements SelectorAdapter.On
         this.selectorHandler = new SelectorHandler(this);
         this.initialTabs();
         this.initialSlideMenu();
+        String id = "";
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras != null) {
+                id = extras.getString("id");
+            }
+        } else {
+            id = (String) savedInstanceState.getSerializable("STRING_I_NEED");
+        }
+        if (id != "") {
+            LocalPreference.instance().setMoveToTopIssueId(id);
+        }
     }
 
     private void initialTabs() {

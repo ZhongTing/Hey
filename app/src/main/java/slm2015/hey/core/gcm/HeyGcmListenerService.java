@@ -31,9 +31,10 @@ public class HeyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
+        String id = data.getString("issueId");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
-
+        Log.d(TAG, "Id: "+ id);
         /**
          * Production applications would usually process the message here.
          * Eg: - Syncing with server.
@@ -45,7 +46,7 @@ public class HeyGcmListenerService extends GcmListenerService {
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
-        sendNotification(message);
+        sendNotification(id, message);
     }
     // [END receive_message]
 
@@ -54,8 +55,9 @@ public class HeyGcmListenerService extends GcmListenerService {
      *
      * @param message GCM message received.
      */
-    private void sendNotification(String message) {
+    private void sendNotification(String id, String message) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("id", id);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
