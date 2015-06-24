@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import slm2015.hey.R;
 import slm2015.hey.api.APIBase;
 import slm2015.hey.api.APIManager;
+import slm2015.hey.view.util.UiUtility;
 
 public abstract class BaseAPIHandler {
     private Context context;
@@ -31,6 +32,7 @@ public abstract class BaseAPIHandler {
         api.setSuccessCallback(new Runnable() {
             @Override
             public void run() {
+                UiUtility.stopLoading(context);
                 try {
                     JSONObject jsonObject = new JSONObject(api.getResponse());
                     callback.onSuccess(jsonObject);
@@ -44,6 +46,7 @@ public abstract class BaseAPIHandler {
         api.setFailCallback(new Runnable() {
             @Override
             public void run() {
+                UiUtility.stopLoading(context);
                 callback.onFail(api.getResponse());
             }
         });
@@ -51,6 +54,7 @@ public abstract class BaseAPIHandler {
         api.setErrorCallback(new Runnable() {
             @Override
             public void run() {
+                UiUtility.stopLoading(context);
                 callback.onError();
             }
         });
