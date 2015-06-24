@@ -14,19 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import slm2015.hey.R;
-import slm2015.hey.core.issue.IssueHandler;
+import slm2015.hey.core.issue.IssueLoader;
 import slm2015.hey.entity.Issue;
 import slm2015.hey.entity.Selector;
 
 public class HistoryIssueAdapter extends BaseAdapter {
-    private IssueHandler issueHandler;
+    private IssueLoader issueLoader;
     private List<Issue> issueList;
     private List<Issue> filterList = new ArrayList<>();
     private ArrayList<Selector> selectors;
     private CardIssueAdapter.CardState cardState = CardIssueAdapter.CardState.NONE;
 
-    public HistoryIssueAdapter(Context context, List<Issue> issueList) {
-        this.issueHandler = new IssueHandler(context);
+    public HistoryIssueAdapter(Context context, List<Issue> issueList, IssueLoader issueLoader) {
+        this.issueLoader = issueLoader;
         setIssueList(issueList);
     }
 
@@ -116,9 +116,9 @@ public class HistoryIssueAdapter extends BaseAdapter {
 
     private void syncIssueLikeToServer(Issue issue) {
         if (issue.isLike()) {
-            this.issueHandler.like(issue.getId());
+            this.issueLoader.likeIssue(issue);
         } else {
-            this.issueHandler.regretLike(issue.getId());
+            this.issueLoader.regretLikeIssue(issue);
         }
     }
 

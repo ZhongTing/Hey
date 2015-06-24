@@ -46,7 +46,23 @@ public class IssueLoader extends BaseLoader {
     }
 
     public void likeIssue(Issue issue) {
-        this.issueHandler.like(issue.getId());
+        this.issueHandler.like(issue.getId(), new IssueHandler.LikeIssueHandlerCallback() {
+            @Override
+            public void onReceiveLikeIssue(List<int[]> likeIssueId) {
+                modifyLikeCount(likeIssueId);
+                notifyLoaderChanged();
+            }
+        });
+    }
+
+    public void regretLikeIssue(Issue issue) {
+        this.issueHandler.regretLike(issue.getId(), new IssueHandler.RegretLikeIssueHandlerCallback() {
+            @Override
+            public void onReceiveRegretLikeIssue(List<int[]> regretLikeIssueId) {
+                modifyLikeCount(regretLikeIssueId);
+                notifyLoaderChanged();
+            }
+        });
     }
 
     public ArrayList<Issue> getIssues() {
