@@ -145,14 +145,13 @@ public class PreviewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 IssueHandler issueHandler = new IssueHandler(PreviewFragment.this.getActivity());
-                UiUtility.showLoading(getActivity());
                 issueHandler.raise(PreviewFragment.this.issue, PreviewFragment.this.issue.isIncognito(), new IssueHandler.RaiseIssueHandlerCallback() {
                     @Override
                     public void onRaisedIssue() {
                         PreviewFragment.this.previewFinishListener.OnPreviewFinish();
                         Toast.makeText(PreviewFragment.this.getActivity(), "發送成功！", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }, true);
             }
         });
     }

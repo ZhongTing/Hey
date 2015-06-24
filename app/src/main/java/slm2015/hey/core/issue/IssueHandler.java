@@ -23,13 +23,13 @@ public class IssueHandler extends BaseAPIHandler {
         super(context);
     }
 
-    public void raise(Issue issue, boolean privacy, final RaiseIssueHandlerCallback callback) {
+    public void raise(Issue issue, boolean privacy, final RaiseIssueHandlerCallback callback, boolean showLoading) {
         this.runAPI(new RaiseIssueAPI(issue, privacy), new Callback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
                 callback.onRaisedIssue();
             }
-        });
+        }, showLoading);
     }
 
     public void fetch(Integer lastIssueId, final FetchIssueHandlerCallback callback) {

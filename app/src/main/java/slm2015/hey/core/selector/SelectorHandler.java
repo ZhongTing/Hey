@@ -21,13 +21,13 @@ public class SelectorHandler extends BaseAPIHandler {
         super(context);
     }
 
-    public void addSelector(final String selector, final AddSelectorCallBack callBack) {
+    public void addSelector(final String selector, final AddSelectorCallBack callBack, boolean showLoading) {
         this.runAPI(new AddSelectorAPI(selector), new Callback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
                 callBack.onReceiveSelectorId(jsonObject.getInt("id"));
             }
-        });
+        }, showLoading);
     }
 
     public void listSelector(final ListSelectorCallBack callback){

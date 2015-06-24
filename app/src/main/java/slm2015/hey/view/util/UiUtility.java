@@ -1,5 +1,6 @@
 package slm2015.hey.view.util;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -10,8 +11,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.inputmethod.InputMethodManager;
-
-import com.jpardogo.android.googleprogressbar.library.GoogleProgressBar;
 
 import slm2015.hey.R;
 
@@ -62,19 +61,25 @@ public class UiUtility {
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
-    
-    public static void showLoading(Activity activity) {
-        View progressBar = activity.findViewById(R.id.google_progress);
-        if (progressBar!=null) {
-            progressBar.setVisibility(View.VISIBLE);
+
+    public static void showLoading(Context context) {
+        Activity activity = (context instanceof Activity ? (Activity) context : null);
+        if (activity != null) {
+            View progressBar = activity.findViewById(R.id.google_progress);
+            if (progressBar != null) {
+                progressBar.setVisibility(View.VISIBLE);
+                ObjectAnimator animator = ObjectAnimator.ofFloat(progressBar, "alpha", 0, 1);
+                animator.setDuration(1000);
+                animator.start();
+            }
         }
     }
 
     public static void stopLoading(Context context) {
-        Activity activity = (context instanceof Activity ? (Activity)context : null);
-        if (activity!= null) {
-            View progressBar =  activity.findViewById(R.id.google_progress);
-            if (progressBar!=null) {
+        Activity activity = (context instanceof Activity ? (Activity) context : null);
+        if (activity != null) {
+            View progressBar = activity.findViewById(R.id.google_progress);
+            if (progressBar != null) {
                 progressBar.setVisibility(View.INVISIBLE);
             }
         }
