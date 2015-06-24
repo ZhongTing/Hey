@@ -6,6 +6,7 @@ import android.util.Log;
 
 public class LocalPreference {
     private static final String KEY_PRIVACY_MODE_HINT = "PrivacyModeHint";
+    private static final String KEY_MOVE_TO_TOP_ISSUE_ID = "TOP_ISSUE_ID";
     private static String KEY_USER_TOKEN = "UserToken";
     static LocalPreference localPreference = null;
     static Context context;
@@ -51,5 +52,13 @@ public class LocalPreference {
 
     public void setUserToken(String token) {
         this.editor.putString(LocalPreference.KEY_USER_TOKEN, token).commit();
+    }
+
+    public String getMoveToTopIssueId() {
+        return  this.sharedPreferences.getString(LocalPreference.KEY_MOVE_TO_TOP_ISSUE_ID, null);
+    }
+
+    public void setMoveToTopIssueId(String id) {
+        this.editor.putString(LocalPreference.KEY_MOVE_TO_TOP_ISSUE_ID, id).commit();
     }
 }

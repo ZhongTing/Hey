@@ -9,6 +9,7 @@ import java.util.Queue;
 
 import slm2015.hey.core.BaseLoader;
 import slm2015.hey.entity.Issue;
+import slm2015.hey.util.LocalPreference;
 
 public class IssueLoader extends BaseLoader {
     private IssueHandler issueHandler;
@@ -32,6 +33,11 @@ public class IssueLoader extends BaseLoader {
                     IssueLoader.this.historyIssues.addAll(issues);
                     IssueLoader.this.issues.addAll(issues);
                 }
+                String moveToTopIssueId = LocalPreference.instance().getMoveToTopIssueId();
+                if (moveToTopIssueId != null) {
+                    LocalPreference.instance().setMoveToTopIssueId(null);
+                    moveIssueToTop(moveToTopIssueId);
+                }
 
                 notifyLoaderChanged();
             }
@@ -43,6 +49,16 @@ public class IssueLoader extends BaseLoader {
                 notifyLoaderChanged();
             }
         });
+    }
+
+    private void moveIssueToTop(String issueId) {
+        for (Issue issue : this.issues) {
+            if (issue.getId().toString().equals(issueId)) {
+                this.issues.remove(issue);
+                this.issues.add(issue);
+                break;
+            }
+        }
     }
 
     public void likeIssue(Issue issue) {
