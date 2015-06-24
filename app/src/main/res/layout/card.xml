@@ -19,7 +19,7 @@
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="300dp"
+                android:layout_width="@dimen/card_width"
                 android:layout_height="60dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/camera_green"

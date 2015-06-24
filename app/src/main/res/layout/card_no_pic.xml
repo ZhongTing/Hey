@@ -28,7 +28,7 @@
                 android:textSize="50dp" />
 
             <RelativeLayout
-                android:layout_width="300dp"
+                android:layout_width="@dimen/card_width"
                 android:layout_height="240dp"
                 android:layout_gravity="center"
                 android:background="@drawable/card_background"
