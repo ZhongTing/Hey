@@ -95,7 +95,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         initialPopularText(view);
     }
 
-    private void initialLatest_text(View view){
+    private void initialLatest_text(View view) {
         this.latestText = (TextView) view.findViewById(R.id.latest_text);
         this.latestText.setSelected(true);
         this.latestText.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +107,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         });
     }
 
-    private void initialPopularText(View view){
+    private void initialPopularText(View view) {
         this.popularText = (TextView) view.findViewById(R.id.popular_text);
         this.popularText.setSelected(false);
         this.popularText.setOnClickListener(new View.OnClickListener() {
@@ -200,14 +200,21 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         @Override
         public void onLeftCardExit(Object dataObject) {
             // Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
-            cardIssueAdapter.setFirstCardState(CardState.NONE);
+            if (cardIssueAdapter.getCount() > 0) {
+                cardIssueAdapter.getFilterListFirstIssue().setLike(false);
+                cardIssueAdapter.setFirstCardState(CardState.NONE);
+            }
         }
 
         @Override
         public void onRightCardExit(Object dataObject) {
             // Toast.makeText(getActivity(), "Right!", Toast.LENGTH_SHORT).show();
-            issueLoader.likeIssue(cardIssueAdapter.getFilterListFirstIssue());
-            cardIssueAdapter.setFirstCardState(CardState.NONE);
+
+            if (cardIssueAdapter.getCount() > 0) {
+                cardIssueAdapter.getFilterListFirstIssue().setLike(true);
+                issueLoader.likeIssue(cardIssueAdapter.getFilterListFirstIssue());
+                cardIssueAdapter.setFirstCardState(CardState.NONE);
+            }
         }
 
         @Override
