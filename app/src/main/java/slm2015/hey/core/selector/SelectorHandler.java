@@ -44,6 +44,7 @@ public class SelectorHandler extends BaseAPIHandler {
                     JSONObject jsonObject = array.getJSONObject(i);
                     Selector selector = new Selector(jsonObject.getString("subject"));
                     selector.setId(jsonObject.getInt("id"));
+                    selector.setNotify(jsonObject.getBoolean("enabled"));
                     list.add(selector);
                 }
                 return list;
