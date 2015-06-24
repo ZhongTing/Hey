@@ -189,7 +189,7 @@ public class SelectorAdapter extends BaseAdapter {
         });
         this.selectorHandler.removeSelector(selector.getId(), new SelectorHandler.RemoveSelectorCallBack() {
             @Override
-            public void onRemoeveSuccess() {
+            public void onRemoveSuccess() {
                 holder.rowview.startAnimation(animation);
             }
         });
