@@ -26,29 +26,48 @@
             layout="@layout/card" />
     </FrameLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="right">
 
         <ImageView
             android:id="@+id/popular"
             android:layout_width="50dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="25dp"
             android:layout_marginRight="0dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/popular_disable" />
+            android:src="@drawable/Green_left"/>
 
         <ImageView
             android:id="@+id/latest"
+            android:layout_toRightOf="@+id/popular"
             android:layout_width="50dp"
-            android:layout_height="34dp"
-            android:layout_marginTop="21dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="25dp"
             android:layout_marginRight="20dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/latest_pressed" />
-    </LinearLayout>
+            android:src="@drawable/gray_right" />
+
+        <TextView
+            android:id="@+id/latest_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:layout_marginLeft="11dp"
+            android:text="最新"
+            android:textColor="@android:color/white" />
+        <TextView
+            android:id="@+id/popular_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:layout_marginLeft="60dp"
+            android:text="熱門"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
 
     <ImageButton
         android:id="@+id/refreshButton"

@@ -36,16 +36,33 @@ public class IssueLoader extends BaseLoader {
                 notifyLoaderChanged();
             }
         });
-//        this.issueHandler.fetchLike(new IssueHandler.FetchIssueLikeHandlerCallback() {
-//            @Override
-//            public void onReceiveLikeIssues(List<Integer> likeIssuesId) {
-//                boolean test = false;
-//            }
-//        });
+        this.issueHandler.fetchLike(new IssueHandler.FetchIssueLikeHandlerCallback() {
+            @Override
+            public void onReceiveLikeIssues(List<int[]> likeIssuesId) {
+                modifyLikeCount(likeIssuesId);
+                notifyLoaderChanged();
+            }
+        });
     }
 
-    public void likeIssue(Issue issue){
-        this.issueHandler.like(issue.getId());
+    public void likeIssue(Issue issue) {
+        this.issueHandler.like(issue.getId(), new IssueHandler.LikeIssueHandlerCallback() {
+            @Override
+            public void onReceiveLikeIssue(List<int[]> likeIssueId) {
+                modifyLikeCount(likeIssueId);
+                notifyLoaderChanged();
+            }
+        });
+    }
+
+    public void regretLikeIssue(Issue issue) {
+        this.issueHandler.regretLike(issue.getId(), new IssueHandler.RegretLikeIssueHandlerCallback() {
+            @Override
+            public void onReceiveRegretLikeIssue(List<int[]> regretLikeIssueId) {
+                modifyLikeCount(regretLikeIssueId);
+                notifyLoaderChanged();
+            }
+        });
     }
 
     public ArrayList<Issue> getIssues() {
@@ -56,12 +73,12 @@ public class IssueLoader extends BaseLoader {
         return this.historyIssues;
     }
 
-    public Queue<Issue> getNewIssues() {
-        return newIssues;
-    }
-
-    public void clearIssues() {
-        this.newIssues.clear();
-        this.issues.clear();
+    private void modifyLikeCount(List<int[]> likeIssueIdList) {
+        for (Issue issue : this.historyIssues) {
+            for (int[] likeIssue : likeIssueIdList) {
+                if (issue.getId() == likeIssue[0])
+                    issue.setLikeCount(likeIssue[1]);
+            }
+        }
     }
 }

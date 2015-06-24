@@ -73,28 +73,48 @@ public class IssueHandler extends BaseAPIHandler {
                 callback.onReceiveLikeIssues(getLikeIssueId(issueJSONArray));
             }
 
-            private List<Integer> getLikeIssueId(JSONArray array) throws JSONException {
-                List<Integer> list = new ArrayList<Integer>();
+            private List<int[]> getLikeIssueId(JSONArray array) throws JSONException {
+                List<int[]> list = new ArrayList<int[]>();
                 for (int i = 0; i < array.length(); i++) {
+                    int[] data = new int[2];
                     JSONObject jsonObject = array.getJSONObject(i);
-                    list.add(jsonObject.getInt("id"));
+                    data[0] = jsonObject.getInt("id");
+                    data[1] = jsonObject.getInt("like");
+                    list.add(data);
                 }
                 return list;
             }
         });
     }
 
-    public void like(int issueId) {
+    public void like(final int issueId, final LikeIssueHandlerCallback callback) {
         this.runAPI(new LikeAPI(issueId), new Callback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
-                JSONArray issueJSONArray = jsonObject.getJSONArray("like_issue");
+                List<int[]> likeIssueIdList = new ArrayList<int[]>();
+                likeIssueIdList.add(new int[]{issueId, jsonObject.getInt("count")});
+                callback.onReceiveLikeIssue(likeIssueIdList);
             }
         });
     }
 
-    public void regretLike(int issueId) {
-        this.runAPI(new RegretLikeAPI(issueId));
+    public void regretLike(final int issueId, final RegretLikeIssueHandlerCallback callback) {
+        this.runAPI(new RegretLikeAPI(issueId), new Callback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                List<int[]> regretLikeIssueIdList = new ArrayList<int[]>();
+                regretLikeIssueIdList.add(new int[]{issueId, jsonObject.getInt("count")});
+                callback.onReceiveRegretLikeIssue(regretLikeIssueIdList);
+            }
+        });
+    }
+
+    public interface LikeIssueHandlerCallback {
+        void onReceiveLikeIssue(List<int[]> likeIssueId);
+    }
+
+    public interface RegretLikeIssueHandlerCallback {
+        void onReceiveRegretLikeIssue(List<int[]> regretLikeIssueId);
     }
 
     public interface FetchIssueHandlerCallback {
@@ -102,7 +122,7 @@ public class IssueHandler extends BaseAPIHandler {
     }
 
     public interface FetchIssueLikeHandlerCallback {
-        void onReceiveLikeIssues(List<Integer> likeIssuesId);
+        void onReceiveLikeIssues(List<int[]> likeIssuesId);
     }
 
     public interface RaiseIssueHandlerCallback {
