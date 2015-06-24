@@ -20,19 +20,28 @@ public abstract class BaseAPIHandler {
     }
 
     protected void runAPI(APIBase api) {
+        this.runAPI(api, false);
+    }
+
+    protected void runAPI(APIBase api, final boolean showLoadingEffect) {
         this.runAPI(api, new Callback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
                 Log.d("BaseAPIHandler", "No override on Success Method");
             }
-        });
+        }, showLoadingEffect);
     }
 
     protected void runAPI(final APIBase api, final Callback callback) {
+        this.runAPI(api, callback, false);
+    }
+
+    protected void runAPI(final APIBase api, final Callback callback, final boolean showLoadingEffect) {
+        if (showLoadingEffect) UiUtility.showLoading(context);
         api.setSuccessCallback(new Runnable() {
             @Override
             public void run() {
-                UiUtility.stopLoading(context);
+                if (showLoadingEffect) UiUtility.stopLoading(context);
                 try {
                     JSONObject jsonObject = new JSONObject(api.getResponse());
                     callback.onSuccess(jsonObject);
@@ -46,7 +55,7 @@ public abstract class BaseAPIHandler {
         api.setFailCallback(new Runnable() {
             @Override
             public void run() {
-                UiUtility.stopLoading(context);
+                if (showLoadingEffect) UiUtility.stopLoading(context);
                 callback.onFail(api.getResponse());
             }
         });
@@ -54,7 +63,7 @@ public abstract class BaseAPIHandler {
         api.setErrorCallback(new Runnable() {
             @Override
             public void run() {
-                UiUtility.stopLoading(context);
+                if (showLoadingEffect) UiUtility.stopLoading(context);
                 callback.onError();
             }
         });

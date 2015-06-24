@@ -37,13 +37,12 @@ public class AddSelectorActivity extends Activity {
             @Override
             public void onClick(View v) {
                 final boolean confirm = false;
-                UiUtility.showLoading(AddSelectorActivity.this);
                 AddSelectorActivity.this.selectorHandler.addSelector(add_selector_edittext.getText().toString(), new SelectorHandler.AddSelectorCallBack() {
                     @Override
                     public void onReceiveSelectorId(int id) {
                         backToMainActivity(confirm, id);
                     }
-                });
+                }, true);
             }
         });
     }
