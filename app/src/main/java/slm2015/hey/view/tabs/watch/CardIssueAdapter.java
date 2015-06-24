@@ -19,18 +19,22 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     private Context context;
     private List<Issue> list;
     private List<Issue> filterList = new ArrayList<>();
+    private List<Issue> popularList;
 
     private ViewPager viewPager = null;
 
     private int newLoadCardCount = 0;
     private CardState firstCardState = CardState.NONE;
+    private boolean showPopular = false;
+    private ArrayList<Selector> selectors;
 
-    public CardIssueAdapter(Context context, int resource, ViewPager viewPager, List<Issue> list) {
+    public CardIssueAdapter(Context context, int resource, ViewPager viewPager, List<Issue> list, List<Issue> popularList) {
         super(context, resource, list);
         this.context = context;
         this.list = list;
         this.filterList.addAll(list);
         this.viewPager = viewPager;
+        this.popularList = popularList;
     }
 
     @Override
@@ -40,13 +44,15 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Issue issue = this.filterList.get(this.getCount() - position - 1);
         IssueCard card = (IssueCard) convertView;
 
         if (card == null) {
-            card = new IssueCard(this.context);
-            card.assignIssueCard(parent, viewPager, issue);
-            card.setRotation(rotationList[(this.getCount() - position - 1) % rotationList.length]);
+            if (this.getCount() > 0) {
+                Issue issue = this.filterList.get(this.getCount() - position - 1);
+                card = new IssueCard(this.context);
+                card.assignIssueCard(parent, viewPager, issue);
+                card.setRotation(rotationList[(this.getCount() - position - 1) % rotationList.length]);
+            }
         }
 
         if (position == 0) {
@@ -91,6 +97,7 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     }
 
     public void setFilter(ArrayList<Selector> selectors) {
+        this.selectors = selectors;
         this.filterList.clear();
         if (!noFilter(selectors)) {
             for (Issue issue : this.list) {
@@ -107,6 +114,8 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
             }
         } else
             this.filterList.addAll(this.list);
+        if (this.showPopular)
+            filterByPopular();
         notifyDataSetChanged();
     }
 
@@ -123,6 +132,31 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
         this.filterList.clear();
         this.filterList.addAll(this.list);
         notifyDataSetChanged();
+    }
+
+    public void setShowPopular(boolean showPopular) {
+        this.showPopular = showPopular;
+        if (showPopular) {
+            filterByPopular();
+            notifyDataSetChanged();
+        } else {
+            setFilter(this.selectors);
+        }
+    }
+
+    public void filterByPopular() {
+        ArrayList<Issue> needToSortIssues = new ArrayList<>();
+        for (Issue issueInPopList : this.popularList) {
+            for (Issue issue : this.filterList) {
+                if (issueInPopList.getId().equals(issue.getId())) {
+                    needToSortIssues.add(issue);
+                }
+            }
+        }
+        this.filterList.removeAll(needToSortIssues);
+        for (Issue issue : needToSortIssues) {
+            this.filterList.add(issue);
+        }
     }
 
     public enum CardState {

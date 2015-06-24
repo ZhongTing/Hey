@@ -11,6 +11,7 @@ import java.util.List;
 
 import slm2015.hey.api.issue.FetchIssueAPI;
 import slm2015.hey.api.issue.FetchLikeIssueAPI;
+import slm2015.hey.api.issue.FetchPopularIssueAPI;
 import slm2015.hey.api.issue.LikeAPI;
 import slm2015.hey.api.issue.RaiseIssueAPI;
 import slm2015.hey.api.issue.RegretLikeAPI;
@@ -39,30 +40,40 @@ public class IssueHandler extends BaseAPIHandler {
                 JSONArray issueJSONArray = jsonObject.getJSONArray("issues");
                 callback.onReceiveIssues(parseIssueArray(issueJSONArray));
             }
-
-            private List<Issue> parseIssueArray(JSONArray array) throws JSONException {
-                List<Issue> list = new ArrayList<>();
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject jsonObject = array.getJSONObject(i);
-                    Issue issue = new Issue();
-                    issue.setId(jsonObject.getInt("id"));
-                    issue.setSubject(jsonObject.getString("subject"));
-                    issue.setDescription(jsonObject.getString("description"));
-                    issue.setTimestamp(Converter.convertToDate(jsonObject.getString("timestamp")));
-                    if (jsonObject.has("like"))
-                        issue.setLikeCount(jsonObject.getInt("like"));
-                    if (jsonObject.has("place"))
-                        issue.setPlace(jsonObject.getString("place"));
-
-                    if (jsonObject.has("photoURL"))
-                        issue.setPhotoURL(jsonObject.getString("photoURL"));
-
-                    issue.getTimestamp();
-                    list.add(issue);
-                }
-                return list;
-            }
         }, showLoading);
+    }
+
+    public void fetchPopular(final FetchPopularIssueHandlerCallback callback) {
+        this.runAPI(new FetchPopularIssueAPI(), new Callback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) throws JSONException {
+                JSONArray issueJSONArray = jsonObject.getJSONArray("issues");
+                callback.onReceivePopularIssue(parseIssueArray(issueJSONArray));
+            }
+        });
+    }
+
+    private List<Issue> parseIssueArray(JSONArray array) throws JSONException {
+        List<Issue> list = new ArrayList<>();
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject jsonObject = array.getJSONObject(i);
+            Issue issue = new Issue();
+            issue.setId(jsonObject.getInt("id"));
+            issue.setSubject(jsonObject.getString("subject"));
+            issue.setDescription(jsonObject.getString("description"));
+            issue.setTimestamp(Converter.convertToDate(jsonObject.getString("timestamp")));
+            if (jsonObject.has("like"))
+                issue.setLikeCount(jsonObject.getInt("like"));
+            if (jsonObject.has("place"))
+                issue.setPlace(jsonObject.getString("place"));
+
+            if (jsonObject.has("photoURL"))
+                issue.setPhotoURL(jsonObject.getString("photoURL"));
+
+            issue.getTimestamp();
+            list.add(issue);
+        }
+        return list;
     }
 
     public void fetchLike(final FetchIssueLikeHandlerCallback callback) {
@@ -119,6 +130,10 @@ public class IssueHandler extends BaseAPIHandler {
 
     public interface FetchIssueHandlerCallback {
         void onReceiveIssues(List<Issue> issues);
+    }
+
+    public interface FetchPopularIssueHandlerCallback {
+        void onReceivePopularIssue(List<Issue> issues);
     }
 
     public interface FetchIssueLikeHandlerCallback {

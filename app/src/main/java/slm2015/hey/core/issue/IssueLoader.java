@@ -16,6 +16,7 @@ public class IssueLoader extends BaseLoader {
     private ArrayList<Issue> issues = new ArrayList<>();
     private ArrayList<Issue> historyIssues = new ArrayList<>();
     private Queue<Issue> newIssues = new LinkedList<>();
+    private ArrayList<Issue> popularIssues = new ArrayList<>();
 
     public IssueLoader(Context context) {
         this.issueHandler = new IssueHandler(context);
@@ -36,11 +37,23 @@ public class IssueLoader extends BaseLoader {
                 notifyLoaderChanged();
             }
         }, true);
+        loadPopularIssues();
         this.issueHandler.fetchLike(new IssueHandler.FetchIssueLikeHandlerCallback() {
             @Override
             public void onReceiveLikeIssues(List<int[]> likeIssuesId) {
                 modifyLikeCount(likeIssuesId);
                 notifyLoaderChanged();
+            }
+        });
+    }
+
+    public void loadPopularIssues() {
+        this.issueHandler.fetchPopular(new IssueHandler.FetchPopularIssueHandlerCallback() {
+            @Override
+            public void onReceivePopularIssue(List<Issue> issues) {
+                if (issues.size() > 0) {
+                    IssueLoader.this.popularIssues.addAll(issues);
+                }
             }
         });
     }
@@ -80,5 +93,9 @@ public class IssueLoader extends BaseLoader {
                     issue.setLikeCount(likeIssue[1]);
             }
         }
+    }
+
+    public ArrayList<Issue> getPopularIssues() {
+        return popularIssues;
     }
 }

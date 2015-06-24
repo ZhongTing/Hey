@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import slm2015.hey.R;
 import slm2015.hey.core.Observer;
 import slm2015.hey.core.issue.IssueLoader;
+import slm2015.hey.entity.Issue;
 import slm2015.hey.entity.Selector;
 import slm2015.hey.view.tabs.TabPagerFragment;
 import slm2015.hey.view.tabs.watch.CardIssueAdapter.CardState;
@@ -91,11 +92,11 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         initialChangeViewButton(view);
 
         initFlingAdapterContainer(view);
-        initialLatest_text(view);
+        initialLatestText(view);
         initialPopularText(view);
     }
 
-    private void initialLatest_text(View view) {
+    private void initialLatestText(View view) {
         this.latestText = (TextView) view.findViewById(R.id.latest_text);
         this.latestText.setSelected(true);
         this.latestText.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +104,8 @@ public class WatchFragment extends TabPagerFragment implements Observer {
             public void onClick(View v) {
                 WatchFragment.this.latestText.setSelected(true);
                 WatchFragment.this.popularText.setSelected(false);
+                WatchFragment.this.cardIssueAdapter.setShowPopular(false);
+                WatchFragment.this.flingAdapterContainer.clearTopView();
             }
         });
     }
@@ -115,6 +118,8 @@ public class WatchFragment extends TabPagerFragment implements Observer {
             public void onClick(View v) {
                 WatchFragment.this.latestText.setSelected(false);
                 WatchFragment.this.popularText.setSelected(true);
+                WatchFragment.this.cardIssueAdapter.setShowPopular(true);
+                WatchFragment.this.flingAdapterContainer.clearTopView();
             }
         });
     }
@@ -122,7 +127,7 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     private void initFlingAdapterContainer(View view) {
         this.issueLoader = new IssueLoader(getActivity());
         this.issueLoader.addObserver(this);
-        cardIssueAdapter = new CardIssueAdapter(getActivity(), R.layout.card, this.pager, this.issueLoader.getIssues());
+        cardIssueAdapter = new CardIssueAdapter(getActivity(), R.layout.card, this.pager, this.issueLoader.getIssues(), this.issueLoader.getPopularIssues());
 
         this.flingAdapterContainer = (SwipeFlingAdapterView) view.findViewById(R.id.card_frame);
         this.flingAdapterContainer.setMaxVisible(5);
@@ -139,6 +144,16 @@ public class WatchFragment extends TabPagerFragment implements Observer {
 
         int newLoadedIssueCount = this.issueLoader.getIssues().size() - this.lastIssueCount;
         this.lastIssueCount = this.issueLoader.getIssues().size();
+
+//        if (newLoadedIssueCount > 0) {
+//            this.cardIssueAdapter.setList();
+//            this.cardIssueAdapter.setFilter(this.selectors);
+//        } else {
+//            this.flingAdapterContainer.requestLayout();
+//
+//        }
+//        this.flingAdapterContainer.clearTopView();
+
         this.cardIssueAdapter.setNewLoadCardCount(newLoadedIssueCount);
         playCardLoadAnimation((newLoadedIssueCount > MAX_CARD_ANIMATION ? MAX_CARD_ANIMATION : newLoadedIssueCount) - 1);
     }
@@ -194,15 +209,17 @@ public class WatchFragment extends TabPagerFragment implements Observer {
         @Override
         public void removeFirstObjectInAdapter() {
             Log.d("LIST", "removed object!");
-            cardIssueAdapter.removeFirst();
         }
 
         @Override
         public void onLeftCardExit(Object dataObject) {
             // Toast.makeText(getActivity(), "Left!", Toast.LENGTH_SHORT).show();
             if (cardIssueAdapter.getCount() > 0) {
-                cardIssueAdapter.getFilterListFirstIssue().setLike(false);
+                Issue issue = cardIssueAdapter.getFilterListFirstIssue();
+                issue.setLike(false);
                 cardIssueAdapter.setFirstCardState(CardState.NONE);
+                cardIssueAdapter.removeFirst();
+                WatchFragment.this.flingAdapterContainer.clearTopView();
             }
         }
 
@@ -211,9 +228,12 @@ public class WatchFragment extends TabPagerFragment implements Observer {
             // Toast.makeText(getActivity(), "Right!", Toast.LENGTH_SHORT).show();
 
             if (cardIssueAdapter.getCount() > 0) {
-                cardIssueAdapter.getFilterListFirstIssue().setLike(true);
-                issueLoader.likeIssue(cardIssueAdapter.getFilterListFirstIssue());
+                Issue issue = cardIssueAdapter.getFilterListFirstIssue();
+                issue.setLike(true);
+                issueLoader.likeIssue(issue);
                 cardIssueAdapter.setFirstCardState(CardState.NONE);
+                cardIssueAdapter.removeFirst();
+                WatchFragment.this.flingAdapterContainer.clearTopView();
             }
         }
 
@@ -306,8 +326,8 @@ public class WatchFragment extends TabPagerFragment implements Observer {
     }
 
     public void onSelectorChange() {
-        this.flingAdapterContainer.clearTopView();
         this.cardIssueAdapter.setFilter(this.selectors);
+        WatchFragment.this.flingAdapterContainer.clearTopView();
         if (this.watchListViewFragment != null)
             this.watchListViewFragment.onSelectorChange();
 //        WatchFragment.this.loadNewIssue();
