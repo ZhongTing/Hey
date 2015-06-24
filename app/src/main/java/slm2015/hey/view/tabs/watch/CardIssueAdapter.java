@@ -74,17 +74,10 @@ public class CardIssueAdapter extends ArrayAdapter<Issue> {
     }
 
     public void setFirstCardState(CardState firstCardState) {
-        if (getCount() > 0) {
-            this.firstCardState = firstCardState;
-            Issue issue = this.getFilterListFirstIssue();
-            if (firstCardState == CardState.LIKE)
-                issue.setLike(true);
-            else if (firstCardState == CardState.SOSO)
-                issue.setLike(false);
-        }
+        this.firstCardState = firstCardState;
     }
 
-    public Issue getFilterListFirstIssue(){
+    public Issue getFilterListFirstIssue() {
         return this.filterList.get(this.getCount() - 1);
     }
 
