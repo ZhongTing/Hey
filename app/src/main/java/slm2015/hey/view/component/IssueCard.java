@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import slm2015.hey.R;
 import slm2015.hey.entity.Issue;
@@ -78,7 +78,7 @@ public class IssueCard extends FrameLayout {
             this.imageView.setImageBitmap(this.issue.getImage());
         }
         if (this.issue.getPhotoURL() != null && this.imageView != null) {
-            ImageLoader.getInstance().displayImage(this.issue.getPhotoURL(), this.imageView);
+            Picasso.with(context).load(this.issue.getPhotoURL()).into(this.imageView);
         }
 
         this.subjectTextView.setText(this.issue.getSubject());

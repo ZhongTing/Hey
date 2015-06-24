@@ -16,8 +16,6 @@ import android.widget.Toast;
 import com.dd.CircularProgressButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import slm2015.hey.R;
 import slm2015.hey.core.gcm.RegistrationIntentService;
@@ -60,7 +58,6 @@ public class LoginActivity extends Activity implements UserHandler.LoginListener
     }
 
     private void globalInit() {
-        ImageLoader.getInstance().init(new ImageLoaderConfiguration.Builder(getBaseContext()).build());
         LocalPreference.init(this);
     }
 
