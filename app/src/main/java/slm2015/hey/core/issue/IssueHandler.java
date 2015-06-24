@@ -32,7 +32,7 @@ public class IssueHandler extends BaseAPIHandler {
         }, showLoading);
     }
 
-    public void fetch(Integer lastIssueId, final FetchIssueHandlerCallback callback) {
+    public void fetch(Integer lastIssueId, final FetchIssueHandlerCallback callback, boolean showLoading) {
         this.runAPI(new FetchIssueAPI(lastIssueId), new Callback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
@@ -62,7 +62,7 @@ public class IssueHandler extends BaseAPIHandler {
                 }
                 return list;
             }
-        });
+        }, showLoading);
     }
 
     public void fetchLike(final FetchIssueLikeHandlerCallback callback) {

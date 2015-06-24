@@ -55,7 +55,7 @@ public class SelectorHandler extends BaseAPIHandler {
         this.runAPI(new RemoveSelectorAPI(selectorId), new Callback() {
             @Override
             public void onSuccess(JSONObject jsonObject) throws JSONException {
-                callBack.onRemoeveSuccess();
+                callBack.onRemoveSuccess();
             }
         });
     }
@@ -87,7 +87,7 @@ public class SelectorHandler extends BaseAPIHandler {
     }
 
     public interface RemoveSelectorCallBack {
-        void onRemoeveSuccess();
+        void onRemoveSuccess();
     }
 
     public interface AddSelectorCallBack {
