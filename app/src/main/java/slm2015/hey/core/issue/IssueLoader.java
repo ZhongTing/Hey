@@ -36,15 +36,16 @@ public class IssueLoader extends BaseLoader {
                 notifyLoaderChanged();
             }
         });
-//        this.issueHandler.fetchLike(new IssueHandler.FetchIssueLikeHandlerCallback() {
-//            @Override
-//            public void onReceiveLikeIssues(List<Integer> likeIssuesId) {
-//                boolean test = false;
-//            }
-//        });
+        this.issueHandler.fetchLike(new IssueHandler.FetchIssueLikeHandlerCallback() {
+            @Override
+            public void onReceiveLikeIssues(List<int[]> likeIssuesId) {
+                modifyLikeCount(likeIssuesId);
+                notifyLoaderChanged();
+            }
+        });
     }
 
-    public void likeIssue(Issue issue){
+    public void likeIssue(Issue issue) {
         this.issueHandler.like(issue.getId());
     }
 
@@ -56,12 +57,12 @@ public class IssueLoader extends BaseLoader {
         return this.historyIssues;
     }
 
-    public Queue<Issue> getNewIssues() {
-        return newIssues;
-    }
-
-    public void clearIssues() {
-        this.newIssues.clear();
-        this.issues.clear();
+    private void modifyLikeCount(List<int[]> likeIssueIdList) {
+        for (Issue issue : this.historyIssues) {
+            for (int[] likeIssue : likeIssueIdList) {
+                if (issue.getId() == likeIssue[0])
+                    issue.setLikeCount(likeIssue[1]);
+            }
+        }
     }
 }
