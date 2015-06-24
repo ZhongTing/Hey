@@ -124,6 +124,7 @@ public class LoginActivity extends Activity implements UserHandler.LoginListener
 
     @Override
     public void onLoginFail() {
+        LocalPreference.instance().setUserToken(null);
         ObjectAnimator animator = ObjectAnimator.ofFloat(this.registerZone, "alpha", this.registerZone.getAlpha(), 1);
         animator.setDuration(3000);
         animator.start();
